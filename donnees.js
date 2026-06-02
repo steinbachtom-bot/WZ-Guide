@@ -49,7 +49,8 @@ const CATEGORIES_PRINCIPALES = [
 const CATEGORIES_SECONDAIRES = [
   "Pistolet",
   "Lanceur",
-  "Arme de mêlée"
+  "Arme de mêlée",
+  "Arme spéciale"
 ];
 
 /* ------------------------------------------------------------
@@ -802,6 +803,56 @@ const ARMES_SECONDAIRES = [
         { id: "sync_recul", nom: "Unité de synchro recul", description: "Réduit l'ensemble du recul.", modificateurs: { gun_kick: "-10%", recul_horizontal: "-10%", recul_vertical: "-10%" } },
         { id: "surpressurise", nom: ".45 surpressurisé", description: "Augmente la vélocité de balle.", modificateurs: { velocite_ms: "+15%" } },
         { id: "sear", nom: "Gâchette rapide Sear", description: "Cadence accrue mais recul dégradé.", modificateurs: { cadence_cpm: "+11%", gun_kick: "+19%", recul_horizontal: "+15%", recul_vertical: "+20%" } }
+      ]}
+    ]
+  },
+  {
+    id: "siren",
+    nom: "Siren",
+    categorie: "Arme spéciale",
+    // Arme spéciale BO7 à projectile ricochet (« one-shot »). Stats de base RÉELLES (source codmunity.gg).
+    stats_base: {
+      degats: 120, portee_m: 30, cadence_cpm: 150, velocite_ms: 13,
+      capacite_chargeur: 6, vitesse_visee_ms: 260, sprint_to_fire_ms: 230,
+      vitesse_rechargement_ms: 3033, gun_kick: 20, recul_horizontal: 7.65,
+      recul_vertical: 18.48, mobilite: 4.8
+    },
+    emplacements: [
+      { id: "poignee_arr", label: "Poignée arrière", options: [
+        { id: "aucun", nom: "— Aucun —" },
+        { id: "lancet", nom: "Poignée Lancet Tear (maniabilité)", description: "Manie plus vite.", modificateurs: { vitesse_visee_ms: "-15%", sprint_to_fire_ms: "-17%" } },
+        { id: "soma81", nom: "Poignée Soma-81 (mobilité)", description: "Déplacement plus rapide.", modificateurs: { mobilite: "+6%" } }
+      ]},
+      { id: "chargeur", label: "Chargeur", options: [
+        { id: "aucun", nom: "— Aucun —" },
+        { id: "deflection", nom: "Noyau MFS Deflection (ricochet)", description: "Projectile ricochet : +vélocité et +munitions, mais cadence réduite.", modificateurs: { velocite_ms: "+50%", capacite_chargeur: "+3", cadence_cpm: "-33%" } }
+      ]}
+    ]
+  },
+  {
+    id: "nx_ravager",
+    nom: "NX Ravager",
+    categorie: "Arme spéciale",
+    // Arbalète (arme spéciale BO7). Stats de base RÉELLES (source codmunity.gg).
+    stats_base: {
+      degats: 120, portee_m: 50, cadence_cpm: 113, velocite_ms: 127,
+      capacite_chargeur: 1, vitesse_visee_ms: 260, sprint_to_fire_ms: 180,
+      vitesse_rechargement_ms: 2933, gun_kick: 25, recul_horizontal: 0.22,
+      recul_vertical: 5, mobilite: 4.8
+    },
+    emplacements: [
+      { id: "viseur", label: "Optique", options: [
+        { id: "aucun", nom: "— Aucun —" },
+        { id: "redwell2x", nom: "Redwell 30-S 2x", description: "Lunette 2x." },
+        { id: "ultrazoom", nom: "Greaves Ultra Zoom", description: "Lunette à zoom variable." }
+      ]},
+      { id: "chargeur", label: "Chargeur", options: [
+        { id: "aucun", nom: "— Aucun —" },
+        { id: "tribolt", nom: "TriBolt", description: "Tire 3 carreaux à la fois.", modificateurs: { capacite_chargeur: "+2" } }
+      ]},
+      { id: "mode_tir", label: "Mode de tir", options: [
+        { id: "aucun", nom: "— Aucun —" },
+        { id: "explosif", nom: "Carreau explosif", description: "Les carreaux explosent à l'impact." }
       ]}
     ]
   },
