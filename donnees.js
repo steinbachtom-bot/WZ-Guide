@@ -54,6 +54,17 @@ const CATEGORIES_SECONDAIRES = [
 ];
 
 /* ------------------------------------------------------------
+   LES OPUS (jeux d'origine des armes). Warzone mélange plusieurs jeux.
+   L'opus d'une arme est défini par son champ "jeu".
+   Un opus sans arme (dans un emplacement donné) s'affiche grisé.
+   ------------------------------------------------------------ */
+const JEUX = [
+  "Black Ops 7",
+  "Black Ops 6",
+  "Modern Warfare III"
+];
+
+/* ------------------------------------------------------------
    LA MÉTA (tier list). Indicative, basée sur la méta codmunity —
    à ajuster librement. Clé = id de l'arme, valeur = tier.
    ------------------------------------------------------------ */
@@ -81,6 +92,7 @@ const ARMES_PRINCIPALES = [
     id: "krig_c",
     nom: "Krig C",
     categorie: "Fusil d'assaut",
+    jeu: "Black Ops 6",
     // Stats de base RÉELLES (Warzone).
     stats_base: {
       degats: 38, portee_m: 50, cadence_cpm: 638, velocite_ms: 820,
@@ -151,6 +163,7 @@ const ARMES_PRINCIPALES = [
     id: "c9",
     nom: "C9",
     categorie: "Mitraillette",
+    jeu: "Black Ops 6",
     // Stats de base RÉELLES (Warzone, source codmunity.gg).
     stats_base: {
       degats: 40, portee_m: 20, cadence_cpm: 732, velocite_ms: 540,
@@ -223,6 +236,7 @@ const ARMES_PRINCIPALES = [
     id: "xmg",
     nom: "XMG",
     categorie: "Fusil-mitrailleur",
+    jeu: "Black Ops 6",
     // Stats de base RÉELLES (Warzone, source codmunity.gg).
     stats_base: {
       degats: 29, portee_m: 43, cadence_cpm: 697, velocite_ms: 860,
@@ -293,6 +307,7 @@ const ARMES_PRINCIPALES = [
     id: "tsarkov_762",
     nom: "Tsarkov 7.62",
     categorie: "Fusil tactique",
+    jeu: "Black Ops 6",
     // Stats de base RÉELLES (Warzone, source codmunity.gg). Dégâts/portée approximés (non affichés dans le panneau).
     stats_base: {
       degats: 60, portee_m: 60, cadence_cpm: 133, velocite_ms: 890,
@@ -364,6 +379,7 @@ const ARMES_PRINCIPALES = [
     id: "lr_762",
     nom: "LR 7.62",
     categorie: "Fusil de précision",
+    jeu: "Black Ops 6",
     // Stats de base RÉELLES (Warzone, source codmunity.gg). Dégâts/portée approximés (sniper, non affichés).
     stats_base: {
       degats: 90, portee_m: 76, cadence_cpm: 39, velocite_ms: 890,
@@ -434,6 +450,7 @@ const ARMES_PRINCIPALES = [
     id: "asg_89",
     nom: "ASG-89",
     categorie: "Fusil à pompe",
+    jeu: "Black Ops 6",
     // Stats de base RÉELLES (Warzone, source codmunity.gg). Dégâts max (102) et portée courte.
     stats_base: {
       degats: 102, portee_m: 10, cadence_cpm: 128, velocite_ms: 320,
@@ -511,6 +528,7 @@ const ARMES_SECONDAIRES = [
     id: "grekhova",
     nom: "Grekhova",
     categorie: "Pistolet",
+    jeu: "Black Ops 6",
     // Stats de base RÉELLES (Warzone, source codmunity.gg).
     stats_base: {
       degats: 35, portee_m: 14.5, cadence_cpm: 750, velocite_ms: 290,
@@ -572,6 +590,7 @@ const ARMES_SECONDAIRES = [
     id: "jager_45",
     nom: "Jäger 45",
     categorie: "Pistolet",
+    jeu: "Black Ops 7",
     // Pistolet semi-auto par défaut de Black Ops 7. Stats de base RÉELLES (source codmunity.gg).
     stats_base: {
       degats: 34, portee_m: 15, cadence_cpm: 600, velocite_ms: 410,
@@ -627,6 +646,7 @@ const ARMES_SECONDAIRES = [
     id: "velox_57",
     nom: "Velox 5.7",
     categorie: "Pistolet",
+    jeu: "Black Ops 7",
     // Pistolet à rafale de 3 coups (Black Ops 7). Stats de base RÉELLES (source codmunity.gg).
     stats_base: {
       degats: 36, portee_m: 18, cadence_cpm: 549, velocite_ms: 400,
@@ -689,6 +709,7 @@ const ARMES_SECONDAIRES = [
     id: "coda_9",
     nom: "Coda 9",
     categorie: "Pistolet",
+    jeu: "Black Ops 7",
     // Pistolet entièrement automatique (Black Ops 7). Stats de base RÉELLES (source codmunity.gg).
     stats_base: {
       degats: 24, portee_m: 12, cadence_cpm: 938, velocite_ms: 280,
@@ -752,6 +773,7 @@ const ARMES_SECONDAIRES = [
     id: "pistolet_1911",
     nom: "1911",
     categorie: "Pistolet",
+    jeu: "Black Ops 7",
     // Pistolet .45 semi-auto classique (Black Ops 7). Stats de base RÉELLES (source codmunity.gg).
     stats_base: {
       degats: 40, portee_m: 16, cadence_cpm: 400, velocite_ms: 450,
@@ -810,6 +832,7 @@ const ARMES_SECONDAIRES = [
     id: "siren",
     nom: "Siren",
     categorie: "Arme spéciale",
+    jeu: "Black Ops 7",
     // Arme spéciale BO7 à projectile ricochet (« one-shot »). Stats de base RÉELLES (source codmunity.gg).
     stats_base: {
       degats: 120, portee_m: 30, cadence_cpm: 150, velocite_ms: 13,
@@ -833,6 +856,7 @@ const ARMES_SECONDAIRES = [
     id: "nx_ravager",
     nom: "NX Ravager",
     categorie: "Arme spéciale",
+    jeu: "Black Ops 7",
     // Arbalète (arme spéciale BO7). Stats de base RÉELLES (source codmunity.gg).
     stats_base: {
       degats: 120, portee_m: 50, cadence_cpm: 113, velocite_ms: 127,
@@ -860,6 +884,7 @@ const ARMES_SECONDAIRES = [
     id: "cigma_2b",
     nom: "Cigma 2B",
     categorie: "Lanceur",
+    jeu: "Black Ops 6",
     // Lanceur à verrouillage (anti-véhicule/streak). Stats simplifiées : un lanceur ne suit
     // pas le modèle des armes à feu (pas de recul/cadence classiques).
     stats_base: {
@@ -870,16 +895,115 @@ const ARMES_SECONDAIRES = [
     },
     emplacements: []
   },
+  // --- LANCEURS BLACK OPS 7 ---
+  // Comme la mêlée, les lanceurs n'ont pas de stats chiffrées publiées : valeurs INDICATIVES.
+  {
+    id: "arc_m1",
+    nom: "A.R.C. M1",
+    categorie: "Lanceur",
+    jeu: "Black Ops 7",
+    stats_base: {
+      degats: 150, portee_m: 80, cadence_cpm: 20, velocite_ms: 130,
+      capacite_chargeur: 1, vitesse_visee_ms: 500, sprint_to_fire_ms: 350,
+      vitesse_rechargement_ms: 4000, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 4.0
+    },
+    emplacements: []
+  },
+  {
+    id: "aarow_109",
+    nom: "AAROW 109",
+    categorie: "Lanceur",
+    jeu: "Black Ops 7",
+    // Lanceur à verrouillage avec suivi de cible (anti-séries de points).
+    stats_base: {
+      degats: 130, portee_m: 90, cadence_cpm: 18, velocite_ms: 100,
+      capacite_chargeur: 1, vitesse_visee_ms: 480, sprint_to_fire_ms: 340,
+      vitesse_rechargement_ms: 4200, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 4.2
+    },
+    emplacements: []
+  },
+  // --- ARMES DE MÊLÉE (Black Ops 7) ---
+  // Les armes de mêlée n'ont pas de stats chiffrées publiées ni d'accessoires en jeu.
+  // Les valeurs ci-dessous sont INDICATIVES : elles traduisent surtout les différences
+  // d'allonge (portee_m) et de maniabilité (mobilite) entre les armes.
   {
     id: "couteau",
     nom: "Couteau",
     categorie: "Arme de mêlée",
-    // Arme de mêlée : un coup = élimination. Pas de munitions, pas d'accessoires.
+    jeu: "Black Ops 7",
     stats_base: {
       degats: 150, portee_m: 2, cadence_cpm: 60, velocite_ms: 0,
       capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
       vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
-      recul_vertical: 0, mobilite: 7.5
+      recul_vertical: 0, mobilite: 7.8
+    },
+    emplacements: []
+  },
+  {
+    id: "flatline_mk2",
+    nom: "Flatline Mk.II",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 7",
+    stats_base: {
+      degats: 150, portee_m: 3, cadence_cpm: 50, velocite_ms: 0,
+      capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 6.5
+    },
+    emplacements: []
+  },
+  {
+    id: "couteau_balistique",
+    nom: "Couteau balistique",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 7",
+    // Particularité : tire une lame -> a une portée, une vélocité et un « chargeur » d'une lame.
+    stats_base: {
+      degats: 150, portee_m: 25, cadence_cpm: 40, velocite_ms: 60,
+      capacite_chargeur: 1, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 1500, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 7.0
+    },
+    emplacements: []
+  },
+  {
+    id: "katana",
+    nom: "Katana",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 7",
+    stats_base: {
+      degats: 160, portee_m: 4, cadence_cpm: 55, velocite_ms: 0,
+      capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 6.8
+    },
+    emplacements: []
+  },
+  {
+    id: "poings",
+    nom: "Poings",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 7",
+    stats_base: {
+      degats: 120, portee_m: 1.5, cadence_cpm: 80, velocite_ms: 0,
+      capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 8
+    },
+    emplacements: []
+  },
+  {
+    id: "h311_saw",
+    nom: "H311-SAW",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 7",
+    stats_base: {
+      degats: 160, portee_m: 2.5, cadence_cpm: 45, velocite_ms: 0,
+      capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 6.0
     },
     emplacements: []
   }

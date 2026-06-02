@@ -369,6 +369,8 @@
       <div class="gs-image">
         <div id="image-arme-principale"></div>
         <div class="gs-weapon-picker">
+          <label>Opus :</label>
+          <div id="choix-opus-principale" class="menu-cible-cat"></div>
           <label>Catégorie :</label>
           <div id="choix-categorie-principale" class="menu-cible-cat"></div>
           <label>Arme :</label>
@@ -398,6 +400,8 @@
       <div class="gs-image">
         <div id="image-arme-secondaire"></div>
         <div class="gs-weapon-picker">
+          <label>Opus :</label>
+          <div id="choix-opus-secondaire" class="menu-cible-cat"></div>
           <label>Catégorie :</label>
           <div id="choix-categorie-secondaire" class="menu-cible-cat"></div>
           <label>Arme :</label>
@@ -474,7 +478,9 @@
 
     let armePrincipale = ARMES_PRINCIPALES[0];
     let armeSecondaire = ARMES_SECONDAIRES[0];
-    // Catégorie actuellement sélectionnée pour chaque arme.
+    // Opus (jeu) et catégorie actuellement sélectionnés pour chaque arme.
+    let opusPrincipal = armePrincipale.jeu;
+    let opusSecondaire = armeSecondaire.jeu;
     let categoriePrincipale = armePrincipale.categorie;
     let categorieSecondaire = armeSecondaire.categorie;
     // Chaque arme a SES PROPRES accessoires -> la sélection se reconstruit à partir de l'arme.
@@ -688,65 +694,94 @@
       });
     }
 
-    // Construit les options de catégories (grisées si aucune arme dedans).
-    function optionsCategories(listeArmes, categories) {
+    // Options de catégories pour un opus donné (grisées si aucune arme de cet opus dedans).
+    function optionsCategories(listeArmes, categories, opus) {
       return categories.map(cat => {
-        const aDesArmes = listeArmes.some(a => a.categorie === cat);
+        const aDesArmes = listeArmes.some(a => a.categorie === cat && a.jeu === opus);
         return { id: cat, nom: aDesArmes ? cat : cat + " (à venir)", desactive: !aDesArmes };
       });
     }
+    // Options d'opus (grisées si aucune arme de cet opus dans cet emplacement).
+    function optionsJeux(listeArmes) {
+      return JEUX.map(jeu => {
+        const present = listeArmes.some(a => a.jeu === jeu);
+        return { id: jeu, nom: present ? jeu : jeu + " (à venir)", desactive: !present };
+      });
+    }
+    // Première catégorie ayant une arme de l'opus donné.
+    function premiereCategorie(listeArmes, categories, opus) {
+      return categories.find(cat => listeArmes.some(a => a.categorie === cat && a.jeu === opus));
+    }
 
-    // -- ARME PRINCIPALE : menu CATÉGORIE puis menu ARME (filtré par catégorie) --
+    // -- ARME PRINCIPALE : OPUS -> CATÉGORIE -> ARME --
+    function dessinerOpusPrincipal() {
+      const cible = document.getElementById("choix-opus-principale");
+      creerMenu(cible, optionsJeux(ARMES_PRINCIPALES), opusPrincipal, (jeu) => {
+        opusPrincipal = jeu;
+        categoriePrincipale = premiereCategorie(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, jeu);
+        armePrincipale = ARMES_PRINCIPALES.find(a => a.categorie === categoriePrincipale && a.jeu === jeu);
+        selectionPrincipale = etatVide(armePrincipale.emplacements);
+        dessinerOpusPrincipal(); dessinerCategoriePrincipale(); dessinerArmePrincipale();
+        afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
+        majEnteteArmePrincipale(); rafraichirPrincipale();
+      });
+    }
     function dessinerCategoriePrincipale() {
       const cible = document.getElementById("choix-categorie-principale");
-      creerMenu(cible, optionsCategories(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES), categoriePrincipale, (cat) => {
+      creerMenu(cible, optionsCategories(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, opusPrincipal), categoriePrincipale, (cat) => {
         categoriePrincipale = cat;
-        armePrincipale = ARMES_PRINCIPALES.find(a => a.categorie === cat);   // 1re arme de la catégorie
+        armePrincipale = ARMES_PRINCIPALES.find(a => a.categorie === cat && a.jeu === opusPrincipal);
         selectionPrincipale = etatVide(armePrincipale.emplacements);
-        dessinerCategoriePrincipale();
-        dessinerArmePrincipale();
+        dessinerCategoriePrincipale(); dessinerArmePrincipale();
         afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
-        majEnteteArmePrincipale();
-        rafraichirPrincipale();
+        majEnteteArmePrincipale(); rafraichirPrincipale();
       });
     }
     function dessinerArmePrincipale() {
       const cible = document.getElementById("choix-arme-principale");
-      const options = ARMES_PRINCIPALES.filter(a => a.categorie === categoriePrincipale).map(a => ({ id: a.id, nom: a.nom }));
+      const options = ARMES_PRINCIPALES.filter(a => a.categorie === categoriePrincipale && a.jeu === opusPrincipal).map(a => ({ id: a.id, nom: a.nom }));
       creerMenu(cible, options, armePrincipale.id, (val) => {
         armePrincipale = ARMES_PRINCIPALES.find(a => a.id === val);
         selectionPrincipale = etatVide(armePrincipale.emplacements);   // nouvelle arme = ses propres accessoires
         dessinerArmePrincipale();
         afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
-        majEnteteArmePrincipale();
-        rafraichirPrincipale();
+        majEnteteArmePrincipale(); rafraichirPrincipale();
       });
     }
 
     // -- ARME SECONDAIRE : même principe --
+    function dessinerOpusSecondaire() {
+      const cible = document.getElementById("choix-opus-secondaire");
+      creerMenu(cible, optionsJeux(ARMES_SECONDAIRES), opusSecondaire, (jeu) => {
+        opusSecondaire = jeu;
+        categorieSecondaire = premiereCategorie(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, jeu);
+        armeSecondaire = ARMES_SECONDAIRES.find(a => a.categorie === categorieSecondaire && a.jeu === jeu);
+        selectionSecondaire = etatVide(armeSecondaire.emplacements);
+        dessinerOpusSecondaire(); dessinerCategorieSecondaire(); dessinerArmeSecondaire();
+        afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
+        majEnteteArmeSecondaire(); rafraichirSecondaire();
+      });
+    }
     function dessinerCategorieSecondaire() {
       const cible = document.getElementById("choix-categorie-secondaire");
-      creerMenu(cible, optionsCategories(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES), categorieSecondaire, (cat) => {
+      creerMenu(cible, optionsCategories(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, opusSecondaire), categorieSecondaire, (cat) => {
         categorieSecondaire = cat;
-        armeSecondaire = ARMES_SECONDAIRES.find(a => a.categorie === cat);
+        armeSecondaire = ARMES_SECONDAIRES.find(a => a.categorie === cat && a.jeu === opusSecondaire);
         selectionSecondaire = etatVide(armeSecondaire.emplacements);
-        dessinerCategorieSecondaire();
-        dessinerArmeSecondaire();
+        dessinerCategorieSecondaire(); dessinerArmeSecondaire();
         afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
-        majEnteteArmeSecondaire();
-        rafraichirSecondaire();
+        majEnteteArmeSecondaire(); rafraichirSecondaire();
       });
     }
     function dessinerArmeSecondaire() {
       const cible = document.getElementById("choix-arme-secondaire");
-      const options = ARMES_SECONDAIRES.filter(a => a.categorie === categorieSecondaire).map(a => ({ id: a.id, nom: a.nom }));
+      const options = ARMES_SECONDAIRES.filter(a => a.categorie === categorieSecondaire && a.jeu === opusSecondaire).map(a => ({ id: a.id, nom: a.nom }));
       creerMenu(cible, options, armeSecondaire.id, (val) => {
         armeSecondaire = ARMES_SECONDAIRES.find(a => a.id === val);
         selectionSecondaire = etatVide(armeSecondaire.emplacements);
         dessinerArmeSecondaire();
         afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
-        majEnteteArmeSecondaire();
-        rafraichirSecondaire();
+        majEnteteArmeSecondaire(); rafraichirSecondaire();
       });
     }
 
@@ -881,11 +916,13 @@
       const c = classesMemoire[i];
       if (!c) return;
       armePrincipale = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale) || ARMES_PRINCIPALES[0];
+      opusPrincipal = armePrincipale.jeu;
       categoriePrincipale = c.categoriePrincipale || armePrincipale.categorie;
       selectionPrincipale = etatVide(armePrincipale.emplacements);
       for (const k in c.selectionPrincipale) if (k in selectionPrincipale) selectionPrincipale[k] = c.selectionPrincipale[k];
 
       armeSecondaire = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire) || ARMES_SECONDAIRES[0];
+      opusSecondaire = armeSecondaire.jeu;
       categorieSecondaire = c.categorieSecondaire || armeSecondaire.categorie;
       selectionSecondaire = etatVide(armeSecondaire.emplacements);
       for (const k in c.selectionSecondaire) if (k in selectionSecondaire) selectionSecondaire[k] = c.selectionSecondaire[k];
@@ -894,10 +931,10 @@
       for (const k in c.equipement) if (k in equipementSelection) equipementSelection[k] = c.equipement[k];
 
       // On redessine l'ensemble du créateur.
-      dessinerCategoriePrincipale(); dessinerArmePrincipale();
+      dessinerOpusPrincipal(); dessinerCategoriePrincipale(); dessinerArmePrincipale();
       afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
       majEnteteArmePrincipale();
-      dessinerCategorieSecondaire(); dessinerArmeSecondaire();
+      dessinerOpusSecondaire(); dessinerCategorieSecondaire(); dessinerArmeSecondaire();
       afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
       majEnteteArmeSecondaire();
       afficherSlots("zone-atouts", ATOUTS, atoutsSelection, rafraichirPrincipale);
@@ -1013,9 +1050,11 @@
     }
 
     // -- D) DÉMARRAGE ----------------------------------------------------
-    // 1) Menus de sélection (catégorie + arme)
+    // 1) Menus de sélection (opus + catégorie + arme)
+    dessinerOpusPrincipal();
     dessinerCategoriePrincipale();
     dessinerArmePrincipale();
+    dessinerOpusSecondaire();
     dessinerCategorieSecondaire();
     dessinerArmeSecondaire();
 
