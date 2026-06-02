@@ -915,17 +915,26 @@ const ATOUTS_BLACKOPS = [
 const EQUIPEMENTS_WARZONE = [
   { id: "letal", label: "Équipement létal", options: [
     { id: "aucun", nom: "— Aucun —" },
-    { id: "frag", nom: "Grenade à fragmentation", description: "Explosif à délai, peut être renvoyé." },
+    { id: "frag", nom: "Grenade à fragmentation", description: "Grenade à délai, peut être cuisinée pour exploser en l'air." },
     { id: "semtex", nom: "Semtex", description: "Grenade collante à explosion rapide." },
-    { id: "c4", nom: "C4", description: "Explosif télécommandé." },
-    { id: "mine", nom: "Mine de proximité", description: "Se déclenche au passage d'un ennemi." }
+    { id: "couteau", nom: "Couteau de lancer", description: "Élimination en un coup, récupérable sur les ennemis." },
+    { id: "thermite", nom: "Thermite", description: "Colle à la cible et inflige des dégâts de feu dans la durée." },
+    { id: "molotov", nom: "Cocktail Molotov", description: "Crée une zone enflammée qui inflige des dégâts continus." },
+    { id: "c4", nom: "C4", description: "Gros explosif collant à détonation à distance." },
+    { id: "charge_perforante", nom: "Charge perforante", description: "Se fixe dans une surface et explose de l'autre côté (perce les murs)." },
+    { id: "mine", nom: "Mine de proximité", description: "Se déclenche au passage d'un ennemi." },
+    { id: "claymore", nom: "Claymore", description: "Mine directionnelle déclenchée par détection." }
   ]},
   { id: "tactique", label: "Équipement tactique", options: [
     { id: "aucun", nom: "— Aucun —" },
-    { id: "flash", nom: "Grenade flash", description: "Aveugle et désoriente les ennemis." },
-    { id: "fumigene", nom: "Grenade fumigène", description: "Crée un écran de fumée." },
-    { id: "stim", nom: "Stim", description: "Régénère la santé et relance le sprint." },
-    { id: "leurre", nom: "Leurre", description: "Simule des tirs pour tromper l'ennemi." }
+    { id: "stun", nom: "Grenade paralysante", description: "Ralentit les déplacements et la visée des ennemis." },
+    { id: "flash", nom: "Grenade aveuglante", description: "Aveugle et assourdit les ennemis." },
+    { id: "fumigene", nom: "Grenade fumigène", description: "Déploie un écran de fumée." },
+    { id: "snapshot", nom: "Grenade Snapshot", description: "Révèle brièvement la position des ennemis proches." },
+    { id: "leurre", nom: "Leurre", description: "Simule des bruits de tir pour tromper l'ennemi." },
+    { id: "stim", nom: "Stim", description: "Régénère la santé et relance le sprint tactique." },
+    { id: "detecteur", nom: "Détecteur de rythme cardiaque", description: "Repère les ennemis proches sur un mini-scanner." },
+    { id: "gaz", nom: "Grenade à gaz", description: "Libère un nuage de gaz qui ralentit et endommage." }
   ]}
   // Pas d'atout de terrain en Warzone : il ne fait pas partie de la classe (ramassé/acheté en partie).
 ];
@@ -934,17 +943,26 @@ const EQUIPEMENTS_WARZONE = [
 const EQUIPEMENTS_BLACKOPS = [
   { id: "letal", label: "Équipement létal", options: [
     { id: "aucun", nom: "— Aucun —" },
-    { id: "frag", nom: "Grenade à fragmentation", description: "Explosif à délai, peut être renvoyé." },
-    { id: "semtex", nom: "Semtex", description: "Grenade collante à explosion rapide." },
-    { id: "tomahawk", nom: "Tomahawk", description: "Hache de lancer, élimination directe." },
-    { id: "molotov", nom: "Cocktail Molotov", description: "Crée une zone enflammée." }
+    { id: "frag", nom: "Grenade à fragmentation", description: "Grenade à fragmentation à délai (peut être cuisinée)." },
+    { id: "cluster", nom: "Grenade à fragmentation en grappe", description: "Disperse de plus petits explosifs en détonant." },
+    { id: "sticky", nom: "Grenade collante", description: "Grenade collante à retardement." },
+    { id: "needle_drone", nom: "Drone aiguille", description: "Petit drone volant qui explose à l'impact (auto ou manuel)." },
+    { id: "molotov", nom: "Cocktail Molotov", description: "Arme incendiaire : crée une zone enflammée." },
+    { id: "point_turret", nom: "Tourelle ponctuelle", description: "Petite tourelle déployable qui tire automatiquement sur les ennemis." },
+    { id: "c4", nom: "C4", description: "Gros explosif collant, détonation à distance ou immédiate." },
+    { id: "combat_axe", nom: "Hache de combat", description: "Hache de lancer, élimination en un coup ; rebondit sur les surfaces." }
   ]},
   { id: "tactique", label: "Équipement tactique", options: [
     { id: "aucun", nom: "— Aucun —" },
-    { id: "flash", nom: "Grenade flash", description: "Aveugle et désoriente les ennemis." },
-    { id: "stun", nom: "Grenade aveuglante", description: "Ralentit les mouvements de l'ennemi." },
-    { id: "fumigene", nom: "Grenade fumigène", description: "Crée un écran de fumée." },
-    { id: "leurre", nom: "Leurre", description: "Simule des tirs pour tromper l'ennemi." }
+    { id: "stun", nom: "Grenade paralysante", description: "Ralentit les déplacements et la visée de la victime." },
+    { id: "emp", nom: "Grenade EMP", description: "Désactive ou détruit l'électronique (équipements, séries, joueurs)." },
+    { id: "decoy", nom: "Leurre", description: "Simule des bruits de tir pour tromper l'ennemi ; colle aux surfaces." },
+    { id: "pinpoint", nom: "Grenade de repérage", description: "Détecte les ennemis à portée et les marque d'un traceur." },
+    { id: "flash", nom: "Grenade aveuglante", description: "Aveugle et assourdit les cibles." },
+    { id: "stim", nom: "Stim", description: "Stimulant militaire qui soigne rapidement les blessures." },
+    { id: "psych", nom: "Grenade psychotrope", description: "Explose à l'impact et libère un nuage de gaz hallucinogène." },
+    { id: "fumigene", nom: "Grenade fumigène", description: "Déploie un écran de fumée qui bloque la vue et le ciblage auto." },
+    { id: "hunter_bot", nom: "Drone chasseur", description: "Drone défensif : cible l'équipement/les séries ennemis, contre les grenades." }
   ]},
   { id: "terrain", label: "Atout de terrain", options: [
     { id: "aucun", nom: "— Aucun —" },
