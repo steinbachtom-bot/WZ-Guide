@@ -625,28 +625,47 @@ const ATOUTS_WARZONE = [
   ]}
 ];
 
-// --- ATOUTS : MODE BLACK OPS (multijoueur) ---
+// --- ATOUTS : MODE BLACK OPS 7 ---
+// Système BO7 : 3 emplacements (Niveau 1/2/3), un atout par niveau.
+// Chaque atout est de type Offense / Furtivité / Support — réunir 3 atouts du
+// même type active une spécialité (Enforcer / Recon / Stratège).
+// (Liste de la bêta ouverte BO7 — peut évoluer.)
 const ATOUTS_BLACKOPS = [
-  { id: "slot1", label: "Atout 1", options: [
+  { id: "slot1", label: "Atout — Niveau 1", options: [
     { id: "aucun", nom: "— Aucun —" },
-    { id: "ninja", nom: "Ninja", description: "Déplacements plus silencieux." },
-    { id: "gung_ho", nom: "Gung-Ho", description: "Recharge et tire en sprint tactique." },
-    { id: "flak_jacket", nom: "Gilet pare-éclats", description: "Réduit les dégâts explosifs et incendiaires." },
-    { id: "double_time", nom: "Sprint prolongé", description: "Augmente la durée du sprint tactique.", modificateurs: { mobilite: "+10%" } }
+    { id: "charognard", nom: "Charognard", description: "Offense — Récupère munitions et équipement sur les ennemis abattus." },
+    { id: "legerete", nom: "Légèreté", description: "Offense — Vitesse de déplacement accrue ; sauts, glissades et plongeons plus longs.", modificateurs: { mobilite: "+7%" } },
+    { id: "gung_ho", nom: "Gung-Ho", description: "Offense — Tire en sprintant ; plus mobile en rechargeant ou utilisant l'équipement." },
+    { id: "sang_froid", nom: "Sang-froid", description: "Furtivité — Indétectable par le ciblage IA et les optiques thermiques." },
+    { id: "fantome", nom: "Fantôme", description: "Furtivité — Indétectable par le Scout Pulse et l'UAV en mouvement." },
+    { id: "ninja", nom: "Ninja", description: "Furtivité — Déplacements plus silencieux." },
+    { id: "masque_tech", nom: "Masque tech", description: "Support — Résiste aux flash, commotions et gaz ; immunisé à l'EMP et au piratage." },
+    { id: "gilet", nom: "Gilet pare-éclats", description: "Support — Réduit les dégâts explosifs et incendiaires." },
+    { id: "ombre", nom: "Ombre", description: "Support — Indétectable par les pièges et mines ennemis." }
   ]},
-  { id: "slot2", label: "Atout 2", options: [
+  { id: "slot2", label: "Atout — Niveau 2", options: [
     { id: "aucun", nom: "— Aucun —" },
-    { id: "assassin", nom: "Assassin", description: "Marque les ennemis en série et leurs primes." },
-    { id: "forward_intel", nom: "Renseignement avancé", description: "Agrandit la mini-carte et indique les directions ennemies." },
-    { id: "dispatcher", nom: "Répartiteur", description: "Réduit le coût des séries de points non létales." },
-    { id: "tracker", nom: "Pisteur", description: "Affiche les traces de pas des ennemis." }
+    { id: "assassin", nom: "Assassin", description: "Offense — Marque les ennemis en série ; ils lâchent des packs de prime." },
+    { id: "combat_rapproche", nom: "Combat rapproché", description: "Offense — Déclenche automatiquement l'attaque de mêlée dédiée." },
+    { id: "instinct", nom: "Instinct de chasseur", description: "Offense — Tuer un ennemi marque la direction du suivant." },
+    { id: "looper", nom: "Looper", description: "Offense — Permet de regagner des séries de points dans la même vie." },
+    { id: "vigilance", nom: "Vigilance", description: "Furtivité — Alerte quand tu apparais sur une mini-carte ennemie ; immunité CUAV / Brouilleur / Vendetta." },
+    { id: "lien_explosif", nom: "Lien explosif", description: "Furtivité — Tes dégâts explosifs marquent les ennemis sur la mini-carte." },
+    { id: "ingenieur", nom: "Ingénieur", description: "Furtivité — Voit l'équipement et les séries ennemis à travers les murs." },
+    { id: "mains_agiles", nom: "Mains agiles", description: "Support — Rechargement et changement d'arme plus rapides.", modificateurs: { vitesse_rechargement_ms: "-15%" } },
+    { id: "bricoleur", nom: "Bricoleur", description: "Support — Deux charges d'atout de terrain ; piège les colis de ravitaillement." }
   ]},
-  { id: "slot3", label: "Atout 3", options: [
+  { id: "slot3", label: "Atout — Niveau 3", options: [
     { id: "aucun", nom: "— Aucun —" },
-    { id: "fast_hands", nom: "Mains agiles", description: "Rechargement et manipulations plus rapides.", modificateurs: { vitesse_rechargement_ms: "-15%" } },
-    { id: "dexterity", nom: "Dextérité", description: "Récupération plus rapide après un saut/une chute." },
-    { id: "tac_mask", nom: "Masque tactique", description: "Réduit l'effet des grenades flash et à gaz." },
-    { id: "vigilance", nom: "Vigilance", description: "Alerte quand tu apparais sur une mini-carte ennemie." }
+    { id: "dexterite", nom: "Dextérité", description: "Offense — Visée complète en glissade, plongeon et saut mural ; moins de dégâts de chute." },
+    { id: "sprinteur_tac", nom: "Sprinteur tactique", description: "Offense — Active le sprint tactique mais réduit la vitesse de sprint normale." },
+    { id: "bankroll", nom: "Pactole", description: "Offense — Commence chaque vie avec +150 points de série." },
+    { id: "cogneur", nom: "Cogneur", description: "Offense — Les éliminations au corps à corps régénèrent la santé et rapportent des points." },
+    { id: "pisteur", nom: "Pisteur", description: "Furtivité — Localise les ennemis proches, montre leurs traces de pas, auto-ping en visant." },
+    { id: "vendetta", nom: "Vendetta", description: "Furtivité — Au réapparition, marque la position de ton tueur ; bonus pour l'éliminer." },
+    { id: "intendant", nom: "Intendant", description: "Support — Recharge les utilisations d'équipement avec le temps." },
+    { id: "lien_charge", nom: "Lien de charge", description: "Support — Recharge d'atout de terrain plus rapide ; bénéfice partagé aux alliés." },
+    { id: "gardien", nom: "Gardien", description: "Support — Soin plus rapide sur les objectifs ; réanime les alliés plus vite." }
   ]}
 ];
 
