@@ -269,6 +269,46 @@
     .tier-armes { flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-content: center; background: #1e2127; border: 1px solid #2c3038; border-radius: 10px; padding: 10px; }
     .tier-arme { background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
     .tier-arme small { color: #9aa0a6; }
+
+    /* Les menus d'arme/catégorie ne débordent jamais de leur conteneur. */
+    .menu-cible-arme, .menu-cible-cat { max-width: 100%; }
+
+    /* ===================== MOBILE (téléphone) ===================== */
+    @media (max-width: 720px) {
+      body { padding: 12px; }
+
+      /* Le menu passe en barre horizontale en haut, le contenu dessous. */
+      .app { flex-direction: column; }
+      .sidebar { width: auto; position: static; top: auto; }
+      .sidebar-toggle { display: none; }            /* pas besoin du repli sur mobile */
+      .sidebar nav { display: flex; flex-wrap: wrap; gap: 6px; }
+      .sidebar .nav-item { flex: 1 1 auto; justify-content: center; margin: 0; }
+      .sidebar .nav-item .txt { display: inline; }
+      .contenu { padding-left: 0; padding-top: 16px; }
+
+      h1 { font-size: 19px; }
+
+      /* Le gunsmith s'empile : image, stats, puis accessoires. */
+      .gs-body { flex-direction: column; gap: 14px; padding: 14px; }
+      .gs-image, .gs-stats { min-width: 0; flex-basis: auto; width: 100%; }
+      .gs-topbar { padding: 12px 14px; }
+      .gs-weapon-picker { width: 100%; }
+      .menu-cible-arme, .menu-cible-cat { width: 100%; }
+      .gs-attachments { padding: 0 14px 16px; }
+      .gs-attachments > div { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+
+      /* Atouts / équipement : une colonne. */
+      .layout { gap: 14px; }
+      .colonne { min-width: 0; flex-basis: 100%; padding: 16px; }
+
+      /* Les menus déroulants ne dépassent pas l'écran. */
+      .dd-liste { max-width: calc(100vw - 28px); }
+
+      /* En-tête : titre, sélecteur de mode et bouton bien empilés. */
+      .entete-vue { gap: 12px; }
+      .mode-toggle, #btn-enregistrer { width: 100%; }
+      .mode-toggle button { flex: 1; }
+    }
   </style>
 </head>
 <body>
