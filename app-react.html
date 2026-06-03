@@ -96,6 +96,8 @@
     }
     .dd-bouton .dd-nom { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .dd-bouton .chips-ligne { flex-basis: 100%; margin-top: 4px; }
+    /* Pas d'étiquettes -> on ne réserve PAS de 2e ligne (sinon la case est trop haute). */
+    .dd-bouton .chips-ligne:empty { display: none; margin-top: 0; }
     .dd-bouton:hover { border-color: #3d8bfd; }
     .dd-bouton.rempli { border-color: #3d8bfd; }
     .dd-bouton .fleche-bas { margin-left: auto; color: #6b7280; }
