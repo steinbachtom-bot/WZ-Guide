@@ -157,7 +157,24 @@ const IMAGES_ARMES = {
   m10_breacher: IMG_BASE + "M10-Breacher-Green.webp",
   sg_12: IMG_BASE + "SG-12-Close-Range-Warzone-Loadout-CODMunity-6394.webp",
   echo_12: IMG_BASE + "Echo-12-Green.webp",
-  akita: IMG_BASE + "Akita-Green.webp"
+  akita: IMG_BASE + "Akita-Green.webp",
+  // Armes Black Ops 6
+  krig_c: IMG_BASE + "KRIG-C.webp",
+  c9: IMG_BASE + "C9-Dark-Spine.webp",
+  xmg: IMG_BASE + "XMG-Dark-Spine.webp",
+  tsarkov_762: IMG_BASE + "Tsarkov-7.62-Dark-Spine.webp",
+  lr_762: IMG_BASE + "LR.7-Dark-Spine.webp",
+  asg_89: IMG_BASE + "ASG-89-Dark-Spine.webp",
+  grekhova: IMG_BASE + "Grekhova-Dark-Spine.webp",
+  // Pistolets BO7
+  jager_45: IMG_BASE + "J%C3%83%C2%A4ger-45-Green.webp",
+  velox_57: IMG_BASE + "Velox-5.7-Green.webp",
+  coda_9: IMG_BASE + "CODA-9-Green.webp",
+  pistolet_1911: IMG_BASE + "1911.webp",
+  // Armes spéciales BO7
+  siren: IMG_BASE + "siren_bo7_icon.webp",
+  nx_ravager: IMG_BASE + "NX-Ravager.webp"
+  // (Lanceurs et armes de mêlée : pas de visuel propre sur codmunity → silhouette)
 };
 
 /* ------------------------------------------------------------
