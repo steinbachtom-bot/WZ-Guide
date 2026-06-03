@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  VERSION REACT — Éditeur de classe Warzone (Black Ops 7)
+  ============================================================
+  Cette version fait EXACTEMENT la même chose que index.html,
+  mais l'interface est construite avec React (chargé depuis un CDN,
+  donc AUCUNE installation : tu uploades juste ce fichier + donnees.js).
+
+  Quand tu seras satisfait, tu pourras renommer ce fichier en index.html.
+  En attendant, ton index.html actuel reste intact et en ligne.
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Éditeur de classe Warzone (BO7) — React</title>
+
+  <!-- ========== STYLE (identique à index.html) ========== -->
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 50% -10%, #123642 0%, #0c2029 45%, #081319 100%) fixed;
+      color: #e8eaed;
+      margin: 0;
+      padding: 24px;
+      min-height: 100vh;
+    }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    .sous-titre { color: #9aa0a6; margin: 0 0 24px; font-size: 14px; }
+
+    .layout { display: flex; gap: 24px; flex-wrap: wrap; }
+    .colonne {
+      background: #1e2127;
+      border: 1px solid #2c3038;
+      border-radius: 12px;
+      padding: 20px;
+      flex: 1;
+      min-width: 300px;
+    }
+    .colonne h2 { font-size: 15px; margin: 0 0 16px; color: #c8cdd4; text-transform: uppercase; letter-spacing: .5px; }
+
+    .barre-arme { margin-bottom: 16px; }
+    .barre-arme label { font-size: 13px; color: #c8cdd4; margin-right: 8px; }
+    .barre-arme select {
+      background: #1e2127; color: #e8eaed; border: 1px solid #2c3038;
+      border-radius: 8px; padding: 8px 12px; font-size: 14px; cursor: pointer;
+    }
+
+    .compteur { font-size: 13px; color: #9aa0a6; margin-bottom: 14px; font-weight: 600; }
+    .compteur.plein  { color: #fbbf24; }
+    .compteur.alerte { color: #f87171; }
+
+    .slot { margin-bottom: 16px; }
+    .slot .slot-label { display: block; font-size: 13px; color: #c8cdd4; margin-bottom: 6px; }
+    .slot select {
+      width: 100%;
+      background: #14161a;
+      color: #e8eaed;
+      border: 1px solid #2c3038;
+      border-radius: 8px;
+      padding: 9px 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .slot select:hover { border-color: #3d8bfd; }
+    .slot select.rempli { border-color: #3d8bfd; }
+    .slot .desc { font-size: 12px; color: #9aa0a6; margin-top: 6px; min-height: 14px; }
+    .slot .desc .effet { color: #4ade80; }
+
+    .emp { margin-bottom: 16px; }
+    .emp-label { font-size: 13px; color: #c8cdd4; margin-bottom: 6px; }
+    .opt {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border: 1px solid #2c3038; border-radius: 8px;
+      margin-bottom: 6px; cursor: pointer;
+    }
+    .opt:hover { border-color: #3d8bfd; }
+    .opt.sel { border-color: #3d8bfd; background: #222733; }
+    .opt input { margin: 0; }
+    .opt-nom { font-size: 13px; }
+    .opt-chips { margin-left: auto; display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+    .chip { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
+    .chip.bonus { background: rgba(74,222,128,.15); color: #4ade80; }
+    .chip.malus { background: rgba(248,113,113,.15); color: #f87171; }
+    .chips-ligne { display: inline-flex; gap: 5px; flex-wrap: wrap; }
+
+    .dd { position: relative; }
+    .dd-bouton {
+      width: 100%; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      background: #14161a; color: #e8eaed; border: 1px solid #2c3038;
+      border-radius: 8px; padding: 9px 10px; font-size: 14px; cursor: pointer; text-align: left;
+      font-family: inherit; overflow: hidden;
+    }
+    .dd-bouton .dd-nom { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dd-bouton .chips-ligne { flex-basis: 100%; margin-top: 4px; }
+    .dd-bouton:hover { border-color: #3d8bfd; }
+    .dd-bouton.rempli { border-color: #3d8bfd; }
+    .dd-bouton .fleche-bas { margin-left: auto; color: #6b7280; }
+    .dd-liste {
+      position: absolute; left: 0; top: calc(100% + 4px); z-index: 30;
+      min-width: 100%; width: max-content; max-width: 300px;
+      background: #1e2127; border: 1px solid #3d8bfd; border-radius: 8px; padding: 4px;
+      max-height: 300px; overflow-y: auto; display: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    }
+    .gs-attachments .slot:nth-last-child(-n+2) .dd-liste { left: auto; right: 0; }
+    .dd.ouvert .dd-liste { display: block; }
+    .dd-opt { display: flex; align-items: center; gap: 8px; padding: 8px 9px; border-radius: 6px; cursor: pointer; }
+    .dd-opt:hover { background: #222733; }
+    .dd-opt.actif { background: #2a3140; }
+    .dd-nom { font-size: 13px; }
+    .dd-opt-texte { display: flex; flex-direction: column; }
+    .dd-sous { font-size: 11px; color: #9aa0a6; margin-top: 2px; }
+    .menu-cible-arme { display: inline-block; width: 300px; vertical-align: middle; }
+    .menu-cible-cat { display: inline-block; width: 220px; vertical-align: middle; }
+    .dd-opt-off { opacity: .4; cursor: not-allowed; }
+
+    .stat { margin-bottom: 14px; }
+    .stat-entete { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+    .stat-nom { color: #c8cdd4; }
+    .stat-valeurs { font-variant-numeric: tabular-nums; }
+    .base { color: #9aa0a6; }
+    .fleche { color: #6b7280; margin: 0 4px; }
+    .final { font-weight: 700; }
+    .mieux { color: #4ade80; }
+    .pire  { color: #f87171; }
+    .egal  { color: #e8eaed; }
+
+    .barre-fond { background: #2c3038; border-radius: 6px; height: 8px; overflow: hidden; }
+    .barre-remplissage { height: 100%; border-radius: 6px; transition: width .2s; }
+
+    .section-titre { font-size: 16px; margin: 32px 0 12px; color: #e8eaed; }
+
+    .gunsmith {
+      background: linear-gradient(160deg, #0f2c36 0%, #0a1c24 60%, #07141a 100%);
+      border: 1px solid #16414f;
+      border-radius: 16px;
+      margin-bottom: 28px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    }
+    .gs-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 22px; border-bottom: 1px solid #16414f; background: rgba(0,0,0,.25);
+      border-top-left-radius: 16px; border-top-right-radius: 16px;
+    }
+    .gs-title { font-weight: 800; letter-spacing: 4px; color: #bfe9f8; font-size: 15px; }
+    .gs-wname { font-size: 22px; font-weight: 800; color: #fff; display: block; line-height: 1.1; }
+    .gs-wcat { font-size: 12px; color: #6fb2c6; text-transform: uppercase; letter-spacing: 1.5px; }
+    .gs-weapon { text-align: right; }
+
+    .gs-body { display: flex; gap: 20px; padding: 22px; flex-wrap: wrap; }
+    .gs-image {
+      flex: 2; min-width: 320px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; min-height: 240px;
+      background: radial-gradient(circle at 50% 42%, rgba(79,208,230,.12), transparent 68%);
+      border-radius: 12px; padding: 16px;
+    }
+    .gs-image svg, .gs-image img { width: 100%; max-width: 460px; height: auto; }
+    .gs-image img { object-fit: contain; max-height: 240px; }
+    .gs-weapon-picker { margin-top: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .gs-weapon-picker label { font-size: 12px; color: #6fb2c6; }
+
+    .gs-stats { flex: 1; min-width: 260px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 18px; }
+    .gs-stats h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #9fd4e4; margin: 0 0 14px; }
+
+    .gs-attachments { padding: 0 22px 22px; }
+    .gs-attachments > div { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+    .gs-attachments .compteur { grid-column: 1 / -1; margin: 0; color: #9fd4e4; }
+    .gs-attachments .slot { margin: 0; }
+    .gs-attachments .slot-label { text-transform: uppercase; letter-spacing: .5px; font-size: 11px; color: #6fb2c6; }
+
+    .app { display: flex; align-items: flex-start; gap: 0; }
+    .sidebar {
+      width: 230px; flex-shrink: 0; position: sticky; top: 24px;
+      background: rgba(0,0,0,.28); border: 1px solid #16414f; border-radius: 14px;
+      padding: 12px; transition: width .2s ease;
+    }
+    .sidebar.replie { width: 60px; }
+    .sidebar-toggle {
+      width: 100%; display: flex; justify-content: center; align-items: center;
+      background: transparent; color: #9fd4e4; border: none; cursor: pointer;
+      font-size: 20px; padding: 6px; margin-bottom: 10px;
+    }
+    .sidebar-toggle:hover { color: #fff; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 11px 12px;
+      border-radius: 9px; cursor: pointer; color: #c8cdd4; margin-bottom: 4px; white-space: nowrap;
+    }
+    .nav-item:hover { background: #16323d; color: #fff; }
+    .nav-item.actif { background: #16414f; color: #fff; }
+    .nav-item .ico { flex-shrink: 0; display: flex; }
+    .sidebar.replie .nav-item .txt { display: none; }
+    .sidebar.replie .nav-item { justify-content: center; padding: 11px 0; }
+
+    .contenu { flex: 1; min-width: 0; padding-left: 24px; }
+
+    .entete-vue { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+    .mode-toggle { display: inline-flex; background: #14161a; border: 1px solid #2c3a45; border-radius: 10px; overflow: hidden; }
+    .mode-toggle button { background: transparent; color: #9aa0a6; border: none; padding: 9px 18px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 700; }
+    .mode-toggle button:hover { color: #fff; }
+    .mode-toggle button.actif { background: #1f6feb; color: #fff; }
+
+    .btn {
+      background: #1e2733; color: #e8eaed; border: 1px solid #2c3a45;
+      border-radius: 8px; padding: 9px 14px; font-size: 13px; cursor: pointer; font-family: inherit;
+    }
+    .btn:hover { border-color: #3d8bfd; }
+    .btn-principal { background: #1f6feb; border-color: #1f6feb; color: #fff; font-weight: 600; }
+    .btn-principal:hover { background: #2a7bff; }
+    .btn-sup { color: #f87171; border-color: #5a2a2a; }
+    .btn-sup:hover { border-color: #f87171; }
+
+    .classe-card {
+      background: #1e2127; border: 1px solid #2c3038; border-radius: 10px;
+      padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center;
+      justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+    .classe-nom { font-weight: 700; }
+    .classe-armes { font-size: 13px; color: #9aa0a6; margin-top: 2px; }
+    .classe-actions { display: flex; gap: 8px; }
+    .vide { color: #9aa0a6; }
+
+    .cmp-choix { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 20px; }
+    .cmp-choix label { font-size: 12px; color: #6fb2c6; margin-right: 8px; }
+    .cmp-ligne { display: grid; grid-template-columns: 1fr 90px 90px; gap: 10px; align-items: center; padding: 8px 12px; border-bottom: 1px solid #2c3038; }
+    .cmp-ligne.tete { color: #9fd4e4; font-weight: 700; border-bottom: 2px solid #2c3038; }
+    .cmp-stat { color: #c8cdd4; font-size: 13px; }
+    .cmp-val { text-align: right; font-variant-numeric: tabular-nums; }
+    .cmp-ligne.tete .cmp-val { text-align: right; font-size: 13px; }
+    .cmp-val.gagne { color: #4ade80; font-weight: 700; }
+
+    .tier { display: flex; align-items: stretch; gap: 12px; margin-bottom: 10px; }
+    .tier-lettre { width: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; border-radius: 10px; color: #0c1116; }
+    .tier-S .tier-lettre { background: #f87171; }
+    .tier-A .tier-lettre { background: #fbbf24; }
+    .tier-B .tier-lettre { background: #4ade80; }
+    .tier-C .tier-lettre { background: #6fb2c6; }
+    .tier-D .tier-lettre { background: #a78bfa; }
+    .tier-N .tier-lettre { background: #4b5563; color: #e8eaed; }
+    .meta-categorie { margin-bottom: 26px; }
+    .meta-cat-titre { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #e8eaed; border-bottom: 1px solid #2c3038; padding-bottom: 6px; }
+    .image-arme-zone { display: flex; align-items: center; justify-content: center; }
+    .img-arme { display: block; width: 100%; max-width: 480px; height: auto; max-height: 170px; object-fit: contain; }
+    .ia-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #161a20; border: 1px solid #2c3a45; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; }
+    .ia-titre { font-weight: 700; color: #9be7ff; }
+    .ia-select { background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 10px; font-size: 13px; }
+    .ia-note { color: #9aa0a6; font-size: 13px; }
+    .ttk-box { background: #161a20; border: 1px solid #2c3a45; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .ttk-val { font-size: 26px; font-weight: 800; color: #4fd0e6; line-height: 1; }
+    .ttk-val small { font-size: 13px; color: #9aa0a6; font-weight: 600; }
+    .ttk-detail { font-size: 13px; color: #c7ccd1; }
+    .ttk-pv { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13px; color: #9aa0a6; }
+    .ttk-pv select { background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 4px 8px; font-size: 13px; }
+    .toggle-valeurs { margin-left: 12px; color: #c7ccd1; font-size: 13px; cursor: pointer; white-space: nowrap; }
+    .badge-maj { display: inline-block; vertical-align: middle; margin-left: 8px; padding: 3px 10px; border-radius: 999px;
+      background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.35); color: #4ade80;
+      font-size: 12px; font-weight: 600; letter-spacing: .2px; }
+    .badge-maj a { color: #9aa7b2; text-decoration: none; font-weight: 400; }
+    .badge-maj a:hover { text-decoration: underline; }
+    .toggle-valeurs input { vertical-align: middle; margin-right: 4px; }
+    .recherche-wrap { position: relative; }
+    .recherche-input { width: 100%; background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 7px 10px; font-size: 13px; box-sizing: border-box; }
+    .recherche-resultats { position: absolute; left: 0; right: 0; top: calc(100% + 4px); background: #161a20; border: 1px solid #2c3a45; border-radius: 8px; overflow: hidden; z-index: 30; display: none; max-height: 260px; overflow-y: auto; }
+    .recherche-resultats.ouvert { display: block; }
+    .recherche-item { padding: 8px 10px; font-size: 13px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+    .recherche-item:hover { background: #1e2630; }
+    .recherche-item small { color: #9aa0a6; }
+    .tier-armes { flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-content: center; background: #1e2127; border: 1px solid #2c3038; border-radius: 10px; padding: 10px; }
+    .tier-arme { background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
+    .tier-arme small { color: #9aa0a6; }
+
+    .menu-cible-arme, .menu-cible-cat { max-width: 100%; }
+
+    @media (max-width: 720px) {
+      body { padding: 12px; }
+      .app { flex-direction: column; }
+      .sidebar { width: auto; position: static; top: auto; }
+      .sidebar-toggle { display: none; }
+      .sidebar nav { display: flex; flex-wrap: wrap; gap: 6px; }
+      .sidebar .nav-item { flex: 1 1 auto; justify-content: center; margin: 0; }
+      .sidebar .nav-item .txt { display: inline; }
+      .contenu { padding-left: 0; padding-top: 16px; }
+      h1 { font-size: 19px; }
+      .gs-body { flex-direction: column; gap: 14px; padding: 14px; }
+      .gs-image, .gs-stats { min-width: 0; flex-basis: auto; width: 100%; }
+      .gs-topbar { padding: 12px 14px; }
+      .gs-weapon-picker { width: 100%; }
+      .menu-cible-arme, .menu-cible-cat { width: 100%; }
+      .gs-attachments { padding: 0 14px 16px; }
+      .gs-attachments > div { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .layout { gap: 14px; }
+      .colonne { min-width: 0; flex-basis: 100%; padding: 16px; }
+      .dd-liste { max-width: calc(100vw - 28px); }
+      .entete-vue { gap: 12px; }
+      .mode-toggle, .btn-enregistrer { width: 100%; }
+      .mode-toggle button { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- DONNÉES (même fichier que la version vanilla) -->
+  <script src="donnees.js"></script>
+
+  <!-- React + Babel depuis un CDN : aucune installation requise -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin></script>
+
+  <!-- ========== APPLICATION REACT ========== -->
+  <script type="text/babel" data-presets="react">
+    const { useState, useEffect, useRef, Fragment } = React;
+
+    /* ===== LOGIQUE PURE (reprise de index.html, sans dépendance au DOM) ===== */
+    function etatVide(emplacements) {
+      const o = {};
+      emplacements.forEach(e => o[e.id] = "aucun");
+      return o;
+    }
+    function appliquerMod(valeurBase, valeurActuelle, modificateur) {
+      if (modificateur.includes("%")) {
+        const pourcent = parseFloat(modificateur);
+        return valeurActuelle + valeurBase * (pourcent / 100);
+      }
+      return valeurActuelle + parseFloat(modificateur);
+    }
+    function compterAccessoires(etat) {
+      return Object.values(etat).filter(v => v !== "aucun").length;
+    }
+    // atoutsActifs = liste d'atouts (ATOUTS_WARZONE/...) ou null ; atoutsSel = sélection {slotId: optId}
+    function calculerStatsFinales(arme, etat, emplacements, atoutsActifs, atoutsSel) {
+      const finales = { ...arme.stats_base };
+      emplacements.forEach(emp => {
+        const opt = emp.options.find(o => o.id === etat[emp.id]);
+        if (!opt || !opt.modificateurs) return;
+        for (const stat in opt.modificateurs) {
+          finales[stat] = appliquerMod(arme.stats_base[stat], finales[stat], opt.modificateurs[stat]);
+        }
+      });
+      if (atoutsActifs && atoutsSel) {
+        atoutsActifs.forEach(slot => {
+          const atout = slot.options.find(o => o.id === atoutsSel[slot.id]);
+          if (!atout || !atout.modificateurs) return;
+          for (const stat in atout.modificateurs) {
+            finales[stat] = appliquerMod(arme.stats_base[stat], finales[stat], atout.modificateurs[stat]);
+          }
+        });
+      }
+      for (const stat in finales) finales[stat] = Math.round(finales[stat] * 100) / 100;
+      return finales;
+    }
+    function chipsAffectes(option, afficherValeurs) {
+      if (!option.modificateurs) return "";
+      return Object.entries(option.modificateurs).map(([stat, val]) => {
+        const infos = INFOS_STATS[stat];
+        const valeur = parseFloat(val);
+        const estBonus = infos.plusGrandEstMieux ? (valeur > 0) : (valeur < 0);
+        const texte = afficherValeurs ? `${infos.court} ${val}` : infos.court;
+        return `<span class="chip ${estBonus ? "bonus" : "malus"}">${texte}</span>`;
+      }).join("");
+    }
+    function calculerTTK(finales, pv) {
+      const deg = finales.degats, cad = finales.cadence_cpm;
+      if (!deg || !cad) return null;
+      const stk = Math.max(1, Math.ceil(pv / deg));
+      const intervalle = 60000 / cad;
+      const ttk = Math.round((stk - 1) * intervalle);
+      return { stk, ttk };
+    }
+    function optionsCategories(listeArmes, categories, opus) {
+      return categories.map(cat => {
+        const aDesArmes = listeArmes.some(a => a.categorie === cat && a.jeu === opus);
+        return { id: cat, nom: aDesArmes ? cat : cat + " (à venir)", desactive: !aDesArmes };
+      });
+    }
+    function optionsJeux(listeArmes) {
+      return JEUX.map(jeu => {
+        const present = listeArmes.some(a => a.jeu === jeu);
+        return { id: jeu, nom: present ? jeu : jeu + " (à venir)", desactive: !present };
+      });
+    }
+    function premiereCategorie(listeArmes, categories, opus) {
+      return categories.find(cat => listeArmes.some(a => a.categorie === cat && a.jeu === opus));
+    }
+    const POIDS_OBJECTIFS = {
+      polyvalent: { recul_vertical: 1.5, recul_horizontal: 1.5, gun_kick: 1, portee_m: 1.2, velocite_ms: 1, vitesse_visee_ms: 1, sprint_to_fire_ms: 1, mobilite: 0.8, capacite_chargeur: 0.6, vitesse_rechargement_ms: 0.5 },
+      longue:     { portee_m: 3, velocite_ms: 2, recul_vertical: 2.5, recul_horizontal: 2.5, gun_kick: 1.5, capacite_chargeur: 0.6, vitesse_visee_ms: 0.2 },
+      courte:     { vitesse_visee_ms: 3, sprint_to_fire_ms: 3, mobilite: 2, recul_horizontal: 1, recul_vertical: 1, gun_kick: 0.8, cadence_cpm: 0.8, capacite_chargeur: 0.4 },
+      mobilite:   { mobilite: 3, vitesse_visee_ms: 2.5, sprint_to_fire_ms: 2.5, vitesse_rechargement_ms: 1, recul_horizontal: 0.6, recul_vertical: 0.6 },
+      recul:      { gun_kick: 3, recul_horizontal: 3, recul_vertical: 3 }
+    };
+    const LABELS_OBJECTIFS = { polyvalent: "Polyvalent", longue: "Longue portée", courte: "Courte portée", mobilite: "Mobilité", recul: "Recul minimal" };
+    function noterOption(arme, option, poids) {
+      if (!option || !option.modificateurs) return 0;
+      let score = 0;
+      for (const stat in option.modificateurs) {
+        const base = arme.stats_base[stat];
+        if (base === undefined) continue;
+        const ref = Math.abs(base) < 1e-6 ? 1 : Math.abs(base);
+        const nouvelle = appliquerMod(base, base, option.modificateurs[stat]);
+        const deltaRel = (nouvelle - base) / ref;
+        const infos = INFOS_STATS[stat];
+        const gain = infos.plusGrandEstMieux ? deltaRel : -deltaRel;
+        score += (poids[stat] || 0) * gain;
+      }
+      return score;
+    }
+    function genererSelection(arme, objectif) {
+      const poids = POIDS_OBJECTIFS[objectif] || POIDS_OBJECTIFS.polyvalent;
+      const emps = arme.emplacements;
+      const candidats = emps.map(emp => {
+        let best = null, bestScore = 0;
+        emp.options.forEach(opt => {
+          if (opt.id === "aucun") return;
+          const sc = noterOption(arme, opt, poids);
+          if (sc > bestScore) { bestScore = sc; best = opt; }
+        });
+        return { slot: emp.id, opt: best, score: bestScore };
+      }).filter(c => c.opt && c.score > 0);
+      candidats.sort((a, b) => b.score - a.score);
+      const retenus = candidats.slice(0, CAP_ACCESSOIRES);
+      const sel = etatVide(emps);
+      retenus.forEach(c => { sel[c.slot] = c.opt.id; });
+      return { sel, retenus };
+    }
+    const SILHOUETTE_ARME = `
+      <svg viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Silhouette d'arme">
+        <defs>
+          <linearGradient id="gmetal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2b4f5c"/>
+            <stop offset="1" stop-color="#14303a"/>
+          </linearGradient>
+        </defs>
+        <g fill="url(#gmetal)" stroke="#4fd0e6" stroke-width="2" stroke-linejoin="round">
+          <path d="M20 70 L70 64 L70 96 L20 104 Z"/>
+          <rect x="70" y="62" width="150" height="40" rx="4"/>
+          <rect x="220" y="68" width="150" height="22" rx="3"/>
+          <rect x="370" y="74" width="92" height="9" rx="3"/>
+          <rect x="120" y="44" width="46" height="18" rx="3"/>
+          <path d="M150 102 L186 102 L196 150 L168 154 Z"/>
+          <path d="M96 102 L120 102 L112 140 L92 138 Z"/>
+        </g>
+      </svg>`;
+    function encoderClasse(c) { return btoa(unescape(encodeURIComponent(JSON.stringify(c)))); }
+    function decoderClasse(code) {
+      try { return JSON.parse(decodeURIComponent(escape(atob(code)))); } catch (e) { return null; }
+    }
+    const CLE_STOCKAGE = "wz_classes";
+    function chargerStockage() { try { return JSON.parse(localStorage.getItem(CLE_STOCKAGE) || "[]"); } catch (e) { return []; } }
+    function sauverStockage(arr) { try { localStorage.setItem(CLE_STOCKAGE, JSON.stringify(arr)); } catch (e) {} }
+
+    const TOUTES_ARMES = [...ARMES_PRINCIPALES, ...ARMES_SECONDAIRES];
+
+    /* ===== COMPOSANTS RÉUTILISABLES ===== */
+    // Menu déroulant personnalisé coloré (équivalent de creerMenu).
+    function Dropdown({ options, value, onChange, className }) {
+      const [ouvert, setOuvert] = useState(false);
+      const ref = useRef(null);
+      useEffect(() => {
+        function onDoc(e) { if (ref.current && !ref.current.contains(e.target)) setOuvert(false); }
+        document.addEventListener("click", onDoc);
+        return () => document.removeEventListener("click", onDoc);
+      }, []);
+      const choisi = options.find(o => o.id === value) || options[0];
+      const rempli = value && value !== "aucun";
+      return (
+        <div className={(className || "")} ref={ref}>
+          <div className={"dd" + (ouvert ? " ouvert" : "")}>
+            <button type="button" className={"dd-bouton" + (rempli ? " rempli" : "")}
+              onClick={(e) => { e.stopPropagation(); setOuvert(o => !o); }}>
+              <span className="dd-nom">{choisi ? choisi.nom : ""}</span>
+              <span className="chips-ligne" dangerouslySetInnerHTML={{ __html: choisi && choisi.chips ? choisi.chips : "" }} />
+              <span className="fleche-bas">▾</span>
+            </button>
+            <div className="dd-liste">
+              {options.map(o => (
+                <div key={o.id}
+                  className={"dd-opt" + (o.id === value ? " actif" : "") + (o.desactive ? " dd-opt-off" : "")}
+                  onClick={() => { if (o.desactive) return; setOuvert(false); onChange(o.id); }}>
+                  <span className="dd-opt-texte">
+                    <span className="dd-nom">{o.nom}</span>
+                    {o.sousTexte ? <span className="dd-sous">{o.sousTexte}</span> : null}
+                  </span>
+                  <span className="chips-ligne" style={{ marginLeft: "auto" }} dangerouslySetInnerHTML={{ __html: o.chips || "" }} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function WeaponImage({ arme }) {
+      const [err, setErr] = useState(false);
+      useEffect(() => setErr(false), [arme.id]);
+      const src = arme.image || (typeof IMAGES_ARMES !== "undefined" ? IMAGES_ARMES[arme.id] : null);
+      if (src && !err) {
+        return <img src={src} alt={arme.nom} className="img-arme" onError={() => setErr(true)} />;
+      }
+      return <span dangerouslySetInnerHTML={{ __html: SILHOUETTE_ARME }} />;
+    }
+
+    function StatBars({ arme, finales }) {
+      return (
+        <Fragment>
+          {Object.keys(arme.stats_base).map(stat => {
+            const base = Math.round(arme.stats_base[stat] * 100) / 100;
+            const fin = finales[stat];
+            const infos = INFOS_STATS[stat];
+            let cls = "egal";
+            if (fin !== base) {
+              const aug = fin > base;
+              cls = (infos.plusGrandEstMieux ? aug : !aug) ? "mieux" : "pire";
+            }
+            const largeur = Math.min(100, (fin / infos.max) * 100);
+            const couleur = cls === "pire" ? "#f87171" : cls === "mieux" ? "#4ade80" : "#6b7280";
+            return (
+              <div className="stat" key={stat}>
+                <div className="stat-entete">
+                  <span className="stat-nom">{infos.label}</span>
+                  <span className="stat-valeurs">
+                    <span className="base">{base}</span>
+                    <span className="fleche">→</span>
+                    <span className={"final " + cls}>{fin}</span>
+                  </span>
+                </div>
+                <div className="barre-fond">
+                  <div className="barre-remplissage" style={{ width: largeur + "%", background: couleur }}></div>
+                </div>
+              </div>
+            );
+          })}
+        </Fragment>
+      );
+    }
+
+    function TTKBox({ finales, pvCible, setPvCible }) {
+      const r = calculerTTK(finales, pvCible);
+      const detail = r ? `${r.stk} balle${r.stk > 1 ? "s" : ""} · cadence ${Math.round(finales.cadence_cpm)} c/min` : "Données insuffisantes";
+      return (
+        <Fragment>
+          <div>
+            <div className="ttk-val">TTK ≈ {r ? <Fragment>{r.ttk} <small>ms</small></Fragment> : "—"}</div>
+            <div className="ttk-detail">{detail} <span style={{ color: "#6b7280" }}>(tir au corps, courte portée)</span></div>
+          </div>
+          <label className="ttk-pv">Cible :
+            <select value={pvCible} onChange={(e) => setPvCible(parseInt(e.target.value, 10))}>
+              <option value={250}>Warzone (250 PV)</option>
+              <option value={150}>Multijoueur (150 PV)</option>
+              <option value={100}>Sans armure (100 PV)</option>
+            </select>
+          </label>
+        </Fragment>
+      );
+    }
+
+    // Emplacements d'accessoires (un menu par emplacement + compteur + règle des 5).
+    function AttachmentSlots({ emplacements, selection, onChange, alerte, afficherValeurs }) {
+      const n = compterAccessoires(selection);
+      return (
+        <div>
+          <div className={"compteur" + (n >= CAP_ACCESSOIRES ? " plein" : "") + (alerte ? " alerte" : "")}>
+            {`Accessoires équipés : ${n} / ${CAP_ACCESSOIRES}` + (alerte ? "  — maximum atteint !" : "")}
+          </div>
+          {emplacements.map(emp => {
+            const options = emp.options.map(o => ({ id: o.id, nom: o.nom, chips: chipsAffectes(o, afficherValeurs) }));
+            return (
+              <div className="slot" key={emp.id}>
+                <label className="slot-label">{emp.label}</label>
+                <Dropdown options={options} value={selection[emp.id]} onChange={(v) => onChange(emp.id, v)} />
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    // Atouts / équipement (menus avec description).
+    function SlotsList({ slots, selection, onChange, afficherValeurs }) {
+      return (
+        <Fragment>
+          {slots.map(slot => {
+            const options = slot.options.map(o => ({
+              id: o.id, nom: o.nom,
+              chips: chipsAffectes(o, afficherValeurs),
+              sousTexte: o.id !== "aucun" ? (o.description || "") : ""
+            }));
+            return (
+              <div className="slot" key={slot.id}>
+                <label className="slot-label">{slot.label}</label>
+                <Dropdown options={options} value={selection[slot.id]} onChange={(v) => onChange(slot.id, v)} />
+              </div>
+            );
+          })}
+        </Fragment>
+      );
+    }
+
+    // Recherche rapide d'arme principale.
+    function SearchBox({ onSelect }) {
+      const [q, setQ] = useState("");
+      const ref = useRef(null);
+      useEffect(() => {
+        function onDoc(e) { if (ref.current && !ref.current.contains(e.target)) setQ(""); }
+        document.addEventListener("click", onDoc);
+        return () => document.removeEventListener("click", onDoc);
+      }, []);
+      const ql = q.trim().toLowerCase();
+      const res = ql ? ARMES_PRINCIPALES.filter(a => a.nom.toLowerCase().includes(ql)).slice(0, 8) : [];
+      return (
+        <div className="recherche-wrap" ref={ref}>
+          <input type="text" className="recherche-input" placeholder="Tape un nom d'arme…" autoComplete="off"
+            value={q} onChange={(e) => setQ(e.target.value)} onClick={(e) => e.stopPropagation()} />
+          <div className={"recherche-resultats" + (ql ? " ouvert" : "")}>
+            {ql && (res.length
+              ? res.map(a => (
+                <div className="recherche-item" key={a.id}
+                  onClick={(e) => { e.stopPropagation(); onSelect(a.id); setQ(""); }}>
+                  <span>{a.nom}</span><small>{a.categorie} · {a.jeu}</small>
+                </div>))
+              : <div className="recherche-item"><span style={{ color: "#9aa0a6" }}>Aucune arme trouvée</span></div>)}
+          </div>
+        </div>
+      );
+    }
+
+    /* ===== APPLICATION PRINCIPALE ===== */
+    function App() {
+      const [mode, setMode] = useState("warzone");
+      const [vue, setVue] = useState("createur");
+      const [sidebarReplie, setSidebarReplie] = useState(false);
+      const [afficherValeurs, setAfficherValeurs] = useState(false);
+      const [pvCible, setPvCible] = useState(250);
+
+      const [armeP, setArmeP] = useState(ARMES_PRINCIPALES[0]);
+      const [selP, setSelP] = useState(() => etatVide(ARMES_PRINCIPALES[0].emplacements));
+      const [alerteP, setAlerteP] = useState(false);
+
+      const [armeS, setArmeS] = useState(ARMES_SECONDAIRES[0]);
+      const [selS, setSelS] = useState(() => etatVide(ARMES_SECONDAIRES[0].emplacements));
+      const [alerteS, setAlerteS] = useState(false);
+
+      const [atouts, setAtouts] = useState({ slot1: "aucun", slot2: "aucun", slot3: "aucun" });
+      const [equip, setEquip] = useState({ letal: "aucun", tactique: "aucun", terrain: "aucun" });
+
+      const [iaObjectif, setIaObjectif] = useState("polyvalent");
+      const [iaNote, setIaNote] = useState("");
+      const [notePartage, setNotePartage] = useState("");
+
+      const [classes, setClasses] = useState(() => chargerStockage());
+      const [cmpA, setCmpA] = useState(TOUTES_ARMES[0]);
+      const [cmpB, setCmpB] = useState(TOUTES_ARMES[1]);
+
+      const ATOUTS = mode === "warzone" ? ATOUTS_WARZONE : ATOUTS_BLACKOPS;
+      const EQUIPEMENTS = mode === "warzone" ? EQUIPEMENTS_WARZONE : EQUIPEMENTS_BLACKOPS;
+
+      const opusP = armeP.jeu, catP = armeP.categorie;
+      const opusS = armeS.jeu, catS = armeS.categorie;
+
+      const finalesP = calculerStatsFinales(armeP, selP, armeP.emplacements, ATOUTS, atouts);
+      const finalesS = calculerStatsFinales(armeS, selS, armeS.emplacements, null, null);
+
+      /* --- Sélecteurs ARME PRINCIPALE --- */
+      function choisirArmeP(arme) { setArmeP(arme); setSelP(etatVide(arme.emplacements)); setAlerteP(false); }
+      function changeOpusP(jeu) {
+        const cat = premiereCategorie(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, jeu);
+        choisirArmeP(ARMES_PRINCIPALES.find(a => a.categorie === cat && a.jeu === jeu));
+      }
+      function changeCatP(cat) { choisirArmeP(ARMES_PRINCIPALES.find(a => a.categorie === cat && a.jeu === opusP)); }
+      function changeArmeP(id) { choisirArmeP(ARMES_PRINCIPALES.find(a => a.id === id)); }
+
+      /* --- Sélecteurs ARME SECONDAIRE --- */
+      function choisirArmeS(arme) { setArmeS(arme); setSelS(etatVide(arme.emplacements)); setAlerteS(false); }
+      function changeOpusS(jeu) {
+        const cat = premiereCategorie(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, jeu);
+        choisirArmeS(ARMES_SECONDAIRES.find(a => a.categorie === cat && a.jeu === jeu));
+      }
+      function changeCatS(cat) { choisirArmeS(ARMES_SECONDAIRES.find(a => a.categorie === cat && a.jeu === opusS)); }
+      function changeArmeS(id) { choisirArmeS(ARMES_SECONDAIRES.find(a => a.id === id)); }
+
+      /* --- Accessoires (règle des 5 max) --- */
+      function changeAccP(empId, nouvelle) {
+        if (nouvelle !== "aucun") {
+          const ajout = selP[empId] === "aucun" ? 1 : 0;
+          if (compterAccessoires(selP) + ajout > CAP_ACCESSOIRES) { setAlerteP(true); return; }
+        }
+        setAlerteP(false);
+        setSelP({ ...selP, [empId]: nouvelle });
+      }
+      function changeAccS(empId, nouvelle) {
+        if (nouvelle !== "aucun") {
+          const ajout = selS[empId] === "aucun" ? 1 : 0;
+          if (compterAccessoires(selS) + ajout > CAP_ACCESSOIRES) { setAlerteS(true); return; }
+        }
+        setAlerteS(false);
+        setSelS({ ...selS, [empId]: nouvelle });
+      }
+
+      /* --- Générateur de classe --- */
+      function genererClasse() {
+        const { sel, retenus } = genererSelection(armeP, iaObjectif);
+        setSelP(sel); setAlerteP(false);
+        setIaNote(retenus.length
+          ? `Classe « ${LABELS_OBJECTIFS[iaObjectif]} » générée pour ${armeP.nom} (${retenus.length} accessoire${retenus.length > 1 ? "s" : ""}).`
+          : "Aucun accessoire utile trouvé pour cet objectif sur cette arme.");
+      }
+
+      /* --- Mode de jeu --- */
+      function changerMode(m) {
+        setMode(m);
+        setAtouts({ slot1: "aucun", slot2: "aucun", slot3: "aucun" });
+        setEquip({ letal: "aucun", tactique: "aucun", terrain: "aucun" });
+      }
+
+      /* --- Classe : capture / sauvegarde / partage --- */
+      function classeActuelle() {
+        return {
+          nom: "", mode,
+          armePrincipale: armeP.id, categoriePrincipale: armeP.categorie,
+          selectionPrincipale: { ...selP },
+          armeSecondaire: armeS.id, categorieSecondaire: armeS.categorie,
+          selectionSecondaire: { ...selS },
+          atouts: { ...atouts }, equipement: { ...equip }
+        };
+      }
+      function appliquerClasse(c) {
+        if (!c) return;
+        if (c.mode) setMode(c.mode);
+        const ap = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale) || ARMES_PRINCIPALES[0];
+        const sp = etatVide(ap.emplacements);
+        for (const k in (c.selectionPrincipale || {})) if (k in sp) sp[k] = c.selectionPrincipale[k];
+        setArmeP(ap); setSelP(sp); setAlerteP(false);
+        const as = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire) || ARMES_SECONDAIRES[0];
+        const ss = etatVide(as.emplacements);
+        for (const k in (c.selectionSecondaire || {})) if (k in ss) ss[k] = c.selectionSecondaire[k];
+        setArmeS(as); setSelS(ss); setAlerteS(false);
+        const at = { slot1: "aucun", slot2: "aucun", slot3: "aucun" };
+        for (const k in (c.atouts || {})) if (k in at) at[k] = c.atouts[k];
+        setAtouts(at);
+        const eq = { letal: "aucun", tactique: "aucun", terrain: "aucun" };
+        for (const k in (c.equipement || {})) if (k in eq) eq[k] = c.equipement[k];
+        setEquip(eq);
+        setVue("createur");
+      }
+      function enregistrerClasse() {
+        const nom = prompt("Nom de la classe :", armeP.nom + " + " + armeS.nom);
+        if (!nom) return;
+        const c = classeActuelle(); c.nom = nom;
+        const next = [...classes, c];
+        setClasses(next); sauverStockage(next); setVue("classes");
+      }
+      function supprimerClasse(i) {
+        const next = classes.filter((_, idx) => idx !== i);
+        setClasses(next); sauverStockage(next);
+      }
+      function partagerClasse() {
+        const code = encoderClasse(classeActuelle());
+        const lien = location.origin + location.pathname + "?c=" + code;
+        const ok = () => { setNotePartage("Lien copié ! 📋"); setTimeout(() => setNotePartage(""), 4000); };
+        const echec = () => setNotePartage("Copie impossible — lien : " + lien);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(lien).then(ok, echec);
+        } else { echec(); }
+      }
+
+      /* --- Au chargement : classe partagée dans l'URL --- */
+      useEffect(() => {
+        const code = new URLSearchParams(location.search).get("c");
+        if (code) { const c = decoderClasse(code); if (c) appliquerClasse(c); }
+      }, []);
+
+      const navItems = [
+        { id: "createur", label: "Créateur de classe", ico: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/></svg> },
+        { id: "classes", label: "Classes enregistrées", ico: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg> },
+        { id: "comparateur", label: "Comparateur", ico: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="4" y1="20" x2="4" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg> },
+        { id: "meta", label: "Méta / Tier list", ico: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9"/></svg> }
+      ];
+
+      return (
+        <div className="app">
+          <aside className={"sidebar" + (sidebarReplie ? " replie" : "")}>
+            <button className="sidebar-toggle" title="Replier / déplier le menu"
+              onClick={(e) => { e.stopPropagation(); setSidebarReplie(r => !r); }}>☰</button>
+            <nav>
+              {navItems.map(it => (
+                <div key={it.id} className={"nav-item" + (vue === it.id ? " actif" : "")} onClick={() => setVue(it.id)}>
+                  <span className="ico">{it.ico}</span>
+                  <span className="txt">{it.label}</span>
+                </div>
+              ))}
+            </nav>
+          </aside>
+
+          <main className="contenu">
+            {vue === "createur" && (
+              <div>
+                <div className="entete-vue">
+                  <div>
+                    <h1>Éditeur de classe — {mode === "warzone" ? "Warzone" : "Black Ops"}
+                      {typeof META_DONNEES !== "undefined" &&
+                        <span className="badge-maj">
+                          📊 {META_DONNEES.saison} · {META_DONNEES.jeu} · données {META_DONNEES.maj}{" "}
+                          <a href={META_DONNEES.sourceUrl} target="_blank" rel="noopener">({META_DONNEES.source})</a>
+                        </span>}
+                    </h1>
+                    <p className="sous-titre">5 accessoires max par arme, un seul par emplacement. Étiquettes : <span style={{ color: "#4ade80" }}>vert = bonus</span>, <span style={{ color: "#f87171" }}>rouge = malus</span>.
+                      <label className="toggle-valeurs">
+                        <input type="checkbox" checked={afficherValeurs} onChange={(e) => setAfficherValeurs(e.target.checked)} /> Afficher les valeurs (%)
+                      </label>
+                    </p>
+                  </div>
+                  <div className="mode-toggle">
+                    <button className={mode === "warzone" ? "actif" : ""} onClick={() => changerMode("warzone")}>Warzone</button>
+                    <button className={mode === "blackops" ? "actif" : ""} onClick={() => changerMode("blackops")}>Black Ops</button>
+                  </div>
+                  <button className="btn btn-principal btn-enregistrer" onClick={enregistrerClasse}>Enregistrer la classe</button>
+                  <button className="btn" onClick={(e) => { e.stopPropagation(); partagerClasse(); }}>🔗 Partager</button>
+                  <span className="ia-note">{notePartage}</span>
+                </div>
+
+                {/* ARME PRINCIPALE */}
+                <div className="gunsmith">
+                  <div className="gs-topbar">
+                    <span className="gs-title">GUNSMITH</span>
+                    <span className="gs-weapon">
+                      <span className="gs-wname">{armeP.nom}</span>
+                      <span className="gs-wcat">{armeP.categorie || ""}</span>
+                    </span>
+                  </div>
+                  <div className="gs-body">
+                    <div className="gs-image">
+                      <div className="image-arme-zone"><WeaponImage arme={armeP} /></div>
+                      <div className="gs-weapon-picker">
+                        <label>Opus :</label>
+                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_PRINCIPALES)} value={opusP} onChange={changeOpusP} />
+                        <label>Catégorie :</label>
+                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
+                        <label>Arme :</label>
+                        <Dropdown className="menu-cible-arme" options={ARMES_PRINCIPALES.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
+                        <label>Recherche rapide :</label>
+                        <SearchBox onSelect={changeArmeP} />
+                      </div>
+                    </div>
+                    <div className="gs-stats">
+                      <h2>Statistiques</h2>
+                      <div className="ttk-box"><TTKBox finales={finalesP} pvCible={pvCible} setPvCible={setPvCible} /></div>
+                      <div><StatBars arme={armeP} finales={finalesP} /></div>
+                    </div>
+                  </div>
+                  <div className="gs-attachments">
+                    <div className="ia-bar">
+                      <span className="ia-titre">✨ Générateur de classe</span>
+                      <label>Objectif :</label>
+                      <select className="ia-select" value={iaObjectif} onChange={(e) => setIaObjectif(e.target.value)}>
+                        <option value="polyvalent">Polyvalent</option>
+                        <option value="longue">Longue portée</option>
+                        <option value="courte">Courte portée</option>
+                        <option value="mobilite">Mobilité</option>
+                        <option value="recul">Recul minimal</option>
+                      </select>
+                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasse(); }}>Générer la classe</button>
+                      <span className="ia-note">{iaNote}</span>
+                    </div>
+                    <AttachmentSlots emplacements={armeP.emplacements} selection={selP} onChange={changeAccP} alerte={alerteP} afficherValeurs={afficherValeurs} />
+                  </div>
+                </div>
+
+                {/* ARME SECONDAIRE */}
+                <div className="gunsmith">
+                  <div className="gs-topbar">
+                    <span className="gs-title">GUNSMITH</span>
+                    <span className="gs-weapon">
+                      <span className="gs-wname">{armeS.nom}</span>
+                      <span className="gs-wcat">{armeS.categorie || ""}</span>
+                    </span>
+                  </div>
+                  <div className="gs-body">
+                    <div className="gs-image">
+                      <div className="image-arme-zone"><WeaponImage arme={armeS} /></div>
+                      <div className="gs-weapon-picker">
+                        <label>Opus :</label>
+                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_SECONDAIRES)} value={opusS} onChange={changeOpusS} />
+                        <label>Catégorie :</label>
+                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
+                        <label>Arme :</label>
+                        <Dropdown className="menu-cible-arme" options={ARMES_SECONDAIRES.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
+                      </div>
+                    </div>
+                    <div className="gs-stats">
+                      <h2>Statistiques</h2>
+                      <div><StatBars arme={armeS} finales={finalesS} /></div>
+                    </div>
+                  </div>
+                  <div className="gs-attachments">
+                    <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} alerte={alerteS} afficherValeurs={afficherValeurs} />
+                  </div>
+                </div>
+
+                {/* ATOUTS & ÉQUIPEMENT */}
+                <h2 className="section-titre">Atouts &amp; équipement</h2>
+                <div className="layout">
+                  <div className="colonne">
+                    <h2>Atouts</h2>
+                    <SlotsList slots={ATOUTS} selection={atouts} onChange={(id, v) => setAtouts({ ...atouts, [id]: v })} afficherValeurs={afficherValeurs} />
+                  </div>
+                  <div className="colonne">
+                    <h2>Équipement</h2>
+                    <SlotsList slots={EQUIPEMENTS} selection={equip} onChange={(id, v) => setEquip({ ...equip, [id]: v })} afficherValeurs={afficherValeurs} />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {vue === "classes" && (
+              <div>
+                <h1>Classes enregistrées</h1>
+                <p className="sous-titre">Tes classes sauvegardées sur cet ordinateur. Clique « Charger » pour réappliquer une classe.</p>
+                {classes.length === 0
+                  ? <p className="vide">Aucune classe enregistrée pour l'instant. Compose une classe dans le créateur, puis clique « Enregistrer la classe ».</p>
+                  : classes.map((c, i) => {
+                    const ap = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale);
+                    const as = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire);
+                    return (
+                      <div className="classe-card" key={i}>
+                        <div>
+                          <div className="classe-nom">{c.nom}</div>
+                          <div className="classe-armes">{ap ? ap.nom : "?"} + {as ? as.nom : "?"}</div>
+                        </div>
+                        <div className="classe-actions">
+                          <button className="btn" onClick={() => appliquerClasse(c)}>Charger</button>
+                          <button className="btn btn-sup" onClick={() => supprimerClasse(i)}>Supprimer</button>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
+
+            {vue === "comparateur" && (
+              <div>
+                <h1>Comparateur d'armes</h1>
+                <p className="sous-titre">Compare les statistiques de base de deux armes. <span style={{ color: "#4ade80" }}>Vert</span> = meilleure des deux.</p>
+                <div className="cmp-choix">
+                  <div><label>Arme A :</label><Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpA.id} onChange={(id) => setCmpA(TOUTES_ARMES.find(a => a.id === id))} /></div>
+                  <div><label>Arme B :</label><Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpB.id} onChange={(id) => setCmpB(TOUTES_ARMES.find(a => a.id === id))} /></div>
+                </div>
+                <div>
+                  <div className="cmp-ligne tete">
+                    <span className="cmp-stat">Statistique</span>
+                    <span className="cmp-val">{cmpA.nom}</span>
+                    <span className="cmp-val">{cmpB.nom}</span>
+                  </div>
+                  {Object.keys(INFOS_STATS).map(stat => {
+                    const a = cmpA.stats_base[stat] ?? 0;
+                    const b = cmpB.stats_base[stat] ?? 0;
+                    let aGagne = false, bGagne = false;
+                    if (a !== b) {
+                      const aMieux = INFOS_STATS[stat].plusGrandEstMieux ? (a > b) : (a < b);
+                      aGagne = aMieux; bGagne = !aMieux;
+                    }
+                    return (
+                      <div className="cmp-ligne" key={stat}>
+                        <span className="cmp-stat">{INFOS_STATS[stat].label}</span>
+                        <span className={"cmp-val" + (aGagne ? " gagne" : "")}>{a}</span>
+                        <span className={"cmp-val" + (bGagne ? " gagne" : "")}>{b}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {vue === "meta" && (
+              <div>
+                <h1>Méta — Tier list</h1>
+                <p className="sous-titre">Classement indicatif des armes (basé sur la méta codmunity, modifiable dans <code>donnees.js</code>).</p>
+                <div>
+                  {(() => {
+                    const ordreCats = [];
+                    TOUTES_ARMES.forEach(a => { if (!ordreCats.includes(a.categorie)) ordreCats.push(a.categorie); });
+                    return ordreCats.map(cat => {
+                      const armesCat = TOUTES_ARMES.filter(a => a.categorie === cat);
+                      const groupes = {};
+                      armesCat.forEach(a => { const t = TIERS[a.id] || "N"; (groupes[t] = groupes[t] || []).push(a); });
+                      return (
+                        <div className="meta-categorie" key={cat}>
+                          <h3 className="meta-cat-titre">{cat}</h3>
+                          {TIERS_ORDRE.concat(["N"]).map(t => {
+                            const armes = groupes[t];
+                            if (!armes || !armes.length) return null;
+                            return (
+                              <div className={"tier tier-" + t} key={t}>
+                                <div className="tier-lettre">{t === "N" ? "?" : t}</div>
+                                <div className="tier-armes">
+                                  {armes.map(a => <span className="tier-arme" key={a.id}>{a.nom}</span>)}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    });
+                  })()}
+                </div>
+              </div>
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
