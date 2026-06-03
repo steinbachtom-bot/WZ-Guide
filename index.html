@@ -718,27 +718,34 @@
 
       const [visibles, setVisibles] = useState(n);   // par défaut : tout affiché (statique)
       const [joue, setJoue] = useState(false);
-      const timerRef = useRef(null);
+      const rafRef = useRef(null);
+      const debutRef = useRef(0);
 
       function stop() {
-        if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+        if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
         setJoue(false);
       }
       function lire() {
         stop();
         setVisibles(0);
         setJoue(true);
-        let i = 0;
-        timerRef.current = setInterval(() => {
-          i++;
-          setVisibles(i);
-          if (i >= n) { clearInterval(timerRef.current); timerRef.current = null; setJoue(false); }
-        }, intervalle);
+        debutRef.current = performance.now();
+        // Le nombre de balles visibles est calculé d'après le TEMPS RÉEL écoulé
+        // (et non le nombre d'images), donc la cadence reste exacte même si le
+        // navigateur bride la fréquence d'images.
+        const etape = (maintenant) => {
+          const ecoule = maintenant - debutRef.current;
+          const compte = Math.min(n, Math.floor(ecoule / intervalle) + 1);
+          setVisibles(compte);
+          if (compte >= n) { rafRef.current = null; setJoue(false); return; }
+          rafRef.current = requestAnimationFrame(etape);
+        };
+        rafRef.current = requestAnimationFrame(etape);
       }
       // Changement d'arme / de chargeur -> on stoppe l'anim et on réaffiche tout.
       useEffect(() => { stop(); setVisibles(n); /* eslint-disable-next-line */ }, [armeId, n]);
       // Nettoyage à la disparition du composant.
-      useEffect(() => () => { if (timerRef.current) clearInterval(timerRef.current); }, []);
+      useEffect(() => () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); }, []);
 
       const montres = pts.slice(0, visibles);
       const poly = montres.map(p => `${p.X.toFixed(1)},${p.Y.toFixed(1)}`).join(" ");
