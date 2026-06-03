@@ -4140,7 +4140,7 @@ const ARMES_SECONDAIRES = [
     nom: "1911",
     categorie: "Pistolet",
     jeu: "Black Ops 7",
-    // Pistolet .45 semi-auto classique (Black Ops 7). Stats de base RÉELLES (source codmunity.gg).
+    // Accessoires COMPLETS du 1911 (liste exhaustive, source codmunity.gg Warzone). Pistolet .45 semi-auto classique (BO7).
     stats_base: {
       degats: 40, portee_m: 16, cadence_cpm: 400, velocite_ms: 450,
       capacite_chargeur: 7, vitesse_visee_ms: 150, sprint_to_fire_ms: 120,
@@ -4148,20 +4148,28 @@ const ARMES_SECONDAIRES = [
       recul_vertical: 52.66, mobilite: 5.1
     },
     emplacements: [
+      { id: "viseur", label: "Optique", options: [
+        { id: "aucun", nom: "— Aucun —" },
+        { id: "lethal_elo", nom: "Lethal Tools ELO", description: "Viseur holographique pistolet." },
+        { id: "strix_thermal", nom: "VAS Strix 6x Thermal", description: "Lunette thermique." }
+      ]},
       { id: "bouche", label: "Bouche", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "supp_shade", nom: "Suppresseur Redwell Shade-X", description: "Discret, réduit le recul mais perd en vélocité/portée.", modificateurs: { gun_kick: "-11%", recul_horizontal: "-11%", recul_vertical: "-11%", velocite_ms: "-13%", portee_m: "-12.1%" } },
+        { id: "p45_supp_mob", nom: "Suppresseur P-45 Strike Comp", description: "Améliore le tir en glissade/saut." },
+        { id: "p45_supp", nom: "Suppresseur P-45 Strike", description: "Améliore le tir en glissade/saut." },
         { id: "compensateur", nom: "Compensateur Castle", description: "Réduit le recul vertical.", modificateurs: { gun_kick: "-13%", recul_vertical: "-13%" } },
-        { id: "auto_brake", nom: "Frein auto MFS Overdrive", description: "Augmente la cadence de tir.", modificateurs: { cadence_cpm: "+25%" } },
-        { id: "supp_shade", nom: "Suppresseur Redwell Shade-X", description: "Discret, réduit le recul mais perd en vélocité/portée.", modificateurs: { gun_kick: "-11%", recul_horizontal: "-11%", recul_vertical: "-11%", velocite_ms: "-13%", portee_m: "-12%" } },
-        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Plus de vélocité/portée, vise plus lentement.", modificateurs: { velocite_ms: "+20%", portee_m: "+9%", vitesse_visee_ms: "+33%" } }
+        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Plus de vélocité/portée, vise plus lentement.", modificateurs: { velocite_ms: "+20%", portee_m: "+9.1%", vitesse_visee_ms: "+33%" } },
+        { id: "stentorian", nom: "Frein LTI Stentorian", description: "Bouche du Battle Pass S4." },
+        { id: "auto_brake", nom: "Frein auto MFS Overdrive (full-auto)", description: "Convertit en tir automatique : cadence accrue, 1re balle réduite.", modificateurs: { cadence_cpm: "+25%" }, effets_extra: { "Recul 1re balle": "−25%" } }
       ]},
       { id: "canon", label: "Canon", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "canon_longslide", nom: "Canon Long Slide 6.4\"", description: "Allonge fortement la portée.", modificateurs: { portee_m: "+33%" } },
-        { id: "canon_tessellate", nom: "Canon Tessellate 5.1\"", description: "Forte hausse de vélocité.", modificateurs: { velocite_ms: "+40%" } },
-        { id: "canon_torx", nom: "Canon Torx 4.5\"", description: "Plus de vélocité et de portée.", modificateurs: { velocite_ms: "+25%", portee_m: "+18%" } },
+        { id: "canon_longslide", nom: "Canon Long Slide 6.4\"", description: "Allonge fortement la portée.", modificateurs: { portee_m: "+33.3%" } },
         { id: "canon_vela", nom: "Canon Vela court 3.7\"", description: "Manie plus vite.", modificateurs: { vitesse_visee_ms: "-12%", sprint_to_fire_ms: "-21%" } },
-        { id: "canon_lout", nom: "Canon LTI Lout 4.5\"", description: "Recul nettement accru.", modificateurs: { gun_kick: "+46%", recul_horizontal: "+20%", recul_vertical: "+50%" } }
+        { id: "canon_torx", nom: "Canon hybride Torx 4.5\"", description: "Plus de vélocité et de portée.", modificateurs: { velocite_ms: "+25%", portee_m: "+18.2%" } },
+        { id: "canon_tessellate", nom: "Canon vélocité Tessellate 5.1\"", description: "Forte hausse de vélocité.", modificateurs: { velocite_ms: "+40%" } },
+        { id: "canon_lout", nom: "Canon dégâts LTI Lout 4.5\"", description: "Dégâts accrus mais recul nettement accru.", modificateurs: { gun_kick: "+46%", recul_horizontal: "+20%", recul_vertical: "+50%" } }
       ]},
       { id: "chargeur", label: "Chargeur", options: [
         { id: "aucun", nom: "— Aucun —" },
@@ -4171,25 +4179,29 @@ const ARMES_SECONDAIRES = [
       ]},
       { id: "poignee_arr", label: "Poignée arrière", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "eaves", nom: "Poignée Eaves Quick", description: "Visée nettement plus rapide.", modificateurs: { vitesse_visee_ms: "-42%" } },
-        { id: "molt", nom: "Poignée Molt Regen", description: "Tir après sprint nettement plus rapide.", modificateurs: { sprint_to_fire_ms: "-25%" } },
-        { id: "f4able", nom: "Poignée F4-Able", description: "Réduit le recul.", modificateurs: { gun_kick: "-9%", recul_vertical: "-10%" } },
-        { id: "stencil", nom: "Poignée Stencil", description: "Réduit le recul horizontal.", modificateurs: { gun_kick: "-1%", recul_horizontal: "-8%" } }
+        { id: "molt", nom: "Poignée Molt Regen (tir-sprint)", description: "Tir après sprint nettement plus rapide.", modificateurs: { sprint_to_fire_ms: "-25%" } },
+        { id: "eaves", nom: "Poignée Eaves Quick (Quickdraw)", description: "Visée nettement plus rapide.", modificateurs: { vitesse_visee_ms: "-42%" } },
+        { id: "stencil", nom: "Poignée Stencil Control", description: "Réduit le recul horizontal.", modificateurs: { gun_kick: "-1%", recul_horizontal: "-8%" } },
+        { id: "f4able", nom: "Poignée F4-Able (précision)", description: "Réduit le recul vertical et la 1re balle.", modificateurs: { gun_kick: "-9%", recul_vertical: "-10%" }, effets_extra: { "Recul 1re balle": "−60%" } },
+        { id: "interlock", nom: "Poignée Interlock Advanced", description: "Visée plus rapide.", modificateurs: { vitesse_visee_ms: "-24%" } }
       ]},
       { id: "crosse", label: "Crosse", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "akimbo", nom: "Akimbo 1911", description: "Double pistolet : recharge et tir après sprint plus lents.", modificateurs: { sprint_to_fire_ms: "+4%", vitesse_rechargement_ms: "+15%" } }
+        { id: "akimbo", nom: "Akimbo 1911 (double)", description: "Double pistolet : recharge et tir après sprint plus lents.", modificateurs: { sprint_to_fire_ms: "+4%", vitesse_rechargement_ms: "+15%" } }
       ]},
       { id: "laser", label: "Laser", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "laser_rapid", nom: "Laser Rapid Sight", description: "Manie plus vite (visible).", modificateurs: { vitesse_visee_ms: "-9%", sprint_to_fire_ms: "-17%" } },
-        { id: "laser_airglide", nom: "Laser cible AirGlide", description: "Améliore la portée du tir à la hanche.", modificateurs: { portee_m: "+18%" } },
-        { id: "laser_tactique", nom: "Laser tactique XS-1", description: "Améliore le tir à la hanche (visible)." }
+        { id: "xs1_tac", nom: "Laser tactique XS-1", description: "Précision tir à la hanche (visible)." },
+        { id: "rapid_sight", nom: "Laser Rapid Sight Motion", description: "Manie plus vite (visible).", modificateurs: { vitesse_visee_ms: "-9%", sprint_to_fire_ms: "-17%" } },
+        { id: "vector_sync", nom: "Laser Vector Sync", description: "Précision tir à la hanche (visible)." },
+        { id: "airglide", nom: "Laser AirGlide Target", description: "Plus de portée (visible).", modificateurs: { portee_m: "+18.2%" } },
+        { id: "zero_x", nom: "Laser Jäger Rapid Zero-X", description: "Précision tir à la hanche (visible)." }
       ]},
       { id: "mode_tir", label: "Mode de tir", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "sync_recul", nom: "Unité de synchro recul", description: "Réduit l'ensemble du recul.", modificateurs: { gun_kick: "-10%", recul_horizontal: "-10%", recul_vertical: "-10%" } },
-        { id: "surpressurise", nom: ".45 surpressurisé", description: "Augmente la vélocité de balle.", modificateurs: { velocite_ms: "+15%" } },
+        { id: "fmj", nom: ".45 Cal FMJ", description: "Pénétration des surfaces (pas d'effet de stat notable)." },
+        { id: "surpressurise", nom: ".45 Cal surpressurisé", description: "Augmente la vélocité de balle.", modificateurs: { velocite_ms: "+15%" } },
         { id: "sear", nom: "Gâchette rapide Sear", description: "Cadence accrue mais recul dégradé.", modificateurs: { cadence_cpm: "+11%", gun_kick: "+19%", recul_horizontal: "+15%", recul_vertical: "+20%" } }
       ]}
     ]
