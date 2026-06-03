@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <!--
   ============================================================
-  PROTOTYPE - Éditeur de classe Warzone (Black Ops 7)
+  VERSION REACT — Éditeur de classe Warzone (Black Ops 7)
   ============================================================
-  Ce fichier est AUTONOME : tout est dedans (données, style, code).
-  Pour le voir fonctionner : double-clique sur ce fichier,
-  il s'ouvre dans ton navigateur. Aucune installation requise.
+  Cette version fait EXACTEMENT la même chose que index.html,
+  mais l'interface est construite avec React (chargé depuis un CDN,
+  donc AUCUNE installation : tu uploades juste ce fichier + donnees.js).
 
-  Règle Black Ops 7 (Warzone) : 5 accessoires MAXIMUM par arme,
-  et UN SEUL accessoire par emplacement (Bouche, Canon, Viseur…).
-
-  Le fichier est découpé en 3 parties :
-    1) PARTIE 1 : le STYLE   -> l'apparence
-    2) PARTIE 2 : le HTML    -> la structure de la page
-    3) PARTIE 3 : le SCRIPT  -> la logique (les calculs)
+  Quand tu seras satisfait, tu pourras renommer ce fichier en index.html.
+  En attendant, ton index.html actuel reste intact et en ligne.
 -->
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Éditeur de classe Warzone (BO7)</title>
+  <title>WZ Guide — Éditeur de classe Warzone (BO7)</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1c24'/%3E%3Cg fill='none' stroke='%234fd0e6' stroke-width='2.5'%3E%3Ccircle cx='16' cy='16' r='9'/%3E%3Cline x1='16' y1='2' x2='16' y2='7'/%3E%3Cline x1='16' y1='25' x2='16' y2='30'/%3E%3Cline x1='2' y1='16' x2='7' y2='16'/%3E%3Cline x1='25' y1='16' x2='30' y2='16'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%234fd0e6'/%3E%3C/svg%3E">
 
-  <!-- ========== PARTIE 1 : LE STYLE (apparence) ========== -->
+  <!-- ========== STYLE (identique à index.html) ========== -->
   <style>
     * { box-sizing: border-box; }
     body {
@@ -46,7 +42,6 @@
     }
     .colonne h2 { font-size: 15px; margin: 0 0 16px; color: #c8cdd4; text-transform: uppercase; letter-spacing: .5px; }
 
-    /* Le sélecteur d'arme de chaque section */
     .barre-arme { margin-bottom: 16px; }
     .barre-arme label { font-size: 13px; color: #c8cdd4; margin-right: 8px; }
     .barre-arme select {
@@ -54,12 +49,10 @@
       border-radius: 8px; padding: 8px 12px; font-size: 14px; cursor: pointer;
     }
 
-    /* Le compteur d'accessoires (X / 5) */
     .compteur { font-size: 13px; color: #9aa0a6; margin-bottom: 14px; font-weight: 600; }
-    .compteur.plein  { color: #fbbf24; }  /* jaune quand on atteint 5 */
-    .compteur.alerte { color: #f87171; }  /* rouge si on tente un 6e */
+    .compteur.plein  { color: #fbbf24; }
+    .compteur.alerte { color: #f87171; }
 
-    /* Les emplacements (menus déroulants) : accessoires, atouts, équipement */
     .slot { margin-bottom: 16px; }
     .slot .slot-label { display: block; font-size: 13px; color: #c8cdd4; margin-bottom: 6px; }
     .slot select {
@@ -73,11 +66,10 @@
       cursor: pointer;
     }
     .slot select:hover { border-color: #3d8bfd; }
-    .slot select.rempli { border-color: #3d8bfd; }  /* emplacement occupé */
+    .slot select.rempli { border-color: #3d8bfd; }
     .slot .desc { font-size: 12px; color: #9aa0a6; margin-top: 6px; min-height: 14px; }
     .slot .desc .effet { color: #4ade80; }
 
-    /* Liste de choix d'accessoires (un emplacement = plusieurs options visibles) */
     .emp { margin-bottom: 16px; }
     .emp-label { font-size: 13px; color: #c8cdd4; margin-bottom: 6px; }
     .opt {
@@ -90,13 +82,11 @@
     .opt input { margin: 0; }
     .opt-nom { font-size: 13px; }
     .opt-chips { margin-left: auto; display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
-    /* Les étiquettes colorées des stats affectées */
     .chip { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
-    .chip.bonus { background: rgba(74,222,128,.15); color: #4ade80; }   /* vert = bonus */
-    .chip.malus { background: rgba(248,113,113,.15); color: #f87171; }  /* rouge = malus */
+    .chip.bonus { background: rgba(74,222,128,.15); color: #4ade80; }
+    .chip.malus { background: rgba(248,113,113,.15); color: #f87171; }
     .chips-ligne { display: inline-flex; gap: 5px; flex-wrap: wrap; }
 
-    /* MENU DÉROULANT PERSONNALISÉ (fait main, donc on peut y mettre de la couleur) */
     .dd { position: relative; }
     .dd-bouton {
       width: 100%; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
@@ -104,21 +94,20 @@
       border-radius: 8px; padding: 9px 10px; font-size: 14px; cursor: pointer; text-align: left;
       font-family: inherit; overflow: hidden;
     }
-    /* Le nom occupe la 1re ligne (tronqué si trop long), les étiquettes passent dessous. */
     .dd-bouton .dd-nom { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .dd-bouton .chips-ligne { flex-basis: 100%; margin-top: 4px; }
+    /* Pas d'étiquettes -> on ne réserve PAS de 2e ligne (sinon la case est trop haute). */
+    .dd-bouton .chips-ligne:empty { display: none; margin-top: 0; }
     .dd-bouton:hover { border-color: #3d8bfd; }
     .dd-bouton.rempli { border-color: #3d8bfd; }
     .dd-bouton .fleche-bas { margin-left: auto; color: #6b7280; }
     .dd-liste {
       position: absolute; left: 0; top: calc(100% + 4px); z-index: 30;
-      /* la liste s'élargit au contenu (et déborde de la petite tuile si besoin) */
       min-width: 100%; width: max-content; max-width: 300px;
       background: #1e2127; border: 1px solid #3d8bfd; border-radius: 8px; padding: 4px;
       max-height: 300px; overflow-y: auto; display: none;
       box-shadow: 0 8px 24px rgba(0,0,0,.4);
     }
-    /* Évite qu'une liste ouverte à droite ne sorte de l'écran : on l'ancre à droite. */
     .gs-attachments .slot:nth-last-child(-n+2) .dd-liste { left: auto; right: 0; }
     .dd.ouvert .dd-liste { display: block; }
     .dd-opt { display: flex; align-items: center; gap: 8px; padding: 8px 9px; border-radius: 6px; cursor: pointer; }
@@ -129,9 +118,8 @@
     .dd-sous { font-size: 11px; color: #9aa0a6; margin-top: 2px; }
     .menu-cible-arme { display: inline-block; width: 300px; vertical-align: middle; }
     .menu-cible-cat { display: inline-block; width: 220px; vertical-align: middle; }
-    .dd-opt-off { opacity: .4; cursor: not-allowed; }   /* catégorie sans arme = grisée */
+    .dd-opt-off { opacity: .4; cursor: not-allowed; }
 
-    /* Les lignes de statistiques */
     .stat { margin-bottom: 14px; }
     .stat-entete { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
     .stat-nom { color: #c8cdd4; }
@@ -139,22 +127,19 @@
     .base { color: #9aa0a6; }
     .fleche { color: #6b7280; margin: 0 4px; }
     .final { font-weight: 700; }
-    .mieux { color: #4ade80; }   /* vert = amélioration */
-    .pire  { color: #f87171; }   /* rouge = malus */
+    .mieux { color: #4ade80; }
+    .pire  { color: #f87171; }
     .egal  { color: #e8eaed; }
 
-    /* La barre visuelle de chaque stat */
     .barre-fond { background: #2c3038; border-radius: 6px; height: 8px; overflow: hidden; }
     .barre-remplissage { height: 100%; border-radius: 6px; transition: width .2s; }
 
     .section-titre { font-size: 16px; margin: 32px 0 12px; color: #e8eaed; }
 
-    /* ===================== THÈME GUNSMITH ===================== */
     .gunsmith {
       background: linear-gradient(160deg, #0f2c36 0%, #0a1c24 60%, #07141a 100%);
       border: 1px solid #16414f;
       border-radius: 16px;
-      /* PAS d'overflow:hidden ici, sinon il coupe les menus déroulants ouverts */
       margin-bottom: 28px;
       box-shadow: 0 12px 40px rgba(0,0,0,.35);
     }
@@ -183,15 +168,12 @@
     .gs-stats { flex: 1; min-width: 260px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 18px; }
     .gs-stats h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #9fd4e4; margin: 0 0 14px; }
 
-    /* Les accessoires en TUILES horizontales (barre du bas du gunsmith) */
     .gs-attachments { padding: 0 22px 22px; }
-    /* Grille : toutes les tuiles ont la MÊME largeur (Mode de tir compris). */
     .gs-attachments > div { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
     .gs-attachments .compteur { grid-column: 1 / -1; margin: 0; color: #9fd4e4; }
     .gs-attachments .slot { margin: 0; }
     .gs-attachments .slot-label { text-transform: uppercase; letter-spacing: .5px; font-size: 11px; color: #6fb2c6; }
 
-    /* ===================== MENU RÉTRACTABLE (SIDEBAR) ===================== */
     .app { display: flex; align-items: flex-start; gap: 0; }
     .sidebar {
       width: 230px; flex-shrink: 0; position: sticky; top: 24px;
@@ -217,16 +199,22 @@
 
     .contenu { flex: 1; min-width: 0; padding-left: 24px; }
 
-    /* En-tête de vue avec le bouton Enregistrer */
-    .entete-vue { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .entete-vue {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      padding: 20px 24px; margin-bottom: 24px; border-radius: 14px; position: relative; overflow: hidden;
+      background: radial-gradient(620px 220px at 0% -50%, rgba(79,208,230,.20), transparent 60%),
+                  linear-gradient(160deg, #0f2c36 0%, #0a1c24 70%, #07141a 100%);
+      border: 1px solid #16414f; box-shadow: 0 8px 28px rgba(0,0,0,.3);
+      animation: apparition .5s ease both;
+    }
+    /* Le sous-titre n'a plus besoin de sa grande marge dans le bandeau encadré. */
+    .entete-vue .sous-titre { margin-bottom: 0; }
 
-    /* Sélecteur de mode Warzone / Black Ops */
     .mode-toggle { display: inline-flex; background: #14161a; border: 1px solid #2c3a45; border-radius: 10px; overflow: hidden; }
     .mode-toggle button { background: transparent; color: #9aa0a6; border: none; padding: 9px 18px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 700; }
     .mode-toggle button:hover { color: #fff; }
     .mode-toggle button.actif { background: #1f6feb; color: #fff; }
 
-    /* Boutons */
     .btn {
       background: #1e2733; color: #e8eaed; border: 1px solid #2c3a45;
       border-radius: 8px; padding: 9px 14px; font-size: 13px; cursor: pointer; font-family: inherit;
@@ -237,7 +225,6 @@
     .btn-sup { color: #f87171; border-color: #5a2a2a; }
     .btn-sup:hover { border-color: #f87171; }
 
-    /* Cartes de classes enregistrées */
     .classe-card {
       background: #1e2127; border: 1px solid #2c3038; border-radius: 10px;
       padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center;
@@ -248,7 +235,6 @@
     .classe-actions { display: flex; gap: 8px; }
     .vide { color: #9aa0a6; }
 
-    /* Comparateur */
     .cmp-choix { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 20px; }
     .cmp-choix label { font-size: 12px; color: #6fb2c6; margin-right: 8px; }
     .cmp-ligne { display: grid; grid-template-columns: 1fr 90px 90px; gap: 10px; align-items: center; padding: 8px 12px; border-bottom: 1px solid #2c3038; }
@@ -258,7 +244,6 @@
     .cmp-ligne.tete .cmp-val { text-align: right; font-size: 13px; }
     .cmp-val.gagne { color: #4ade80; font-weight: 700; }
 
-    /* Tier list */
     .tier { display: flex; align-items: stretch; gap: 12px; margin-bottom: 10px; }
     .tier-lettre { width: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; border-radius: 10px; color: #0c1116; }
     .tier-S .tier-lettre { background: #f87171; }
@@ -269,7 +254,7 @@
     .tier-N .tier-lettre { background: #4b5563; color: #e8eaed; }
     .meta-categorie { margin-bottom: 26px; }
     .meta-cat-titre { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #e8eaed; border-bottom: 1px solid #2c3038; padding-bottom: 6px; }
-    #image-arme-principale, #image-arme-secondaire { display: flex; align-items: center; justify-content: center; }
+    .image-arme-zone { display: flex; align-items: center; justify-content: center; }
     .img-arme { display: block; width: 100%; max-width: 480px; height: auto; max-height: 170px; object-fit: contain; }
     .ia-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #161a20; border: 1px solid #2c3a45; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; }
     .ia-titre { font-weight: 700; color: #9be7ff; }
@@ -282,6 +267,11 @@
     .ttk-pv { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13px; color: #9aa0a6; }
     .ttk-pv select { background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 4px 8px; font-size: 13px; }
     .toggle-valeurs { margin-left: 12px; color: #c7ccd1; font-size: 13px; cursor: pointer; white-space: nowrap; }
+    .badge-maj { display: inline-block; vertical-align: middle; margin-left: 8px; padding: 3px 10px; border-radius: 999px;
+      background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.35); color: #4ade80;
+      font-size: 12px; font-weight: 600; letter-spacing: .2px; }
+    .badge-maj a { color: #9aa7b2; text-decoration: none; font-weight: 400; }
+    .badge-maj a:hover { text-decoration: underline; }
     .toggle-valeurs input { vertical-align: middle; margin-right: 4px; }
     .recherche-wrap { position: relative; }
     .recherche-input { width: 100%; background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 7px 10px; font-size: 13px; box-sizing: border-box; }
@@ -291,28 +281,119 @@
     .recherche-item:hover { background: #1e2630; }
     .recherche-item small { color: #9aa0a6; }
     .tier-armes { flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-content: center; background: #1e2127; border: 1px solid #2c3038; border-radius: 10px; padding: 10px; }
-    .tier-arme { background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
+    .tier-arme { display: inline-flex; align-items: center; gap: 8px; background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
     .tier-arme small { color: #9aa0a6; }
+    .tier-arme img { height: 24px; width: auto; max-width: 56px; object-fit: contain; }
 
-    /* Les menus d'arme/catégorie ne débordent jamais de leur conteneur. */
+    /* Miniatures du comparateur */
+    .cmp-vignette { display: block; margin-top: 10px; height: 70px; width: auto; max-width: 200px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
+
+    /* ===================== PAGE D'ACCUEIL (hero + cartes) ===================== */
+    .hero {
+      position: relative; text-align: center; padding: 64px 24px 54px; margin-bottom: 36px;
+      border-radius: 18px; overflow: hidden;
+      background: radial-gradient(900px 420px at 50% -25%, rgba(79,208,230,.28), transparent 62%),
+                  linear-gradient(160deg, #0f2c36 0%, #0a1c24 60%, #07141a 100%);
+      border: 1px solid #16414f; box-shadow: 0 14px 44px rgba(0,0,0,.4);
+    }
+    .hero::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(79,208,230,.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(79,208,230,.05) 1px, transparent 1px);
+      background-size: 38px 38px; mask-image: radial-gradient(circle at 50% 30%, #000 35%, transparent 75%);
+    }
+    .hero-logo { position: relative; font-size: 56px; font-weight: 900; letter-spacing: 7px; color: #fff; margin: 0; text-shadow: 0 0 34px rgba(79,208,230,.45); }
+    .hero-logo span { color: #4fd0e6; }
+    .hero-slogan { position: relative; font-size: 21px; color: #bfe9f8; margin: 16px 0 8px; font-weight: 700; }
+    .hero-sous { position: relative; color: #9aa0a6; font-size: 15px; margin: 0 auto 14px; max-width: 580px; line-height: 1.6; }
+    .hero .badge-maj { position: relative; margin: 0 0 24px; }
+    .hero-cta {
+      position: relative; display: inline-flex; align-items: center; gap: 8px;
+      background: #1f6feb; color: #fff; border: none; border-radius: 11px;
+      padding: 14px 28px; font-size: 15px; font-weight: 800; cursor: pointer; font-family: inherit;
+      box-shadow: 0 6px 22px rgba(31,111,235,.45); transition: background .15s, transform .15s;
+    }
+    .hero-cta:hover { background: #2a7bff; transform: translateY(-2px); }
+
+    /* Lueur pulsante animée derrière le titre */
+    .hero::before {
+      content: ""; position: absolute; left: 50%; top: -28%; width: 680px; height: 480px;
+      transform: translateX(-50%); pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(79,208,230,.30), transparent 62%);
+      animation: lueur 6s ease-in-out infinite;
+    }
+    @keyframes lueur { 0%, 100% { opacity: .8; transform: translateX(-50%) scale(1); } 50% { opacity: 1; transform: translateX(-50%) scale(1.08); } }
+    .hero > * { position: relative; z-index: 1; }
+
+    /* Visuel d'arme flottant dans le hero */
+    .hero-arme {
+      position: absolute; right: -30px; bottom: -34px; width: 42%; max-width: 520px;
+      opacity: .15; z-index: 0; pointer-events: none;
+      filter: drop-shadow(0 0 22px rgba(79,208,230,.45));
+      animation: flotter 7s ease-in-out infinite;
+    }
+    @keyframes flotter { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-12px) rotate(-3deg); } }
+
+    /* Vignettes d'armes sur les cartes */
+    .carte-vignettes { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
+    .carte-vignettes img { height: 32px; width: auto; max-width: 84px; object-fit: contain; opacity: .9; filter: drop-shadow(0 2px 4px rgba(0,0,0,.4)); }
+
+    /* Animation d'apparition (hero + cartes) */
+    @keyframes apparition { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-logo  { animation: apparition .6s ease both; }
+    .hero-slogan{ animation: apparition .6s ease .10s both; }
+    .hero-sous  { animation: apparition .6s ease .18s both; }
+    .hero .badge-maj { animation: apparition .6s ease .26s both; }
+    .hero-cta   { animation: apparition .6s ease .34s both; }
+    .carte-nav  { animation: apparition .5s ease both; }
+    .accueil-cartes .carte-nav:nth-child(1) { animation-delay: .05s; }
+    .accueil-cartes .carte-nav:nth-child(2) { animation-delay: .12s; }
+    .accueil-cartes .carte-nav:nth-child(3) { animation-delay: .19s; }
+    .accueil-cartes .carte-nav:nth-child(4) { animation-delay: .26s; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before, .hero-arme, .hero-logo, .hero-slogan, .hero-sous, .hero .badge-maj, .hero-cta, .carte-nav { animation: none; }
+    }
+
+    /* Bandeau d'en-tête des vues (Classes, Comparateur, Méta) */
+    .banniere {
+      display: flex; align-items: center; gap: 16px; padding: 20px 24px; margin-bottom: 24px;
+      border-radius: 14px; position: relative; overflow: hidden;
+      background: radial-gradient(620px 220px at 0% -50%, rgba(79,208,230,.20), transparent 60%),
+                  linear-gradient(160deg, #0f2c36 0%, #0a1c24 70%, #07141a 100%);
+      border: 1px solid #16414f; box-shadow: 0 8px 28px rgba(0,0,0,.3);
+      animation: apparition .5s ease both;
+    }
+    .banniere-ico { width: 48px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: rgba(79,208,230,.12); color: #4fd0e6; }
+    .banniere-ico svg { width: 26px; height: 26px; }
+    .banniere-titre { font-size: 22px; margin: 0; color: #fff; }
+    .banniere-sous { margin: 4px 0 0; color: #9aa0a6; font-size: 14px; }
+
+    .accueil-titre { font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: #9fd4e4; margin: 0 0 14px; }
+    .accueil-cartes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+    .carte-nav {
+      background: linear-gradient(160deg, #11313c, #0c2129); border: 1px solid #16414f;
+      border-radius: 14px; padding: 24px; cursor: pointer; text-align: left;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    .carte-nav:hover { transform: translateY(-4px); border-color: #4fd0e6; box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+    .carte-ico { width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: rgba(79,208,230,.12); color: #4fd0e6; margin-bottom: 14px; }
+    .carte-ico svg { width: 24px; height: 24px; }
+    .carte-titre { font-size: 17px; font-weight: 700; color: #fff; margin: 0 0 6px; }
+    .carte-desc { font-size: 13px; color: #9aa0a6; margin: 0; line-height: 1.5; }
+    .carte-fleche { color: #4fd0e6; font-weight: 700; margin-top: 12px; font-size: 13px; }
+
     .menu-cible-arme, .menu-cible-cat { max-width: 100%; }
 
-    /* ===================== MOBILE (téléphone) ===================== */
     @media (max-width: 720px) {
       body { padding: 12px; }
-
-      /* Le menu passe en barre horizontale en haut, le contenu dessous. */
       .app { flex-direction: column; }
       .sidebar { width: auto; position: static; top: auto; }
-      .sidebar-toggle { display: none; }            /* pas besoin du repli sur mobile */
+      .sidebar-toggle { display: none; }
       .sidebar nav { display: flex; flex-wrap: wrap; gap: 6px; }
       .sidebar .nav-item { flex: 1 1 auto; justify-content: center; margin: 0; }
       .sidebar .nav-item .txt { display: inline; }
       .contenu { padding-left: 0; padding-top: 16px; }
-
       h1 { font-size: 19px; }
-
-      /* Le gunsmith s'empile : image, stats, puis accessoires. */
       .gs-body { flex-direction: column; gap: 14px; padding: 14px; }
       .gs-image, .gs-stats { min-width: 0; flex-basis: auto; width: 100%; }
       .gs-topbar { padding: 12px 14px; }
@@ -320,556 +401,147 @@
       .menu-cible-arme, .menu-cible-cat { width: 100%; }
       .gs-attachments { padding: 0 14px 16px; }
       .gs-attachments > div { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-
-      /* Atouts / équipement : une colonne. */
       .layout { gap: 14px; }
       .colonne { min-width: 0; flex-basis: 100%; padding: 16px; }
-
-      /* Les menus déroulants ne dépassent pas l'écran. */
       .dd-liste { max-width: calc(100vw - 28px); }
-
-      /* En-tête : titre, sélecteur de mode et bouton bien empilés. */
       .entete-vue { gap: 12px; }
-      .mode-toggle, #btn-enregistrer { width: 100%; }
+      .mode-toggle, .btn-enregistrer { width: 100%; }
       .mode-toggle button { flex: 1; }
+
+      .hero { padding: 40px 16px 34px; }
+      .hero-logo { font-size: 38px; letter-spacing: 4px; }
+      .hero-slogan { font-size: 17px; }
+      .hero-arme { display: none; }
     }
   </style>
 </head>
 <body>
+  <div id="root"></div>
 
-  <!-- ========== PARTIE 2 : LA STRUCTURE DE LA PAGE ========== -->
-  <div class="app">
-
-    <!-- MENU RÉTRACTABLE À GAUCHE (d'autres entrées viendront plus tard) -->
-    <aside class="sidebar" id="sidebar">
-      <button class="sidebar-toggle" id="toggle-sidebar" title="Replier / déplier le menu">☰</button>
-      <nav>
-        <div class="nav-item actif" data-vue="createur">
-          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/></svg></span>
-          <span class="txt">Créateur de classe</span>
-        </div>
-        <div class="nav-item" data-vue="classes">
-          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></span>
-          <span class="txt">Classes enregistrées</span>
-        </div>
-        <div class="nav-item" data-vue="comparateur">
-          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="20" x2="4" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg></span>
-          <span class="txt">Comparateur</span>
-        </div>
-        <div class="nav-item" data-vue="meta">
-          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9"/></svg></span>
-          <span class="txt">Méta / Tier list</span>
-        </div>
-      </nav>
-    </aside>
-
-    <!-- CONTENU PRINCIPAL -->
-    <main class="contenu">
-
-      <!-- ===== VUE : CRÉATEUR DE CLASSE ===== -->
-      <div id="vue-createur">
-        <div class="entete-vue">
-          <div>
-            <h1>Éditeur de classe — <span id="titre-mode">Warzone</span></h1>
-            <p class="sous-titre">5 accessoires max par arme, un seul par emplacement. Étiquettes : <span style="color:#4ade80">vert = bonus</span>, <span style="color:#f87171">rouge = malus</span>.
-              <label class="toggle-valeurs"><input type="checkbox" id="toggle-valeurs"> Afficher les valeurs (%)</label>
-            </p>
-          </div>
-          <div class="mode-toggle">
-            <button id="mode-warzone" class="actif">Warzone</button>
-            <button id="mode-blackops">Black Ops</button>
-          </div>
-          <button class="btn btn-principal" id="btn-enregistrer">Enregistrer la classe</button>
-          <button class="btn" id="btn-partager">🔗 Partager</button>
-          <span class="ia-note" id="note-partage"></span>
-        </div>
-
-  <!-- ARME PRINCIPALE (vue Gunsmith, façon écran du jeu) -->
-  <div class="gunsmith">
-    <div class="gs-topbar">
-      <span class="gs-title">GUNSMITH</span>
-      <span class="gs-weapon">
-        <span class="gs-wname" id="nom-arme-principale"></span>
-        <span class="gs-wcat" id="cat-arme-principale"></span>
-      </span>
-    </div>
-    <div class="gs-body">
-      <div class="gs-image">
-        <div id="image-arme-principale"></div>
-        <div class="gs-weapon-picker">
-          <label>Opus :</label>
-          <div id="choix-opus-principale" class="menu-cible-cat"></div>
-          <label>Catégorie :</label>
-          <div id="choix-categorie-principale" class="menu-cible-cat"></div>
-          <label>Arme :</label>
-          <div id="choix-arme-principale" class="menu-cible-arme"></div>
-          <label>Recherche rapide :</label>
-          <div class="recherche-wrap">
-            <input type="text" id="recherche-arme" class="recherche-input" placeholder="Tape un nom d'arme…" autocomplete="off">
-            <div id="resultats-recherche" class="recherche-resultats"></div>
-          </div>
-        </div>
-      </div>
-      <div class="gs-stats">
-        <h2>Statistiques</h2>
-        <div id="zone-ttk-principale" class="ttk-box"></div>
-        <div id="zone-stats-principale"></div>
-      </div>
-    </div>
-    <div class="gs-attachments">
-      <div class="ia-bar">
-        <span class="ia-titre">✨ Générateur de classe</span>
-        <label for="ia-objectif">Objectif :</label>
-        <select id="ia-objectif" class="ia-select">
-          <option value="polyvalent">Polyvalent</option>
-          <option value="longue">Longue portée</option>
-          <option value="courte">Courte portée</option>
-          <option value="mobilite">Mobilité</option>
-          <option value="recul">Recul minimal</option>
-        </select>
-        <button class="btn btn-principal" id="btn-generer-classe">Générer la classe</button>
-        <span class="ia-note" id="ia-note"></span>
-      </div>
-      <div id="zone-accessoires-principale"></div>
-    </div>
-  </div>
-
-  <!-- ARME SECONDAIRE (vue Gunsmith) -->
-  <div class="gunsmith">
-    <div class="gs-topbar">
-      <span class="gs-title">GUNSMITH</span>
-      <span class="gs-weapon">
-        <span class="gs-wname" id="nom-arme-secondaire"></span>
-        <span class="gs-wcat" id="cat-arme-secondaire"></span>
-      </span>
-    </div>
-    <div class="gs-body">
-      <div class="gs-image">
-        <div id="image-arme-secondaire"></div>
-        <div class="gs-weapon-picker">
-          <label>Opus :</label>
-          <div id="choix-opus-secondaire" class="menu-cible-cat"></div>
-          <label>Catégorie :</label>
-          <div id="choix-categorie-secondaire" class="menu-cible-cat"></div>
-          <label>Arme :</label>
-          <div id="choix-arme-secondaire" class="menu-cible-arme"></div>
-        </div>
-      </div>
-      <div class="gs-stats">
-        <h2>Statistiques</h2>
-        <div id="zone-stats-secondaire"></div>
-      </div>
-    </div>
-    <div class="gs-attachments">
-      <div id="zone-accessoires-secondaire"></div>
-    </div>
-  </div>
-
-  <!-- ATOUTS & ÉQUIPEMENT -->
-  <h2 class="section-titre">Atouts &amp; équipement</h2>
-  <div class="layout">
-    <div class="colonne">
-      <h2>Atouts</h2>
-      <div id="zone-atouts"></div>
-    </div>
-    <div class="colonne">
-      <h2>Équipement</h2>
-      <div id="zone-equipement"></div>
-    </div>
-  </div>
-      </div><!-- fin vue-createur -->
-
-      <!-- ===== VUE : CLASSES ENREGISTRÉES ===== -->
-      <div id="vue-classes" style="display:none">
-        <h1>Classes enregistrées</h1>
-        <p class="sous-titre">Tes classes sauvegardées sur cet ordinateur. Clique « Charger » pour réappliquer une classe.</p>
-        <div id="liste-classes"></div>
-      </div>
-
-      <!-- ===== VUE : COMPARATEUR ===== -->
-      <div id="vue-comparateur" style="display:none">
-        <h1>Comparateur d'armes</h1>
-        <p class="sous-titre">Compare les statistiques de base de deux armes. <span style="color:#4ade80">Vert</span> = meilleure des deux.</p>
-        <div class="cmp-choix">
-          <div><label>Arme A :</label><div id="cmp-arme-a" class="menu-cible-arme"></div></div>
-          <div><label>Arme B :</label><div id="cmp-arme-b" class="menu-cible-arme"></div></div>
-        </div>
-        <div id="cmp-resultat"></div>
-      </div>
-
-      <!-- ===== VUE : MÉTA / TIER LIST ===== -->
-      <div id="vue-meta" style="display:none">
-        <h1>Méta — Tier list</h1>
-        <p class="sous-titre">Classement indicatif des armes (basé sur la méta codmunity, modifiable dans <code>donnees.js</code>).</p>
-        <div id="liste-meta"></div>
-      </div>
-
-    </main>
-  </div><!-- fin .app -->
-
-  <!-- Les DONNÉES du jeu sont dans un fichier séparé : facile à éditer sans toucher au code. -->
+  <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js"></script>
 
-  <!-- ========== PARTIE 3 : LA LOGIQUE (le code qui calcule) ========== -->
-  <script>
-    // -- A) LES DONNÉES : elles sont dans le fichier donnees.js (inclus juste avant ce script).
-    //     Pour ajouter une arme, un accessoire, un atout… on édite donnees.js, PAS ce fichier-ci.
+  <!-- React + Babel depuis un CDN : aucune installation requise -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin></script>
 
-    // -- ÉTAT (ce que l'utilisateur a choisi) ----------------------------
-    // Crée un objet { emplacement: "aucun", ... } à partir d'une liste d'emplacements.
+  <!-- ========== APPLICATION REACT ========== -->
+  <script type="text/babel" data-presets="react">
+    const { useState, useEffect, useRef, Fragment } = React;
+
+    /* ===== LOGIQUE PURE (reprise de index.html, sans dépendance au DOM) ===== */
     function etatVide(emplacements) {
       const o = {};
       emplacements.forEach(e => o[e.id] = "aucun");
       return o;
     }
-
-    let armePrincipale = ARMES_PRINCIPALES[0];
-    let armeSecondaire = ARMES_SECONDAIRES[0];
-    // Opus (jeu) et catégorie actuellement sélectionnés pour chaque arme.
-    let opusPrincipal = armePrincipale.jeu;
-    let opusSecondaire = armeSecondaire.jeu;
-    let categoriePrincipale = armePrincipale.categorie;
-    let categorieSecondaire = armeSecondaire.categorie;
-    // Chaque arme a SES PROPRES accessoires -> la sélection se reconstruit à partir de l'arme.
-    let selectionPrincipale = etatVide(armePrincipale.emplacements);
-    let selectionSecondaire = etatVide(armeSecondaire.emplacements);
-    const atoutsSelection     = { slot1: "aucun", slot2: "aucun", slot3: "aucun" };
-    const equipementSelection = { letal: "aucun", tactique: "aucun", terrain: "aucun" };
-
-    // MODE de jeu (Warzone / Black Ops) : il détermine quels atouts et équipements sont dispo.
-    let mode = "warzone";
-    let ATOUTS = ATOUTS_WARZONE;
-    let EQUIPEMENTS = EQUIPEMENTS_WARZONE;
-    // Points de vie de la cible pour le calcul du TTK (Warzone = 100 PV + 150 d'armure = 250).
-    let pvCible = 250;
-    // Afficher (ou non) les valeurs chiffrées des effets sur les étiquettes.
-    let afficherValeurs = false;
-
-    // -- B) LE CALCUL ----------------------------------------------------
     function appliquerMod(valeurBase, valeurActuelle, modificateur) {
       if (modificateur.includes("%")) {
-        const pourcent = parseFloat(modificateur);            // "+15%" -> 15
+        const pourcent = parseFloat(modificateur);
         return valeurActuelle + valeurBase * (pourcent / 100);
-      } else {
-        return valeurActuelle + parseFloat(modificateur);     // "+20" -> 20
       }
+      return valeurActuelle + parseFloat(modificateur);
     }
-
-    // Compte combien d'accessoires sont équipés (différents de "aucun").
     function compterAccessoires(etat) {
       return Object.values(etat).filter(v => v !== "aucun").length;
     }
-
-    // Calcule les stats finales d'une arme selon ses emplacements + (optionnel) les atouts.
-    function calculerStatsFinales(arme, etatEmplacements, emplacements, appliquerAtouts) {
+    // atoutsActifs = liste d'atouts (ATOUTS_WARZONE/...) ou null ; atoutsSel = sélection {slotId: optId}
+    function calculerStatsFinales(arme, etat, emplacements, atoutsActifs, atoutsSel) {
       const finales = { ...arme.stats_base };
-
-      // Un accessoire choisi par emplacement.
       emplacements.forEach(emp => {
-        const opt = emp.options.find(o => o.id === etatEmplacements[emp.id]);
+        const opt = emp.options.find(o => o.id === etat[emp.id]);
         if (!opt || !opt.modificateurs) return;
         for (const stat in opt.modificateurs) {
           finales[stat] = appliquerMod(arme.stats_base[stat], finales[stat], opt.modificateurs[stat]);
         }
       });
-
-      // Atouts à effet (seulement pour l'arme principale).
-      if (appliquerAtouts) {
-        ATOUTS.forEach(slot => {
-          const atout = slot.options.find(o => o.id === atoutsSelection[slot.id]);
+      if (atoutsActifs && atoutsSel) {
+        atoutsActifs.forEach(slot => {
+          const atout = slot.options.find(o => o.id === atoutsSel[slot.id]);
           if (!atout || !atout.modificateurs) return;
           for (const stat in atout.modificateurs) {
             finales[stat] = appliquerMod(arme.stats_base[stat], finales[stat], atout.modificateurs[stat]);
           }
         });
       }
-
-      // On arrondit à 2 décimales (et PAS à l'entier) : sinon une stat de base
-      // décimale comme 18,38 deviendrait 18 et paraîtrait "modifiée" sans accessoire.
       for (const stat in finales) finales[stat] = Math.round(finales[stat] * 100) / 100;
       return finales;
     }
-
-    // -- C) L'AFFICHAGE --------------------------------------------------
-    // Construit les ÉTIQUETTES colorées des stats affectées par un accessoire.
-    // Vert = bonus, rouge = malus. On ne montre PAS les chiffres exacts, juste la stat.
-    function chipsAffectes(option) {
+    function chipsAffectes(option, afficherValeurs) {
       if (!option.modificateurs) return "";
       return Object.entries(option.modificateurs).map(([stat, val]) => {
         const infos = INFOS_STATS[stat];
-        const valeur = parseFloat(val);   // ex: "-12%" -> -12  (on regarde juste le signe)
-        // Pour le recul/visée/recharge, une BAISSE est un bonus -> on inverse selon "plusGrandEstMieux".
+        const valeur = parseFloat(val);
         const estBonus = infos.plusGrandEstMieux ? (valeur > 0) : (valeur < 0);
-        // Option "afficher les valeurs" : on ajoute le pourcentage/chiffre exact.
         const texte = afficherValeurs ? `${infos.court} ${val}` : infos.court;
         return `<span class="chip ${estBonus ? "bonus" : "malus"}">${texte}</span>`;
       }).join("");
     }
-
-    // Construit le texte de description (description + effet stat) d'une option.
-    function texteDescription(option) {
-      if (!option || option.id === "aucun") return "";
-      let texte = option.description || "";
-      if (option.modificateurs) {
-        const effets = Object.entries(option.modificateurs)
-          .map(([stat, val]) => `${INFOS_STATS[stat].label} ${val}`)
-          .join(", ");
-        texte += ` <span class="effet">(Effet : ${effets})</span>`;
-      }
-      return texte;
+    function calculerTTK(finales, pv) {
+      const deg = finales.degats, cad = finales.cadence_cpm;
+      if (!deg || !cad) return null;
+      const stk = Math.max(1, Math.ceil(pv / deg));
+      const intervalle = 60000 / cad;
+      const ttk = Math.round((stk - 1) * intervalle);
+      return { stk, ttk };
     }
-
-    // Dessine les statistiques d'une arme dans une zone.
-    function afficherStats(zoneId, arme, etatEmplacements, emplacements, appliquerAtouts) {
-      const finales = calculerStatsFinales(arme, etatEmplacements, emplacements, appliquerAtouts);
-      let html = "";
-      for (const stat in arme.stats_base) {
-        const base = Math.round(arme.stats_base[stat] * 100) / 100;  // même précision que la valeur finale
-        const fin = finales[stat];
-        const infos = INFOS_STATS[stat];
-
-        let classeCouleur = "egal";
-        if (fin !== base) {
-          const aAugmente = fin > base;
-          const estMieux = infos.plusGrandEstMieux ? aAugmente : !aAugmente;
-          classeCouleur = estMieux ? "mieux" : "pire";
-        }
-
-        const largeur = Math.min(100, (fin / infos.max) * 100);
-        const couleurBarre = classeCouleur === "pire" ? "#f87171"
-                            : classeCouleur === "mieux" ? "#4ade80" : "#6b7280";
-
-        html += `
-          <div class="stat">
-            <div class="stat-entete">
-              <span class="stat-nom">${infos.label}</span>
-              <span class="stat-valeurs">
-                <span class="base">${base}</span>
-                <span class="fleche">→</span>
-                <span class="final ${classeCouleur}">${fin}</span>
-              </span>
-            </div>
-            <div class="barre-fond">
-              <div class="barre-remplissage" style="width:${largeur}%; background:${couleurBarre}"></div>
-            </div>
-          </div>`;
-      }
-      document.getElementById(zoneId).innerHTML = html;
-    }
-
-    // Met à jour le compteur "X / 5" d'une zone d'accessoires.
-    function majCompteur(zoneId, etat, alerte) {
-      const n = compterAccessoires(etat);
-      const el = document.getElementById(`compteur-${zoneId}`);
-      el.textContent = `Accessoires équipés : ${n} / ${CAP_ACCESSOIRES}` + (alerte ? "  — maximum atteint !" : "");
-      el.classList.toggle("plein", n >= CAP_ACCESSOIRES);
-      el.classList.toggle("alerte", !!alerte);
-    }
-
-    // Ferme tous les menus personnalisés ouverts.
-    function fermerTousLesMenus() {
-      document.querySelectorAll(".dd.ouvert").forEach(d => d.classList.remove("ouvert"));
-    }
-
-    // Crée UN menu déroulant personnalisé dans l'élément "cible".
-    // C'est LA brique réutilisable : armes, accessoires, atouts et équipement s'en servent tous.
-    //   options        : [{ id, nom, chips (html, facultatif), sousTexte (facultatif) }]
-    //   valeurActuelle : l'id de l'option choisie
-    //   onChoix        : fonction appelée avec l'id choisi quand on clique une option
-    function creerMenu(cible, options, valeurActuelle, onChoix) {
-      const choisi = options.find(o => o.id === valeurActuelle) || options[0];
-      const rempli = valeurActuelle && valeurActuelle !== "aucun";
-
-      const liste = options.map(o => `
-        <div class="dd-opt ${o.id === valeurActuelle ? "actif" : ""} ${o.desactive ? "dd-opt-off" : ""}" data-val="${o.id}">
-          <span class="dd-opt-texte">
-            <span class="dd-nom">${o.nom}</span>
-            ${o.sousTexte ? `<span class="dd-sous">${o.sousTexte}</span>` : ""}
-          </span>
-          <span class="chips-ligne" style="margin-left:auto">${o.chips || ""}</span>
-        </div>`).join("");
-
-      cible.innerHTML = `
-        <div class="dd">
-          <button type="button" class="dd-bouton ${rempli ? "rempli" : ""}">
-            <span class="dd-nom">${choisi.nom}</span>
-            <span class="chips-ligne">${choisi.chips || ""}</span>
-            <span class="fleche-bas">▾</span>
-          </button>
-          <div class="dd-liste">${liste}</div>
-        </div>`;
-
-      const dd = cible.querySelector(".dd");
-      // Ouvre/ferme au clic sur le bouton.
-      cible.querySelector(".dd-bouton").addEventListener("click", e => {
-        e.stopPropagation();
-        const ouvert = dd.classList.contains("ouvert");
-        fermerTousLesMenus();
-        if (!ouvert) dd.classList.add("ouvert");
-      });
-      // Sélectionne une option au clic.
-      cible.querySelectorAll(".dd-opt").forEach(opt => {
-        opt.addEventListener("click", () => {
-          if (opt.classList.contains("dd-opt-off")) return;   // option grisée = non sélectionnable
-          onChoix(opt.dataset.val);
-        });
-      });
-    }
-
-    // Dessine tous les emplacements d'accessoires d'une arme (un menu chacun),
-    // en respectant : un choix par emplacement + 5 accessoires max au total.
-    function afficherEmplacements(zoneId, emplacements, etatSelection, recalculer, alerte) {
-      let html = `<div class="compteur" id="compteur-${zoneId}"></div>`;
-      emplacements.forEach(emp => {
-        html += `<div class="slot"><label class="slot-label">${emp.label}</label><div class="menu-cible" data-emp="${emp.id}"></div></div>`;
-      });
-      document.getElementById(zoneId).innerHTML = html;
-      majCompteur(zoneId, etatSelection, alerte);
-
-      emplacements.forEach(emp => {
-        const cible = document.querySelector(`#${zoneId} .menu-cible[data-emp="${emp.id}"]`);
-        const options = emp.options.map(o => ({ id: o.id, nom: o.nom, chips: chipsAffectes(o) }));
-        creerMenu(cible, options, etatSelection[emp.id], (nouvelle) => {
-          const ancienne = etatSelection[emp.id];
-          // Règle des 5 max : on bloque seulement si on AJOUTE un accessoire.
-          if (nouvelle !== "aucun") {
-            const compte = compterAccessoires(etatSelection);
-            const ajoutUnNouveau = (ancienne === "aucun") ? 1 : 0;
-            if (compte + ajoutUnNouveau > CAP_ACCESSOIRES) {
-              afficherEmplacements(zoneId, emplacements, etatSelection, recalculer, true);
-              return;
-            }
-          }
-          etatSelection[emp.id] = nouvelle;
-          afficherEmplacements(zoneId, emplacements, etatSelection, recalculer, false);
-          recalculer();
-        });
-      });
-    }
-
-    // Options de catégories pour un opus donné (grisées si aucune arme de cet opus dedans).
     function optionsCategories(listeArmes, categories, opus) {
       return categories.map(cat => {
         const aDesArmes = listeArmes.some(a => a.categorie === cat && a.jeu === opus);
         return { id: cat, nom: aDesArmes ? cat : cat + " (à venir)", desactive: !aDesArmes };
       });
     }
-    // Options d'opus (grisées si aucune arme de cet opus dans cet emplacement).
     function optionsJeux(listeArmes) {
       return JEUX.map(jeu => {
         const present = listeArmes.some(a => a.jeu === jeu);
         return { id: jeu, nom: present ? jeu : jeu + " (à venir)", desactive: !present };
       });
     }
-    // Première catégorie ayant une arme de l'opus donné.
     function premiereCategorie(listeArmes, categories, opus) {
       return categories.find(cat => listeArmes.some(a => a.categorie === cat && a.jeu === opus));
     }
-
-    // -- ARME PRINCIPALE : OPUS -> CATÉGORIE -> ARME --
-    function dessinerOpusPrincipal() {
-      const cible = document.getElementById("choix-opus-principale");
-      creerMenu(cible, optionsJeux(ARMES_PRINCIPALES), opusPrincipal, (jeu) => {
-        opusPrincipal = jeu;
-        categoriePrincipale = premiereCategorie(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, jeu);
-        armePrincipale = ARMES_PRINCIPALES.find(a => a.categorie === categoriePrincipale && a.jeu === jeu);
-        selectionPrincipale = etatVide(armePrincipale.emplacements);
-        dessinerOpusPrincipal(); dessinerCategoriePrincipale(); dessinerArmePrincipale();
-        afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
-        majEnteteArmePrincipale(); rafraichirPrincipale();
-      });
+    const POIDS_OBJECTIFS = {
+      polyvalent: { recul_vertical: 1.5, recul_horizontal: 1.5, gun_kick: 1, portee_m: 1.2, velocite_ms: 1, vitesse_visee_ms: 1, sprint_to_fire_ms: 1, mobilite: 0.8, capacite_chargeur: 0.6, vitesse_rechargement_ms: 0.5 },
+      longue:     { portee_m: 3, velocite_ms: 2, recul_vertical: 2.5, recul_horizontal: 2.5, gun_kick: 1.5, capacite_chargeur: 0.6, vitesse_visee_ms: 0.2 },
+      courte:     { vitesse_visee_ms: 3, sprint_to_fire_ms: 3, mobilite: 2, recul_horizontal: 1, recul_vertical: 1, gun_kick: 0.8, cadence_cpm: 0.8, capacite_chargeur: 0.4 },
+      mobilite:   { mobilite: 3, vitesse_visee_ms: 2.5, sprint_to_fire_ms: 2.5, vitesse_rechargement_ms: 1, recul_horizontal: 0.6, recul_vertical: 0.6 },
+      recul:      { gun_kick: 3, recul_horizontal: 3, recul_vertical: 3 }
+    };
+    const LABELS_OBJECTIFS = { polyvalent: "Polyvalent", longue: "Longue portée", courte: "Courte portée", mobilite: "Mobilité", recul: "Recul minimal" };
+    function noterOption(arme, option, poids) {
+      if (!option || !option.modificateurs) return 0;
+      let score = 0;
+      for (const stat in option.modificateurs) {
+        const base = arme.stats_base[stat];
+        if (base === undefined) continue;
+        const ref = Math.abs(base) < 1e-6 ? 1 : Math.abs(base);
+        const nouvelle = appliquerMod(base, base, option.modificateurs[stat]);
+        const deltaRel = (nouvelle - base) / ref;
+        const infos = INFOS_STATS[stat];
+        const gain = infos.plusGrandEstMieux ? deltaRel : -deltaRel;
+        score += (poids[stat] || 0) * gain;
+      }
+      return score;
     }
-    function dessinerCategoriePrincipale() {
-      const cible = document.getElementById("choix-categorie-principale");
-      creerMenu(cible, optionsCategories(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, opusPrincipal), categoriePrincipale, (cat) => {
-        categoriePrincipale = cat;
-        armePrincipale = ARMES_PRINCIPALES.find(a => a.categorie === cat && a.jeu === opusPrincipal);
-        selectionPrincipale = etatVide(armePrincipale.emplacements);
-        dessinerCategoriePrincipale(); dessinerArmePrincipale();
-        afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
-        majEnteteArmePrincipale(); rafraichirPrincipale();
-      });
+    function genererSelection(arme, objectif) {
+      const poids = POIDS_OBJECTIFS[objectif] || POIDS_OBJECTIFS.polyvalent;
+      const emps = arme.emplacements;
+      const candidats = emps.map(emp => {
+        let best = null, bestScore = 0;
+        emp.options.forEach(opt => {
+          if (opt.id === "aucun") return;
+          const sc = noterOption(arme, opt, poids);
+          if (sc > bestScore) { bestScore = sc; best = opt; }
+        });
+        return { slot: emp.id, opt: best, score: bestScore };
+      }).filter(c => c.opt && c.score > 0);
+      candidats.sort((a, b) => b.score - a.score);
+      const retenus = candidats.slice(0, CAP_ACCESSOIRES);
+      const sel = etatVide(emps);
+      retenus.forEach(c => { sel[c.slot] = c.opt.id; });
+      return { sel, retenus };
     }
-    function dessinerArmePrincipale() {
-      const cible = document.getElementById("choix-arme-principale");
-      const options = ARMES_PRINCIPALES.filter(a => a.categorie === categoriePrincipale && a.jeu === opusPrincipal).map(a => ({ id: a.id, nom: a.nom }));
-      creerMenu(cible, options, armePrincipale.id, (val) => {
-        armePrincipale = ARMES_PRINCIPALES.find(a => a.id === val);
-        selectionPrincipale = etatVide(armePrincipale.emplacements);   // nouvelle arme = ses propres accessoires
-        dessinerArmePrincipale();
-        afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
-        majEnteteArmePrincipale(); rafraichirPrincipale();
-      });
-    }
-
-    // -- ARME SECONDAIRE : même principe --
-    function dessinerOpusSecondaire() {
-      const cible = document.getElementById("choix-opus-secondaire");
-      creerMenu(cible, optionsJeux(ARMES_SECONDAIRES), opusSecondaire, (jeu) => {
-        opusSecondaire = jeu;
-        categorieSecondaire = premiereCategorie(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, jeu);
-        armeSecondaire = ARMES_SECONDAIRES.find(a => a.categorie === categorieSecondaire && a.jeu === jeu);
-        selectionSecondaire = etatVide(armeSecondaire.emplacements);
-        dessinerOpusSecondaire(); dessinerCategorieSecondaire(); dessinerArmeSecondaire();
-        afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
-        majEnteteArmeSecondaire(); rafraichirSecondaire();
-      });
-    }
-    function dessinerCategorieSecondaire() {
-      const cible = document.getElementById("choix-categorie-secondaire");
-      creerMenu(cible, optionsCategories(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, opusSecondaire), categorieSecondaire, (cat) => {
-        categorieSecondaire = cat;
-        armeSecondaire = ARMES_SECONDAIRES.find(a => a.categorie === cat && a.jeu === opusSecondaire);
-        selectionSecondaire = etatVide(armeSecondaire.emplacements);
-        dessinerCategorieSecondaire(); dessinerArmeSecondaire();
-        afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
-        majEnteteArmeSecondaire(); rafraichirSecondaire();
-      });
-    }
-    function dessinerArmeSecondaire() {
-      const cible = document.getElementById("choix-arme-secondaire");
-      const options = ARMES_SECONDAIRES.filter(a => a.categorie === categorieSecondaire && a.jeu === opusSecondaire).map(a => ({ id: a.id, nom: a.nom }));
-      creerMenu(cible, options, armeSecondaire.id, (val) => {
-        armeSecondaire = ARMES_SECONDAIRES.find(a => a.id === val);
-        selectionSecondaire = etatVide(armeSecondaire.emplacements);
-        dessinerArmeSecondaire();
-        afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
-        majEnteteArmeSecondaire(); rafraichirSecondaire();
-      });
-    }
-
-    // Atouts / équipement : un menu personnalisé par emplacement (même brique creerMenu).
-    // Chaque option montre sa description (sousTexte) et, si l'atout a un effet stat, ses étiquettes.
-    function afficherSlots(zoneId, slots, etatSelection, recalculer) {
-      let html = "";
-      slots.forEach(slot => {
-        html += `<div class="slot"><label class="slot-label">${slot.label}</label><div class="menu-cible" data-slot="${slot.id}"></div></div>`;
-      });
-      document.getElementById(zoneId).innerHTML = html;
-
-      slots.forEach(slot => {
-        const cible = document.querySelector(`#${zoneId} .menu-cible[data-slot="${slot.id}"]`);
-        const options = slot.options.map(o => ({
-          id: o.id,
-          nom: o.nom,
-          chips: chipsAffectes(o),
-          sousTexte: (o.id !== "aucun") ? (o.description || "") : ""
-        }));
-        // Petite fonction locale : (re)dessine CE menu pour refléter le choix courant.
-        function dessiner() {
-          creerMenu(cible, options, etatSelection[slot.id], (nouvelle) => {
-            etatSelection[slot.id] = nouvelle;
-            dessiner();
-            if (recalculer) recalculer();
-          });
-        }
-        dessiner();
-      });
-    }
-
-    // Silhouette d'arme générique (placeholder). Les vraies photos Call of Duty
-    // appartiennent à Activision : pour mettre la tienne, ajoute "image: 'monfichier.png'"
-    // à l'arme dans donnees.js (place le fichier image à côté de index.html).
     const SILHOUETTE_ARME = `
       <svg viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Silhouette d'arme">
         <defs>
@@ -888,468 +560,676 @@
           <path d="M96 102 L120 102 L112 140 L92 138 Z"/>
         </g>
       </svg>`;
-
-    // Affiche l'image (ou la silhouette) d'une arme dans une zone.
-    function afficherImageArme(arme, zoneId) {
-      const cible = document.getElementById(zoneId);
-      if (!cible) return;
-      // Source de l'image : champ "image" de l'arme, sinon la table IMAGES_ARMES.
-      const src = arme.image || (typeof IMAGES_ARMES !== "undefined" ? IMAGES_ARMES[arme.id] : null);
-      if (src) {
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = arme.nom;
-        img.className = "img-arme";
-        // Si l'image ne charge pas, on retombe sur la silhouette.
-        img.onerror = () => { cible.innerHTML = SILHOUETTE_ARME; };
-        cible.innerHTML = "";
-        cible.appendChild(img);
-      } else {
-        cible.innerHTML = SILHOUETTE_ARME;
-      }
-    }
-
-    // Met à jour le bandeau d'une arme (nom, catégorie, image).
-    function majEnteteArmePrincipale() {
-      document.getElementById("nom-arme-principale").textContent = armePrincipale.nom;
-      const cat = document.getElementById("cat-arme-principale");
-      if (cat) cat.textContent = armePrincipale.categorie || "";
-      afficherImageArme(armePrincipale, "image-arme-principale");
-    }
-    function majEnteteArmeSecondaire() {
-      document.getElementById("nom-arme-secondaire").textContent = armeSecondaire.nom;
-      const cat = document.getElementById("cat-arme-secondaire");
-      if (cat) cat.textContent = armeSecondaire.categorie || "";
-      afficherImageArme(armeSecondaire, "image-arme-secondaire");
-    }
-
-    // -- CALCUL DU TTK (temps pour tuer) ---------------------------------
-    // STK = balles nécessaires = arrondi sup. de (PV / dégâts par balle).
-    // Intervalle entre balles = 60000 / cadence (ms). TTK = (STK - 1) * intervalle.
-    // Approximation : tir au corps, dégâts à courte portée (un seul profil de dégâts dans nos données).
-    function calculerTTK(finales, pv) {
-      const deg = finales.degats, cad = finales.cadence_cpm;
-      if (!deg || !cad) return null;
-      const stk = Math.max(1, Math.ceil(pv / deg));
-      const intervalle = 60000 / cad;        // ms entre deux balles
-      const ttk = Math.round((stk - 1) * intervalle);
-      return { stk, ttk };
-    }
-
-    function afficherTTK(arme, etatEmplacements, emplacements) {
-      const zone = document.getElementById("zone-ttk-principale");
-      if (!zone) return;
-      const finales = calculerStatsFinales(arme, etatEmplacements, emplacements, true);
-      const r = calculerTTK(finales, pvCible);
-      const txt = r ? `${r.ttk} <small>ms</small>` : "—";
-      const detail = r ? `${r.stk} balle${r.stk > 1 ? "s" : ""} · cadence ${Math.round(finales.cadence_cpm)} c/min` : "Données insuffisantes";
-      zone.innerHTML = `
-        <div>
-          <div class="ttk-val">TTK ≈ ${txt}</div>
-          <div class="ttk-detail">${detail} <span style="color:#6b7280">(tir au corps, courte portée)</span></div>
-        </div>
-        <label class="ttk-pv">Cible :
-          <select id="ttk-pv-select">
-            <option value="250"${pvCible === 250 ? " selected" : ""}>Warzone (250 PV)</option>
-            <option value="150"${pvCible === 150 ? " selected" : ""}>Multijoueur (150 PV)</option>
-            <option value="100"${pvCible === 100 ? " selected" : ""}>Sans armure (100 PV)</option>
-          </select>
-        </label>`;
-      const sel = document.getElementById("ttk-pv-select");
-      if (sel) sel.addEventListener("change", (e) => { pvCible = parseInt(e.target.value, 10); afficherTTK(armePrincipale, selectionPrincipale, armePrincipale.emplacements); });
-    }
-
-    // -- Raccourcis pour rafraîchir les stats de chaque arme -------------
-    function rafraichirPrincipale() {
-      document.getElementById("nom-arme-principale").textContent = armePrincipale.nom;
-      afficherStats("zone-stats-principale", armePrincipale, selectionPrincipale, armePrincipale.emplacements, true);
-      afficherTTK(armePrincipale, selectionPrincipale, armePrincipale.emplacements);
-    }
-    function rafraichirSecondaire() {
-      document.getElementById("nom-arme-secondaire").textContent = armeSecondaire.nom;
-      afficherStats("zone-stats-secondaire", armeSecondaire, selectionSecondaire, armeSecondaire.emplacements, false);
-    }
-
-    // -- RECHERCHE RAPIDE D'ARME (principale) ----------------------------
-    function selectionnerArmePrincipale(id) {
-      const a = ARMES_PRINCIPALES.find(x => x.id === id);
-      if (!a) return;
-      armePrincipale = a;
-      opusPrincipal = a.jeu;
-      categoriePrincipale = a.categorie;
-      selectionPrincipale = etatVide(a.emplacements);
-      dessinerOpusPrincipal(); dessinerCategoriePrincipale(); dessinerArmePrincipale();
-      afficherEmplacements("zone-accessoires-principale", a.emplacements, selectionPrincipale, rafraichirPrincipale);
-      majEnteteArmePrincipale(); rafraichirPrincipale();
-    }
-    function chercherArmes(q) {
-      const zone = document.getElementById("resultats-recherche");
-      if (!zone) return;
-      q = q.trim().toLowerCase();
-      if (!q) { zone.classList.remove("ouvert"); zone.innerHTML = ""; return; }
-      const res = ARMES_PRINCIPALES.filter(a => a.nom.toLowerCase().includes(q)).slice(0, 8);
-      zone.innerHTML = res.length
-        ? res.map(a => `<div class="recherche-item" data-id="${a.id}"><span>${a.nom}</span><small>${a.categorie} · ${a.jeu}</small></div>`).join("")
-        : `<div class="recherche-item"><span style="color:#9aa0a6">Aucune arme trouvée</span></div>`;
-      zone.classList.add("ouvert");
-      zone.querySelectorAll(".recherche-item[data-id]").forEach(el => {
-        el.addEventListener("click", (e) => {
-          e.stopPropagation();
-          selectionnerArmePrincipale(el.dataset.id);
-          document.getElementById("recherche-arme").value = "";
-          zone.classList.remove("ouvert"); zone.innerHTML = "";
-        });
-      });
-    }
-
-    // -- AFFICHER LES VALEURS (%) sur les étiquettes ---------------------
-    function basculerValeurs(on) {
-      afficherValeurs = on;
-      afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
-      afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
-    }
-
-    // -- GÉNÉRATEUR DE CLASSE (IA "maison", 100% local) ------------------
-    // Pour chaque objectif, on donne un poids (importance) à certaines stats.
-    // Le générateur choisit, par emplacement, l'accessoire qui améliore le plus
-    // l'objectif, puis garde les 5 meilleurs (limite du jeu).
-    const POIDS_OBJECTIFS = {
-      polyvalent: { recul_vertical: 1.5, recul_horizontal: 1.5, gun_kick: 1, portee_m: 1.2, velocite_ms: 1, vitesse_visee_ms: 1, sprint_to_fire_ms: 1, mobilite: 0.8, capacite_chargeur: 0.6, vitesse_rechargement_ms: 0.5 },
-      longue:     { portee_m: 3, velocite_ms: 2, recul_vertical: 2.5, recul_horizontal: 2.5, gun_kick: 1.5, capacite_chargeur: 0.6, vitesse_visee_ms: 0.2 },
-      courte:     { vitesse_visee_ms: 3, sprint_to_fire_ms: 3, mobilite: 2, recul_horizontal: 1, recul_vertical: 1, gun_kick: 0.8, cadence_cpm: 0.8, capacite_chargeur: 0.4 },
-      mobilite:   { mobilite: 3, vitesse_visee_ms: 2.5, sprint_to_fire_ms: 2.5, vitesse_rechargement_ms: 1, recul_horizontal: 0.6, recul_vertical: 0.6 },
-      recul:      { gun_kick: 3, recul_horizontal: 3, recul_vertical: 3 }
-    };
-    const LABELS_OBJECTIFS = { polyvalent: "Polyvalent", longue: "Longue portée", courte: "Courte portée", mobilite: "Mobilité", recul: "Recul minimal" };
-
-    // Note (positive = bonne pour l'objectif) d'un accessoire.
-    function noterOption(arme, option, poids) {
-      if (!option || !option.modificateurs) return 0;
-      let score = 0;
-      for (const stat in option.modificateurs) {
-        const base = arme.stats_base[stat];
-        if (base === undefined) continue;
-        const ref = Math.abs(base) < 1e-6 ? 1 : Math.abs(base);
-        const nouvelle = appliquerMod(base, base, option.modificateurs[stat]);
-        const deltaRel = (nouvelle - base) / ref;                 // variation relative
-        const infos = INFOS_STATS[stat];
-        const gain = infos.plusGrandEstMieux ? deltaRel : -deltaRel; // >0 = amélioration
-        score += (poids[stat] || 0) * gain;
-      }
-      return score;
-    }
-
-    function genererClasse() {
-      const obj = document.getElementById("ia-objectif").value;
-      const poids = POIDS_OBJECTIFS[obj] || POIDS_OBJECTIFS.polyvalent;
-      const emps = armePrincipale.emplacements;
-      // Meilleur accessoire (hors "aucun") par emplacement.
-      const candidats = emps.map(emp => {
-        let best = null, bestScore = 0;
-        emp.options.forEach(opt => {
-          if (opt.id === "aucun") return;
-          const sc = noterOption(armePrincipale, opt, poids);
-          if (sc > bestScore) { bestScore = sc; best = opt; }
-        });
-        return { slot: emp.id, opt: best, score: bestScore };
-      }).filter(c => c.opt && c.score > 0);
-      // On garde les meilleurs dans la limite d'accessoires.
-      candidats.sort((a, b) => b.score - a.score);
-      const retenus = candidats.slice(0, CAP_ACCESSOIRES);
-      // Applique la sélection.
-      selectionPrincipale = etatVide(emps);
-      retenus.forEach(c => { selectionPrincipale[c.slot] = c.opt.id; });
-      afficherEmplacements("zone-accessoires-principale", emps, selectionPrincipale, rafraichirPrincipale);
-      rafraichirPrincipale();
-      const note = document.getElementById("ia-note");
-      if (note) {
-        note.textContent = retenus.length
-          ? `Classe « ${LABELS_OBJECTIFS[obj]} » générée pour ${armePrincipale.nom} (${retenus.length} accessoire${retenus.length > 1 ? "s" : ""}).`
-          : "Aucun accessoire utile trouvé pour cet objectif sur cette arme.";
-      }
-    }
-
-    // -- NAVIGATION (menu de gauche) + CLASSES ENREGISTRÉES --------------
-
-    // Affiche une vue ("createur" ou "classes") et met le menu à jour.
-    function montrerVue(nom) {
-      ["createur", "classes", "comparateur", "meta"].forEach(v => {
-        const el = document.getElementById("vue-" + v);
-        if (el) el.style.display = (v === nom) ? "block" : "none";
-      });
-      document.querySelectorAll(".nav-item").forEach(n => n.classList.toggle("actif", n.dataset.vue === nom));
-      if (nom === "classes") afficherClasses();
-      if (nom === "comparateur") afficherComparateur();
-      if (nom === "meta") afficherMeta();
-    }
-
-    // Les classes sont stockées sur l'ordinateur (localStorage), avec repli en mémoire.
-    const CLE_STOCKAGE = "wz_classes";
-    let classesMemoire = [];
-    try { classesMemoire = JSON.parse(localStorage.getItem(CLE_STOCKAGE) || "[]"); } catch (e) {}
-    function sauverStockage() { try { localStorage.setItem(CLE_STOCKAGE, JSON.stringify(classesMemoire)); } catch (e) {} }
-
-    // Capture la classe actuellement composée.
-    function classeActuelle() {
-      return {
-        nom: "",
-        mode,
-        armePrincipale: armePrincipale.id, categoriePrincipale,
-        selectionPrincipale: { ...selectionPrincipale },
-        armeSecondaire: armeSecondaire.id, categorieSecondaire,
-        selectionSecondaire: { ...selectionSecondaire },
-        atouts: { ...atoutsSelection }, equipement: { ...equipementSelection }
-      };
-    }
-
-    // Enregistre la classe actuelle (demande un nom).
-    function enregistrerClasse() {
-      const nom = prompt("Nom de la classe :", armePrincipale.nom + " + " + armeSecondaire.nom);
-      if (!nom) return;
-      const c = classeActuelle(); c.nom = nom;
-      classesMemoire.push(c);
-      sauverStockage();
-      montrerVue("classes");
-    }
-
-    // Applique un objet "classe" (depuis une sauvegarde OU un lien partagé) et réaffiche tout.
-    function appliquerClasse(c) {
-      if (!c) return;
-      // Mode de jeu (atouts/équipement en dépendent) — on l'applique d'abord.
-      if (c.mode && c.mode !== mode) {
-        mode = c.mode;
-        ATOUTS = (mode === "warzone") ? ATOUTS_WARZONE : ATOUTS_BLACKOPS;
-        EQUIPEMENTS = (mode === "warzone") ? EQUIPEMENTS_WARZONE : EQUIPEMENTS_BLACKOPS;
-        document.getElementById("titre-mode").textContent = (mode === "warzone") ? "Warzone" : "Black Ops";
-        document.getElementById("mode-warzone").classList.toggle("actif", mode === "warzone");
-        document.getElementById("mode-blackops").classList.toggle("actif", mode === "blackops");
-      }
-      armePrincipale = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale) || ARMES_PRINCIPALES[0];
-      opusPrincipal = armePrincipale.jeu;
-      categoriePrincipale = c.categoriePrincipale || armePrincipale.categorie;
-      selectionPrincipale = etatVide(armePrincipale.emplacements);
-      for (const k in (c.selectionPrincipale || {})) if (k in selectionPrincipale) selectionPrincipale[k] = c.selectionPrincipale[k];
-
-      armeSecondaire = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire) || ARMES_SECONDAIRES[0];
-      opusSecondaire = armeSecondaire.jeu;
-      categorieSecondaire = c.categorieSecondaire || armeSecondaire.categorie;
-      selectionSecondaire = etatVide(armeSecondaire.emplacements);
-      for (const k in (c.selectionSecondaire || {})) if (k in selectionSecondaire) selectionSecondaire[k] = c.selectionSecondaire[k];
-
-      for (const k in (c.atouts || {})) if (k in atoutsSelection) atoutsSelection[k] = c.atouts[k];
-      for (const k in (c.equipement || {})) if (k in equipementSelection) equipementSelection[k] = c.equipement[k];
-
-      // On redessine l'ensemble du créateur.
-      dessinerOpusPrincipal(); dessinerCategoriePrincipale(); dessinerArmePrincipale();
-      afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
-      majEnteteArmePrincipale();
-      dessinerOpusSecondaire(); dessinerCategorieSecondaire(); dessinerArmeSecondaire();
-      afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
-      majEnteteArmeSecondaire();
-      afficherSlots("zone-atouts", ATOUTS, atoutsSelection, rafraichirPrincipale);
-      afficherSlots("zone-equipement", EQUIPEMENTS, equipementSelection, null);
-      rafraichirPrincipale(); rafraichirSecondaire();
-      montrerVue("createur");
-    }
-
-    // Recharge une classe enregistrée.
-    function chargerClasse(i) { appliquerClasse(classesMemoire[i]); }
-
-    // -- PARTAGE PAR LIEN ------------------------------------------------
-    // Encode/décode en base64 (compatible UTF-8).
     function encoderClasse(c) { return btoa(unescape(encodeURIComponent(JSON.stringify(c)))); }
     function decoderClasse(code) {
       try { return JSON.parse(decodeURIComponent(escape(atob(code)))); } catch (e) { return null; }
     }
-    function partagerClasse() {
-      const code = encoderClasse(classeActuelle());
-      const lien = location.origin + location.pathname + "?c=" + code;
-      const note = document.getElementById("note-partage");
-      const ok = () => { if (note) note.textContent = "Lien copié ! 📋"; setTimeout(() => { if (note) note.textContent = ""; }, 4000); };
-      const echec = () => { if (note) note.textContent = "Copie impossible — lien : " + lien; };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(lien).then(ok, echec);
-      } else { echec(); }
-    }
-    // Au chargement : si l'URL contient une classe partagée, on l'applique.
-    function chargerDepuisURL() {
-      const code = new URLSearchParams(location.search).get("c");
-      if (!code) return false;
-      const c = decoderClasse(code);
-      if (c) { appliquerClasse(c); return true; }
-      return false;
-    }
+    const CLE_STOCKAGE = "wz_classes";
+    function chargerStockage() { try { return JSON.parse(localStorage.getItem(CLE_STOCKAGE) || "[]"); } catch (e) { return []; } }
+    function sauverStockage(arr) { try { localStorage.setItem(CLE_STOCKAGE, JSON.stringify(arr)); } catch (e) {} }
 
-    function supprimerClasse(i) {
-      classesMemoire.splice(i, 1);
-      sauverStockage();
-      afficherClasses();
-    }
-
-    // Dessine la liste des classes enregistrées.
-    function afficherClasses() {
-      const z = document.getElementById("liste-classes");
-      if (!classesMemoire.length) {
-        z.innerHTML = `<p class="vide">Aucune classe enregistrée pour l'instant. Compose une classe dans le créateur, puis clique « Enregistrer la classe ».</p>`;
-        return;
-      }
-      z.innerHTML = classesMemoire.map((c, i) => {
-        const ap = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale);
-        const as = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire);
-        return `
-          <div class="classe-card">
-            <div>
-              <div class="classe-nom">${c.nom}</div>
-              <div class="classe-armes">${ap ? ap.nom : "?"} + ${as ? as.nom : "?"}</div>
-            </div>
-            <div class="classe-actions">
-              <button class="btn" data-load="${i}">Charger</button>
-              <button class="btn btn-sup" data-del="${i}">Supprimer</button>
-            </div>
-          </div>`;
-      }).join("");
-      z.querySelectorAll("[data-load]").forEach(b => b.addEventListener("click", () => chargerClasse(+b.dataset.load)));
-      z.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => supprimerClasse(+b.dataset.del)));
-    }
-
-    // -- COMPARATEUR -----------------------------------------------------
     const TOUTES_ARMES = [...ARMES_PRINCIPALES, ...ARMES_SECONDAIRES];
-    let compareA = TOUTES_ARMES[0];
-    let compareB = TOUTES_ARMES[1];
 
-    function afficherComparateur() {
-      const options = TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }));
-      creerMenu(document.getElementById("cmp-arme-a"), options, compareA.id, (val) => {
-        compareA = TOUTES_ARMES.find(a => a.id === val); afficherComparateur();
-      });
-      creerMenu(document.getElementById("cmp-arme-b"), options, compareB.id, (val) => {
-        compareB = TOUTES_ARMES.find(a => a.id === val); afficherComparateur();
-      });
+    /* ===== COMPOSANTS RÉUTILISABLES ===== */
+    // Menu déroulant personnalisé coloré (équivalent de creerMenu).
+    function Dropdown({ options, value, onChange, className }) {
+      const [ouvert, setOuvert] = useState(false);
+      const ref = useRef(null);
+      useEffect(() => {
+        function onDoc(e) { if (ref.current && !ref.current.contains(e.target)) setOuvert(false); }
+        document.addEventListener("click", onDoc);
+        return () => document.removeEventListener("click", onDoc);
+      }, []);
+      const choisi = options.find(o => o.id === value) || options[0];
+      const rempli = value && value !== "aucun";
+      return (
+        <div className={(className || "")} ref={ref}>
+          <div className={"dd" + (ouvert ? " ouvert" : "")}>
+            <button type="button" className={"dd-bouton" + (rempli ? " rempli" : "")}
+              onClick={(e) => { e.stopPropagation(); setOuvert(o => !o); }}>
+              <span className="dd-nom">{choisi ? choisi.nom : ""}</span>
+              <span className="chips-ligne" dangerouslySetInnerHTML={{ __html: choisi && choisi.chips ? choisi.chips : "" }} />
+              <span className="fleche-bas">▾</span>
+            </button>
+            <div className="dd-liste">
+              {options.map(o => (
+                <div key={o.id}
+                  className={"dd-opt" + (o.id === value ? " actif" : "") + (o.desactive ? " dd-opt-off" : "")}
+                  onClick={() => { if (o.desactive) return; setOuvert(false); onChange(o.id); }}>
+                  <span className="dd-opt-texte">
+                    <span className="dd-nom">{o.nom}</span>
+                    {o.sousTexte ? <span className="dd-sous">{o.sousTexte}</span> : null}
+                  </span>
+                  <span className="chips-ligne" style={{ marginLeft: "auto" }} dangerouslySetInnerHTML={{ __html: o.chips || "" }} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
 
-      let html = `<div class="cmp-ligne tete">
-          <span class="cmp-stat">Statistique</span>
-          <span class="cmp-val">${compareA.nom}</span>
-          <span class="cmp-val">${compareB.nom}</span>
-        </div>`;
-      for (const stat in INFOS_STATS) {
-        const a = compareA.stats_base[stat] ?? 0;
-        const b = compareB.stats_base[stat] ?? 0;
-        let aGagne = false, bGagne = false;
-        if (a !== b) {
-          const aMieux = INFOS_STATS[stat].plusGrandEstMieux ? (a > b) : (a < b);
-          aGagne = aMieux; bGagne = !aMieux;
-        }
-        html += `<div class="cmp-ligne">
-            <span class="cmp-stat">${INFOS_STATS[stat].label}</span>
-            <span class="cmp-val ${aGagne ? "gagne" : ""}">${a}</span>
-            <span class="cmp-val ${bGagne ? "gagne" : ""}">${b}</span>
-          </div>`;
+    function WeaponImage({ arme }) {
+      const [err, setErr] = useState(false);
+      useEffect(() => setErr(false), [arme.id]);
+      const src = arme.image || (typeof IMAGES_ARMES !== "undefined" ? IMAGES_ARMES[arme.id] : null);
+      if (src && !err) {
+        return <img src={src} alt={arme.nom} className="img-arme" onError={() => setErr(true)} />;
       }
-      document.getElementById("cmp-resultat").innerHTML = html;
+      return <span dangerouslySetInnerHTML={{ __html: SILHOUETTE_ARME }} />;
     }
 
-    // -- MÉTA / TIER LIST ------------------------------------------------
-    function afficherMeta() {
-      // Ordre des catégories = ordre d'apparition des armes
-      const ordreCats = [];
-      TOUTES_ARMES.forEach(a => { if (!ordreCats.includes(a.categorie)) ordreCats.push(a.categorie); });
-
-      let html = "";
-      ordreCats.forEach(cat => {
-        const armesCat = TOUTES_ARMES.filter(a => a.categorie === cat);
-        // Regroupe les armes de cette catégorie par tier
-        const groupes = {};
-        armesCat.forEach(a => {
-          const t = TIERS[a.id] || "N";   // N = non classé
-          (groupes[t] = groupes[t] || []).push(a);
-        });
-        let lignes = "";
-        TIERS_ORDRE.concat(["N"]).forEach(t => {
-          const armes = groupes[t];
-          if (!armes || !armes.length) return;
-          const lettre = (t === "N") ? "?" : t;
-          lignes += `<div class="tier tier-${t}">
-              <div class="tier-lettre">${lettre}</div>
-              <div class="tier-armes">` +
-              armes.map(a => `<span class="tier-arme">${a.nom}</span>`).join("") +
-            `</div>
-            </div>`;
-        });
-        html += `<div class="meta-categorie">
-            <h3 class="meta-cat-titre">${cat}</h3>
-            ${lignes}
-          </div>`;
-      });
-      document.getElementById("liste-meta").innerHTML = html;
+    function StatBars({ arme, finales }) {
+      return (
+        <Fragment>
+          {Object.keys(arme.stats_base).map(stat => {
+            const base = Math.round(arme.stats_base[stat] * 100) / 100;
+            const fin = finales[stat];
+            const infos = INFOS_STATS[stat];
+            let cls = "egal";
+            if (fin !== base) {
+              const aug = fin > base;
+              cls = (infos.plusGrandEstMieux ? aug : !aug) ? "mieux" : "pire";
+            }
+            const largeur = Math.min(100, (fin / infos.max) * 100);
+            const couleur = cls === "pire" ? "#f87171" : cls === "mieux" ? "#4ade80" : "#6b7280";
+            return (
+              <div className="stat" key={stat}>
+                <div className="stat-entete">
+                  <span className="stat-nom">{infos.label}</span>
+                  <span className="stat-valeurs">
+                    <span className="base">{base}</span>
+                    <span className="fleche">→</span>
+                    <span className={"final " + cls}>{fin}</span>
+                  </span>
+                </div>
+                <div className="barre-fond">
+                  <div className="barre-remplissage" style={{ width: largeur + "%", background: couleur }}></div>
+                </div>
+              </div>
+            );
+          })}
+        </Fragment>
+      );
     }
 
-    // -- MODE DE JEU (Warzone / Black Ops) -------------------------------
-    function changerMode(m) {
-      mode = m;
-      ATOUTS = (m === "warzone") ? ATOUTS_WARZONE : ATOUTS_BLACKOPS;
-      EQUIPEMENTS = (m === "warzone") ? EQUIPEMENTS_WARZONE : EQUIPEMENTS_BLACKOPS;
-      // Les options diffèrent selon le mode -> on remet les choix à zéro.
-      for (const k in atoutsSelection) atoutsSelection[k] = "aucun";
-      for (const k in equipementSelection) equipementSelection[k] = "aucun";
-      afficherSlots("zone-atouts", ATOUTS, atoutsSelection, rafraichirPrincipale);
-      afficherSlots("zone-equipement", EQUIPEMENTS, equipementSelection, null);
-      document.getElementById("titre-mode").textContent = (m === "warzone") ? "Warzone" : "Black Ops";
-      document.getElementById("mode-warzone").classList.toggle("actif", m === "warzone");
-      document.getElementById("mode-blackops").classList.toggle("actif", m === "blackops");
-      rafraichirPrincipale();
+    function TTKBox({ finales, pvCible, setPvCible }) {
+      const r = calculerTTK(finales, pvCible);
+      const detail = r ? `${r.stk} balle${r.stk > 1 ? "s" : ""} · cadence ${Math.round(finales.cadence_cpm)} c/min` : "Données insuffisantes";
+      return (
+        <Fragment>
+          <div>
+            <div className="ttk-val">TTK ≈ {r ? <Fragment>{r.ttk} <small>ms</small></Fragment> : "—"}</div>
+            <div className="ttk-detail">{detail} <span style={{ color: "#6b7280" }}>(tir au corps, courte portée)</span></div>
+          </div>
+          <label className="ttk-pv">Cible :
+            <select value={pvCible} onChange={(e) => setPvCible(parseInt(e.target.value, 10))}>
+              <option value={250}>Warzone (250 PV)</option>
+              <option value={150}>Multijoueur (150 PV)</option>
+              <option value={100}>Sans armure (100 PV)</option>
+            </select>
+          </label>
+        </Fragment>
+      );
     }
 
-    // -- D) DÉMARRAGE ----------------------------------------------------
-    // 1) Menus de sélection (opus + catégorie + arme)
-    dessinerOpusPrincipal();
-    dessinerCategoriePrincipale();
-    dessinerArmePrincipale();
-    dessinerOpusSecondaire();
-    dessinerCategorieSecondaire();
-    dessinerArmeSecondaire();
+    // Emplacements d'accessoires (un menu par emplacement + compteur + règle des 5).
+    function AttachmentSlots({ emplacements, selection, onChange, alerte, afficherValeurs }) {
+      const n = compterAccessoires(selection);
+      return (
+        <div>
+          <div className={"compteur" + (n >= CAP_ACCESSOIRES ? " plein" : "") + (alerte ? " alerte" : "")}>
+            {`Accessoires équipés : ${n} / ${CAP_ACCESSOIRES}` + (alerte ? "  — maximum atteint !" : "")}
+          </div>
+          {emplacements.map(emp => {
+            const options = emp.options.map(o => ({ id: o.id, nom: o.nom, chips: chipsAffectes(o, afficherValeurs) }));
+            return (
+              <div className="slot" key={emp.id}>
+                <label className="slot-label">{emp.label}</label>
+                <Dropdown options={options} value={selection[emp.id]} onChange={(v) => onChange(emp.id, v)} />
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
 
-    // 2) Accessoires de chaque arme (propres à l'arme choisie)
-    afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
-    afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
+    // Atouts / équipement (menus avec description).
+    function SlotsList({ slots, selection, onChange, afficherValeurs }) {
+      return (
+        <Fragment>
+          {slots.map(slot => {
+            const options = slot.options.map(o => ({
+              id: o.id, nom: o.nom,
+              chips: chipsAffectes(o, afficherValeurs),
+              sousTexte: o.id !== "aucun" ? (o.description || "") : ""
+            }));
+            return (
+              <div className="slot" key={slot.id}>
+                <label className="slot-label">{slot.label}</label>
+                <Dropdown options={options} value={selection[slot.id]} onChange={(v) => onChange(slot.id, v)} />
+              </div>
+            );
+          })}
+        </Fragment>
+      );
+    }
 
-    // En-têtes Gunsmith (nom, catégorie, image)
-    majEnteteArmePrincipale();
-    majEnteteArmeSecondaire();
+    // Recherche rapide d'arme principale.
+    function SearchBox({ onSelect }) {
+      const [q, setQ] = useState("");
+      const ref = useRef(null);
+      useEffect(() => {
+        function onDoc(e) { if (ref.current && !ref.current.contains(e.target)) setQ(""); }
+        document.addEventListener("click", onDoc);
+        return () => document.removeEventListener("click", onDoc);
+      }, []);
+      const ql = q.trim().toLowerCase();
+      const res = ql ? ARMES_PRINCIPALES.filter(a => a.nom.toLowerCase().includes(ql)).slice(0, 8) : [];
+      return (
+        <div className="recherche-wrap" ref={ref}>
+          <input type="text" className="recherche-input" placeholder="Tape un nom d'arme…" autoComplete="off"
+            value={q} onChange={(e) => setQ(e.target.value)} onClick={(e) => e.stopPropagation()} />
+          <div className={"recherche-resultats" + (ql ? " ouvert" : "")}>
+            {ql && (res.length
+              ? res.map(a => (
+                <div className="recherche-item" key={a.id}
+                  onClick={(e) => { e.stopPropagation(); onSelect(a.id); setQ(""); }}>
+                  <span>{a.nom}</span><small>{a.categorie} · {a.jeu}</small>
+                </div>))
+              : <div className="recherche-item"><span style={{ color: "#9aa0a6" }}>Aucune arme trouvée</span></div>)}
+          </div>
+        </div>
+      );
+    }
 
-    // 3) Atouts (recalculent la principale) et équipement (descriptif)
-    afficherSlots("zone-atouts", ATOUTS, atoutsSelection, rafraichirPrincipale);
-    afficherSlots("zone-equipement", EQUIPEMENTS, equipementSelection, null);
+    // Bandeau d'en-tête réutilisable pour les vues secondaires.
+    function Banniere({ icone, titre, sous }) {
+      return (
+        <div className="banniere">
+          {icone && <div className="banniere-ico">{icone}</div>}
+          <div>
+            <h1 className="banniere-titre">{titre}</h1>
+            {sous && <p className="banniere-sous">{sous}</p>}
+          </div>
+        </div>
+      );
+    }
 
-    // 4) Fermer les menus si on clique n'importe où ailleurs sur la page.
-    document.addEventListener("click", fermerTousLesMenus);
+    /* ===== APPLICATION PRINCIPALE ===== */
+    function App() {
+      const [mode, setMode] = useState("warzone");
+      const [vue, setVue] = useState("accueil");
+      const [sidebarReplie, setSidebarReplie] = useState(false);
+      const [afficherValeurs, setAfficherValeurs] = useState(false);
+      const [pvCible, setPvCible] = useState(250);
 
-    // 5) Premier affichage des statistiques
-    rafraichirPrincipale();
-    rafraichirSecondaire();
+      const [armeP, setArmeP] = useState(ARMES_PRINCIPALES[0]);
+      const [selP, setSelP] = useState(() => etatVide(ARMES_PRINCIPALES[0].emplacements));
+      const [alerteP, setAlerteP] = useState(false);
 
-    // 6) Menu de gauche : repli, navigation, bouton « Enregistrer la classe »
-    document.getElementById("toggle-sidebar").addEventListener("click", (e) => {
-      e.stopPropagation();
-      document.getElementById("sidebar").classList.toggle("replie");
-    });
-    document.querySelectorAll(".nav-item").forEach(n => {
-      n.addEventListener("click", () => montrerVue(n.dataset.vue));
-    });
-    document.getElementById("btn-enregistrer").addEventListener("click", enregistrerClasse);
-    document.getElementById("btn-partager").addEventListener("click", (e) => { e.stopPropagation(); partagerClasse(); });
-    const champRecherche = document.getElementById("recherche-arme");
-    champRecherche.addEventListener("input", (e) => { e.stopPropagation(); chercherArmes(e.target.value); });
-    champRecherche.addEventListener("click", (e) => e.stopPropagation());
-    document.getElementById("resultats-recherche").addEventListener("click", (e) => e.stopPropagation());
-    document.addEventListener("click", () => { const z = document.getElementById("resultats-recherche"); if (z) z.classList.remove("ouvert"); });
-    document.getElementById("toggle-valeurs").addEventListener("change", (e) => basculerValeurs(e.target.checked));
-    document.getElementById("btn-generer-classe").addEventListener("click", (e) => { e.stopPropagation(); genererClasse(); });
-    document.getElementById("mode-warzone").addEventListener("click", () => changerMode("warzone"));
-    document.getElementById("mode-blackops").addEventListener("click", () => changerMode("blackops"));
-    montrerVue("createur");
+      const [armeS, setArmeS] = useState(ARMES_SECONDAIRES[0]);
+      const [selS, setSelS] = useState(() => etatVide(ARMES_SECONDAIRES[0].emplacements));
+      const [alerteS, setAlerteS] = useState(false);
 
-    // 7) Si un lien de classe partagée est présent dans l'URL, on l'ouvre.
-    chargerDepuisURL();
+      const [atouts, setAtouts] = useState({ slot1: "aucun", slot2: "aucun", slot3: "aucun" });
+      const [equip, setEquip] = useState({ letal: "aucun", tactique: "aucun", terrain: "aucun" });
+
+      const [iaObjectif, setIaObjectif] = useState("polyvalent");
+      const [iaNote, setIaNote] = useState("");
+      const [iaObjectifS, setIaObjectifS] = useState("polyvalent");
+      const [iaNoteS, setIaNoteS] = useState("");
+      const [notePartage, setNotePartage] = useState("");
+
+      const [classes, setClasses] = useState(() => chargerStockage());
+      const [cmpA, setCmpA] = useState(TOUTES_ARMES[0]);
+      const [cmpB, setCmpB] = useState(TOUTES_ARMES[1]);
+
+      const ATOUTS = mode === "warzone" ? ATOUTS_WARZONE : ATOUTS_BLACKOPS;
+      const EQUIPEMENTS = mode === "warzone" ? EQUIPEMENTS_WARZONE : EQUIPEMENTS_BLACKOPS;
+
+      const opusP = armeP.jeu, catP = armeP.categorie;
+      const opusS = armeS.jeu, catS = armeS.categorie;
+
+      const finalesP = calculerStatsFinales(armeP, selP, armeP.emplacements, ATOUTS, atouts);
+      const finalesS = calculerStatsFinales(armeS, selS, armeS.emplacements, null, null);
+
+      /* --- Sélecteurs ARME PRINCIPALE --- */
+      function choisirArmeP(arme) { setArmeP(arme); setSelP(etatVide(arme.emplacements)); setAlerteP(false); }
+      function changeOpusP(jeu) {
+        const cat = premiereCategorie(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, jeu);
+        choisirArmeP(ARMES_PRINCIPALES.find(a => a.categorie === cat && a.jeu === jeu));
+      }
+      function changeCatP(cat) { choisirArmeP(ARMES_PRINCIPALES.find(a => a.categorie === cat && a.jeu === opusP)); }
+      function changeArmeP(id) { choisirArmeP(ARMES_PRINCIPALES.find(a => a.id === id)); }
+
+      /* --- Sélecteurs ARME SECONDAIRE --- */
+      function choisirArmeS(arme) { setArmeS(arme); setSelS(etatVide(arme.emplacements)); setAlerteS(false); }
+      function changeOpusS(jeu) {
+        const cat = premiereCategorie(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, jeu);
+        choisirArmeS(ARMES_SECONDAIRES.find(a => a.categorie === cat && a.jeu === jeu));
+      }
+      function changeCatS(cat) { choisirArmeS(ARMES_SECONDAIRES.find(a => a.categorie === cat && a.jeu === opusS)); }
+      function changeArmeS(id) { choisirArmeS(ARMES_SECONDAIRES.find(a => a.id === id)); }
+
+      /* --- Accessoires (règle des 5 max) --- */
+      function changeAccP(empId, nouvelle) {
+        if (nouvelle !== "aucun") {
+          const ajout = selP[empId] === "aucun" ? 1 : 0;
+          if (compterAccessoires(selP) + ajout > CAP_ACCESSOIRES) { setAlerteP(true); return; }
+        }
+        setAlerteP(false);
+        setSelP({ ...selP, [empId]: nouvelle });
+      }
+      function changeAccS(empId, nouvelle) {
+        if (nouvelle !== "aucun") {
+          const ajout = selS[empId] === "aucun" ? 1 : 0;
+          if (compterAccessoires(selS) + ajout > CAP_ACCESSOIRES) { setAlerteS(true); return; }
+        }
+        setAlerteS(false);
+        setSelS({ ...selS, [empId]: nouvelle });
+      }
+
+      /* --- Générateur de classe --- */
+      function genererClasse() {
+        const { sel, retenus } = genererSelection(armeP, iaObjectif);
+        setSelP(sel); setAlerteP(false);
+        setIaNote(retenus.length
+          ? `Classe « ${LABELS_OBJECTIFS[iaObjectif]} » générée pour ${armeP.nom} (${retenus.length} accessoire${retenus.length > 1 ? "s" : ""}).`
+          : "Aucun accessoire utile trouvé pour cet objectif sur cette arme.");
+      }
+      function genererClasseS() {
+        const { sel, retenus } = genererSelection(armeS, iaObjectifS);
+        setSelS(sel); setAlerteS(false);
+        setIaNoteS(retenus.length
+          ? `Classe « ${LABELS_OBJECTIFS[iaObjectifS]} » générée pour ${armeS.nom} (${retenus.length} accessoire${retenus.length > 1 ? "s" : ""}).`
+          : "Aucun accessoire utile trouvé pour cet objectif sur cette arme.");
+      }
+
+      /* --- Mode de jeu --- */
+      function changerMode(m) {
+        setMode(m);
+        setAtouts({ slot1: "aucun", slot2: "aucun", slot3: "aucun" });
+        setEquip({ letal: "aucun", tactique: "aucun", terrain: "aucun" });
+      }
+
+      /* --- Classe : capture / sauvegarde / partage --- */
+      function classeActuelle() {
+        return {
+          nom: "", mode,
+          armePrincipale: armeP.id, categoriePrincipale: armeP.categorie,
+          selectionPrincipale: { ...selP },
+          armeSecondaire: armeS.id, categorieSecondaire: armeS.categorie,
+          selectionSecondaire: { ...selS },
+          atouts: { ...atouts }, equipement: { ...equip }
+        };
+      }
+      function appliquerClasse(c) {
+        if (!c) return;
+        if (c.mode) setMode(c.mode);
+        const ap = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale) || ARMES_PRINCIPALES[0];
+        const sp = etatVide(ap.emplacements);
+        for (const k in (c.selectionPrincipale || {})) if (k in sp) sp[k] = c.selectionPrincipale[k];
+        setArmeP(ap); setSelP(sp); setAlerteP(false);
+        const as = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire) || ARMES_SECONDAIRES[0];
+        const ss = etatVide(as.emplacements);
+        for (const k in (c.selectionSecondaire || {})) if (k in ss) ss[k] = c.selectionSecondaire[k];
+        setArmeS(as); setSelS(ss); setAlerteS(false);
+        const at = { slot1: "aucun", slot2: "aucun", slot3: "aucun" };
+        for (const k in (c.atouts || {})) if (k in at) at[k] = c.atouts[k];
+        setAtouts(at);
+        const eq = { letal: "aucun", tactique: "aucun", terrain: "aucun" };
+        for (const k in (c.equipement || {})) if (k in eq) eq[k] = c.equipement[k];
+        setEquip(eq);
+        setVue("createur");
+      }
+      function enregistrerClasse() {
+        const nom = prompt("Nom de la classe :", armeP.nom + " + " + armeS.nom);
+        if (!nom) return;
+        const c = classeActuelle(); c.nom = nom;
+        const next = [...classes, c];
+        setClasses(next); sauverStockage(next); setVue("classes");
+      }
+      function supprimerClasse(i) {
+        const next = classes.filter((_, idx) => idx !== i);
+        setClasses(next); sauverStockage(next);
+      }
+      function partagerClasse() {
+        const code = encoderClasse(classeActuelle());
+        const lien = location.origin + location.pathname + "?c=" + code;
+        const ok = () => { setNotePartage("Lien copié ! 📋"); setTimeout(() => setNotePartage(""), 4000); };
+        const echec = () => setNotePartage("Copie impossible — lien : " + lien);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(lien).then(ok, echec);
+        } else { echec(); }
+      }
+
+      /* --- Au chargement : classe partagée dans l'URL --- */
+      useEffect(() => {
+        const code = new URLSearchParams(location.search).get("c");
+        if (code) { const c = decoderClasse(code); if (c) appliquerClasse(c); }
+      }, []);
+
+      const navItems = [
+        { id: "accueil", label: "Accueil", ico: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg> },
+        { id: "createur", label: "Créateur de classe", ico: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/></svg> },
+        { id: "classes", label: "Classes enregistrées", ico: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg> },
+        { id: "comparateur", label: "Comparateur", ico: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="4" y1="20" x2="4" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg> },
+        { id: "meta", label: "Méta / Tier list", ico: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9"/></svg> }
+      ];
+
+      return (
+        <div className="app">
+          <aside className={"sidebar" + (sidebarReplie ? " replie" : "")}>
+            <button className="sidebar-toggle" title="Replier / déplier le menu"
+              onClick={(e) => { e.stopPropagation(); setSidebarReplie(r => !r); }}>☰</button>
+            <nav>
+              {navItems.map(it => (
+                <div key={it.id} className={"nav-item" + (vue === it.id ? " actif" : "")} onClick={() => setVue(it.id)}>
+                  <span className="ico">{it.ico}</span>
+                  <span className="txt">{it.label}</span>
+                </div>
+              ))}
+            </nav>
+          </aside>
+
+          <main className="contenu">
+            {vue === "accueil" && (() => {
+              const aImg = (id) => (typeof IMAGES_ARMES !== "undefined" && IMAGES_ARMES[id]) ? IMAGES_ARMES[id] : null;
+              const sTier = (typeof TIERS !== "undefined")
+                ? Object.keys(TIERS).filter(id => TIERS[id] === "S" && aImg(id))
+                : [];
+              const heroImg = aImg("krig_c") || aImg("m15_mod0") || aImg("voyak_kt3") || (sTier[0] && aImg(sTier[0]));
+              const cartes = [
+                { id: "createur", titre: "Créateur de classe", desc: "Compose ton arme, tes accessoires, atouts et équipement, avec stats et TTK en direct." },
+                { id: "meta", titre: "Méta / Tier list", desc: "Le classement des meilleures armes du moment, regroupé par catégorie.", vignettes: sTier.slice(0, 3) },
+                { id: "comparateur", titre: "Comparateur", desc: "Mets deux armes côte à côte et compare-les statistique par statistique.", vignettes: sTier.slice(0, 2) },
+                { id: "classes", titre: "Classes enregistrées", desc: "Retrouve, recharge et partage les classes que tu as sauvegardées." }
+              ];
+              return (
+                <div>
+                  <div className="hero">
+                    {heroImg && <img className="hero-arme" src={heroImg} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    <h1 className="hero-logo">WZ<span> GUIDE</span></h1>
+                    <p className="hero-slogan">Crée tes classes Warzone &amp; Black Ops 7 optimales</p>
+                    <p className="hero-sous">Gunsmith complet, stats réelles, calcul du TTK, générateur de classe et tier list — le tout au même endroit.</p>
+                    {typeof META_DONNEES !== "undefined" &&
+                      <div className="badge-maj">📊 {META_DONNEES.saison} · {META_DONNEES.jeu} · données {META_DONNEES.maj}</div>}
+                    <div>
+                      <button className="hero-cta" onClick={() => setVue("createur")}>Créer une classe →</button>
+                    </div>
+                  </div>
+                  <h2 className="accueil-titre">Explorer</h2>
+                  <div className="accueil-cartes">
+                    {cartes.map(c => {
+                      const it = navItems.find(n => n.id === c.id);
+                      return (
+                        <div className="carte-nav" key={c.id} onClick={() => setVue(c.id)}>
+                          <div className="carte-ico">{it ? it.ico : null}</div>
+                          <h3 className="carte-titre">{c.titre}</h3>
+                          <p className="carte-desc">{c.desc}</p>
+                          {c.vignettes && c.vignettes.length > 0 &&
+                            <div className="carte-vignettes">
+                              {c.vignettes.map(id => <img key={id} src={aImg(id)} alt="" onError={(e) => { e.target.style.display = "none"; }} />)}
+                            </div>}
+                          <div className="carte-fleche">Ouvrir →</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {vue === "createur" && (
+              <div>
+                <div className="entete-vue">
+                  <div>
+                    <h1>Éditeur de classe — {mode === "warzone" ? "Warzone" : "Black Ops"}
+                      {typeof META_DONNEES !== "undefined" &&
+                        <span className="badge-maj">
+                          📊 {META_DONNEES.saison} · {META_DONNEES.jeu} · données {META_DONNEES.maj}{" "}
+                          <a href={META_DONNEES.sourceUrl} target="_blank" rel="noopener">({META_DONNEES.source})</a>
+                        </span>}
+                    </h1>
+                    <p className="sous-titre">5 accessoires max par arme, un seul par emplacement. Étiquettes : <span style={{ color: "#4ade80" }}>vert = bonus</span>, <span style={{ color: "#f87171" }}>rouge = malus</span>.
+                      <label className="toggle-valeurs">
+                        <input type="checkbox" checked={afficherValeurs} onChange={(e) => setAfficherValeurs(e.target.checked)} /> Afficher les valeurs (%)
+                      </label>
+                    </p>
+                  </div>
+                  <div className="mode-toggle">
+                    <button className={mode === "warzone" ? "actif" : ""} onClick={() => changerMode("warzone")}>Warzone</button>
+                    <button className={mode === "blackops" ? "actif" : ""} onClick={() => changerMode("blackops")}>Black Ops</button>
+                  </div>
+                  <button className="btn btn-principal btn-enregistrer" onClick={enregistrerClasse}>Enregistrer la classe</button>
+                  <button className="btn" onClick={(e) => { e.stopPropagation(); partagerClasse(); }}>🔗 Partager</button>
+                  <span className="ia-note">{notePartage}</span>
+                </div>
+
+                {/* ARME PRINCIPALE */}
+                <div className="gunsmith">
+                  <div className="gs-topbar">
+                    <span className="gs-title">GUNSMITH</span>
+                    <span className="gs-weapon">
+                      <span className="gs-wname">{armeP.nom}</span>
+                      <span className="gs-wcat">{armeP.categorie || ""}</span>
+                    </span>
+                  </div>
+                  <div className="gs-body">
+                    <div className="gs-image">
+                      <div className="image-arme-zone"><WeaponImage arme={armeP} /></div>
+                      <div className="gs-weapon-picker">
+                        <label>Opus :</label>
+                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_PRINCIPALES)} value={opusP} onChange={changeOpusP} />
+                        <label>Catégorie :</label>
+                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
+                        <label>Arme :</label>
+                        <Dropdown className="menu-cible-arme" options={ARMES_PRINCIPALES.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
+                        <label>Recherche rapide :</label>
+                        <SearchBox onSelect={changeArmeP} />
+                      </div>
+                    </div>
+                    <div className="gs-stats">
+                      <h2>Statistiques</h2>
+                      <div className="ttk-box"><TTKBox finales={finalesP} pvCible={pvCible} setPvCible={setPvCible} /></div>
+                      <div><StatBars arme={armeP} finales={finalesP} /></div>
+                    </div>
+                  </div>
+                  <div className="gs-attachments">
+                    <div className="ia-bar">
+                      <span className="ia-titre">✨ Générateur de classe</span>
+                      <label>Objectif :</label>
+                      <select className="ia-select" value={iaObjectif} onChange={(e) => setIaObjectif(e.target.value)}>
+                        <option value="polyvalent">Polyvalent</option>
+                        <option value="longue">Longue portée</option>
+                        <option value="courte">Courte portée</option>
+                        <option value="mobilite">Mobilité</option>
+                        <option value="recul">Recul minimal</option>
+                      </select>
+                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasse(); }}>Générer la classe</button>
+                      <span className="ia-note">{iaNote}</span>
+                    </div>
+                    <AttachmentSlots emplacements={armeP.emplacements} selection={selP} onChange={changeAccP} alerte={alerteP} afficherValeurs={afficherValeurs} />
+                  </div>
+                </div>
+
+                {/* ARME SECONDAIRE */}
+                <div className="gunsmith">
+                  <div className="gs-topbar">
+                    <span className="gs-title">GUNSMITH</span>
+                    <span className="gs-weapon">
+                      <span className="gs-wname">{armeS.nom}</span>
+                      <span className="gs-wcat">{armeS.categorie || ""}</span>
+                    </span>
+                  </div>
+                  <div className="gs-body">
+                    <div className="gs-image">
+                      <div className="image-arme-zone"><WeaponImage arme={armeS} /></div>
+                      <div className="gs-weapon-picker">
+                        <label>Opus :</label>
+                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_SECONDAIRES)} value={opusS} onChange={changeOpusS} />
+                        <label>Catégorie :</label>
+                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
+                        <label>Arme :</label>
+                        <Dropdown className="menu-cible-arme" options={ARMES_SECONDAIRES.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
+                      </div>
+                    </div>
+                    <div className="gs-stats">
+                      <h2>Statistiques</h2>
+                      <div><StatBars arme={armeS} finales={finalesS} /></div>
+                    </div>
+                  </div>
+                  <div className="gs-attachments">
+                    <div className="ia-bar">
+                      <span className="ia-titre">✨ Générateur de classe</span>
+                      <label>Objectif :</label>
+                      <select className="ia-select" value={iaObjectifS} onChange={(e) => setIaObjectifS(e.target.value)}>
+                        <option value="polyvalent">Polyvalent</option>
+                        <option value="longue">Longue portée</option>
+                        <option value="courte">Courte portée</option>
+                        <option value="mobilite">Mobilité</option>
+                        <option value="recul">Recul minimal</option>
+                      </select>
+                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasseS(); }}>Générer la classe</button>
+                      <span className="ia-note">{iaNoteS}</span>
+                    </div>
+                    <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} alerte={alerteS} afficherValeurs={afficherValeurs} />
+                  </div>
+                </div>
+
+                {/* ATOUTS & ÉQUIPEMENT */}
+                <h2 className="section-titre">Atouts &amp; équipement</h2>
+                <div className="layout">
+                  <div className="colonne">
+                    <h2>Atouts</h2>
+                    <SlotsList slots={ATOUTS} selection={atouts} onChange={(id, v) => setAtouts({ ...atouts, [id]: v })} afficherValeurs={afficherValeurs} />
+                  </div>
+                  <div className="colonne">
+                    <h2>Équipement</h2>
+                    <SlotsList slots={EQUIPEMENTS} selection={equip} onChange={(id, v) => setEquip({ ...equip, [id]: v })} afficherValeurs={afficherValeurs} />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {vue === "classes" && (
+              <div>
+                <Banniere icone={navItems.find(n => n.id === "classes").ico} titre="Classes enregistrées"
+                  sous="Tes classes sauvegardées sur cet ordinateur. Clique « Charger » pour réappliquer une classe." />
+                {classes.length === 0
+                  ? <p className="vide">Aucune classe enregistrée pour l'instant. Compose une classe dans le créateur, puis clique « Enregistrer la classe ».</p>
+                  : classes.map((c, i) => {
+                    const ap = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale);
+                    const as = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire);
+                    return (
+                      <div className="classe-card" key={i}>
+                        <div>
+                          <div className="classe-nom">{c.nom}</div>
+                          <div className="classe-armes">{ap ? ap.nom : "?"} + {as ? as.nom : "?"}</div>
+                        </div>
+                        <div className="classe-actions">
+                          <button className="btn" onClick={() => appliquerClasse(c)}>Charger</button>
+                          <button className="btn btn-sup" onClick={() => supprimerClasse(i)}>Supprimer</button>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
+
+            {vue === "comparateur" && (
+              <div>
+                <Banniere icone={navItems.find(n => n.id === "comparateur").ico} titre="Comparateur d'armes"
+                  sous="Compare les statistiques de base de deux armes — le vert indique la meilleure des deux." />
+                <div className="cmp-choix">
+                  <div>
+                    <label>Arme A :</label>
+                    <Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpA.id} onChange={(id) => setCmpA(TOUTES_ARMES.find(a => a.id === id))} />
+                    {typeof IMAGES_ARMES !== "undefined" && IMAGES_ARMES[cmpA.id] &&
+                      <img className="cmp-vignette" src={IMAGES_ARMES[cmpA.id]} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                  </div>
+                  <div>
+                    <label>Arme B :</label>
+                    <Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpB.id} onChange={(id) => setCmpB(TOUTES_ARMES.find(a => a.id === id))} />
+                    {typeof IMAGES_ARMES !== "undefined" && IMAGES_ARMES[cmpB.id] &&
+                      <img className="cmp-vignette" src={IMAGES_ARMES[cmpB.id]} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                  </div>
+                </div>
+                <div>
+                  <div className="cmp-ligne tete">
+                    <span className="cmp-stat">Statistique</span>
+                    <span className="cmp-val">{cmpA.nom}</span>
+                    <span className="cmp-val">{cmpB.nom}</span>
+                  </div>
+                  {Object.keys(INFOS_STATS).map(stat => {
+                    const a = cmpA.stats_base[stat] ?? 0;
+                    const b = cmpB.stats_base[stat] ?? 0;
+                    let aGagne = false, bGagne = false;
+                    if (a !== b) {
+                      const aMieux = INFOS_STATS[stat].plusGrandEstMieux ? (a > b) : (a < b);
+                      aGagne = aMieux; bGagne = !aMieux;
+                    }
+                    return (
+                      <div className="cmp-ligne" key={stat}>
+                        <span className="cmp-stat">{INFOS_STATS[stat].label}</span>
+                        <span className={"cmp-val" + (aGagne ? " gagne" : "")}>{a}</span>
+                        <span className={"cmp-val" + (bGagne ? " gagne" : "")}>{b}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {vue === "meta" && (
+              <div>
+                <Banniere icone={navItems.find(n => n.id === "meta").ico} titre="Méta — Tier list"
+                  sous="Classement indicatif des armes, basé sur la méta codmunity (modifiable dans donnees.js)." />
+                <div>
+                  {(() => {
+                    const ordreCats = [];
+                    TOUTES_ARMES.forEach(a => { if (!ordreCats.includes(a.categorie)) ordreCats.push(a.categorie); });
+                    return ordreCats.map(cat => {
+                      const armesCat = TOUTES_ARMES.filter(a => a.categorie === cat);
+                      const groupes = {};
+                      armesCat.forEach(a => { const t = TIERS[a.id] || "N"; (groupes[t] = groupes[t] || []).push(a); });
+                      return (
+                        <div className="meta-categorie" key={cat}>
+                          <h3 className="meta-cat-titre">{cat}</h3>
+                          {TIERS_ORDRE.concat(["N"]).map(t => {
+                            const armes = groupes[t];
+                            if (!armes || !armes.length) return null;
+                            return (
+                              <div className={"tier tier-" + t} key={t}>
+                                <div className="tier-lettre">{t === "N" ? "?" : t}</div>
+                                <div className="tier-armes">
+                                  {armes.map(a => {
+                                    const src = (typeof IMAGES_ARMES !== "undefined") ? IMAGES_ARMES[a.id] : null;
+                                    return (
+                                      <span className="tier-arme" key={a.id}>
+                                        {src && <img src={src} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                                        {a.nom}
+                                      </span>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    });
+                  })()}
+                </div>
+              </div>
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
 </body>
 </html>
