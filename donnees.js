@@ -111,6 +111,56 @@ const TIERS = {
 };
 
 /* ------------------------------------------------------------
+   IMAGES DES ARMES (visuels codmunity.gg). Clé = id de l'arme.
+   Si une image manque ou ne charge pas, une silhouette s'affiche.
+   ------------------------------------------------------------ */
+const IMG_BASE = "https://assets.codmunity.gg/optimized/";
+const IMAGES_ARMES = {
+  // Fusils d'assaut BO7
+  m15_mod0: IMG_BASE + "M15-Mod-0-Green.webp",
+  ak_27: IMG_BASE + "AK-27-Green.webp",
+  mxr_17: IMG_BASE + "MXR-17-Green.webp",
+  peacekeeper_mk1: IMG_BASE + "Peacekeeper-Mk1-Green.webp",
+  egrt_17: IMG_BASE + "EGRT-17.webp",
+  voyak_kt3: IMG_BASE + "VOYAK-KT-3.webp",
+  mk35_isr: IMG_BASE + "MK35-ISR.webp",
+  x9_maverick: IMG_BASE + "X9-Maverick-Green.webp",
+  maddox_rfb: IMG_BASE + "Maddox-RFB.webp",
+  ds20_mirage: IMG_BASE + "DS20-Mirage-Green.webp",
+  // Mitraillettes BO7
+  kogot_7: IMG_BASE + "Kogot.webp",
+  mpc_25: IMG_BASE + "MPC-25-Green.webp",
+  carbon_57: IMG_BASE + "Carbon-57-Green.webp",
+  sturmwolf_45: IMG_BASE + "Sturmwolf-45.webp",
+  ryden_45k: IMG_BASE + "Ryden-45K-Green.webp",
+  rk_9: IMG_BASE + "RK-9-Green.webp",
+  dravec_45: IMG_BASE + "Dravec-45-Green.webp",
+  vst: IMG_BASE + "VST.webp",
+  razor_9mm: IMG_BASE + "Razor-9mm-Green.webp",
+  rev_46: IMG_BASE + "REV-46.webp",
+  // Fusils-mitrailleurs BO7
+  mk78: IMG_BASE + "MK.78-Green.webp",
+  xm325: IMG_BASE + "XM325-Green.webp",
+  sokol_545: IMG_BASE + "Sokol-545.webp",
+  // Fusils tactiques BO7
+  swordfish_a1: IMG_BASE + "Swordfish-AI.webp",
+  m8a1: IMG_BASE + "M8A1-Green.webp",
+  m34_novaline: IMG_BASE + "M34-Novaline-Green.webp",
+  warden_308: IMG_BASE + "Warden-308-Green.webp",
+  // Fusils de précision BO7
+  strider_300: IMG_BASE + "strider300_bo7_icon.webp",
+  hawker_hx: IMG_BASE + "Hawker-HX.webp",
+  xr3_ion: IMG_BASE + "XR-3-Ion-Green.webp",
+  shadow_sk: IMG_BASE + "Shadow-SK-Green.webp",
+  vs_recon: IMG_BASE + "VS-Recon-Green.webp",
+  // Fusils à pompe BO7
+  m10_breacher: IMG_BASE + "M10-Breacher-Green.webp",
+  sg_12: IMG_BASE + "SG-12-Close-Range-Warzone-Loadout-CODMunity-6394.webp",
+  echo_12: IMG_BASE + "Echo-12-Green.webp",
+  akita: IMG_BASE + "Akita-Green.webp"
+};
+
+/* ------------------------------------------------------------
    ARMES PRINCIPALES
    ------------------------------------------------------------
    La 1re est le KRIG C avec ses VRAIES données (source codmunity.gg,
