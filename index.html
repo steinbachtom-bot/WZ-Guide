@@ -271,6 +271,10 @@
     .meta-cat-titre { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #e8eaed; border-bottom: 1px solid #2c3038; padding-bottom: 6px; }
     #image-arme-principale, #image-arme-secondaire { display: flex; align-items: center; justify-content: center; }
     .img-arme { display: block; width: 100%; max-width: 480px; height: auto; max-height: 170px; object-fit: contain; }
+    .ia-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #161a20; border: 1px solid #2c3a45; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; }
+    .ia-titre { font-weight: 700; color: #9be7ff; }
+    .ia-select { background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 10px; font-size: 13px; }
+    .ia-note { color: #9aa0a6; font-size: 13px; }
     .tier-armes { flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-content: center; background: #1e2127; border: 1px solid #2c3038; border-radius: 10px; padding: 10px; }
     .tier-arme { background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
     .tier-arme small { color: #9aa0a6; }
@@ -388,6 +392,18 @@
       </div>
     </div>
     <div class="gs-attachments">
+      <div class="ia-bar">
+        <span class="ia-titre">✨ Générateur de classe</span>
+        <label for="ia-objectif">Objectif :</label>
+        <select id="ia-objectif" class="ia-select">
+          <option value="polyvalent">Polyvalent</option>
+          <option value="longue">Longue portée</option>
+          <option value="courte">Courte portée</option>
+          <option value="mobilite">Mobilité</option>
+        </select>
+        <button class="btn btn-principal" id="btn-generer-classe">Générer la classe</button>
+        <span class="ia-note" id="ia-note"></span>
+      </div>
       <div id="zone-accessoires-principale"></div>
     </div>
   </div>
@@ -885,6 +901,65 @@
       afficherStats("zone-stats-secondaire", armeSecondaire, selectionSecondaire, armeSecondaire.emplacements, false);
     }
 
+    // -- GÉNÉRATEUR DE CLASSE (IA "maison", 100% local) ------------------
+    // Pour chaque objectif, on donne un poids (importance) à certaines stats.
+    // Le générateur choisit, par emplacement, l'accessoire qui améliore le plus
+    // l'objectif, puis garde les 5 meilleurs (limite du jeu).
+    const POIDS_OBJECTIFS = {
+      polyvalent: { recul_vertical: 1.5, recul_horizontal: 1.5, gun_kick: 1, portee_m: 1.2, velocite_ms: 1, vitesse_visee_ms: 1, sprint_to_fire_ms: 1, mobilite: 0.8, capacite_chargeur: 0.6, vitesse_rechargement_ms: 0.5 },
+      longue:     { portee_m: 3, velocite_ms: 2, recul_vertical: 2.5, recul_horizontal: 2.5, gun_kick: 1.5, capacite_chargeur: 0.6, vitesse_visee_ms: 0.2 },
+      courte:     { vitesse_visee_ms: 3, sprint_to_fire_ms: 3, mobilite: 2, recul_horizontal: 1, recul_vertical: 1, gun_kick: 0.8, cadence_cpm: 0.8, capacite_chargeur: 0.4 },
+      mobilite:   { mobilite: 3, vitesse_visee_ms: 2.5, sprint_to_fire_ms: 2.5, vitesse_rechargement_ms: 1, recul_horizontal: 0.6, recul_vertical: 0.6 }
+    };
+    const LABELS_OBJECTIFS = { polyvalent: "Polyvalent", longue: "Longue portée", courte: "Courte portée", mobilite: "Mobilité" };
+
+    // Note (positive = bonne pour l'objectif) d'un accessoire.
+    function noterOption(arme, option, poids) {
+      if (!option || !option.modificateurs) return 0;
+      let score = 0;
+      for (const stat in option.modificateurs) {
+        const base = arme.stats_base[stat];
+        if (base === undefined) continue;
+        const ref = Math.abs(base) < 1e-6 ? 1 : Math.abs(base);
+        const nouvelle = appliquerMod(base, base, option.modificateurs[stat]);
+        const deltaRel = (nouvelle - base) / ref;                 // variation relative
+        const infos = INFOS_STATS[stat];
+        const gain = infos.plusGrandEstMieux ? deltaRel : -deltaRel; // >0 = amélioration
+        score += (poids[stat] || 0) * gain;
+      }
+      return score;
+    }
+
+    function genererClasse() {
+      const obj = document.getElementById("ia-objectif").value;
+      const poids = POIDS_OBJECTIFS[obj] || POIDS_OBJECTIFS.polyvalent;
+      const emps = armePrincipale.emplacements;
+      // Meilleur accessoire (hors "aucun") par emplacement.
+      const candidats = emps.map(emp => {
+        let best = null, bestScore = 0;
+        emp.options.forEach(opt => {
+          if (opt.id === "aucun") return;
+          const sc = noterOption(armePrincipale, opt, poids);
+          if (sc > bestScore) { bestScore = sc; best = opt; }
+        });
+        return { slot: emp.id, opt: best, score: bestScore };
+      }).filter(c => c.opt && c.score > 0);
+      // On garde les meilleurs dans la limite d'accessoires.
+      candidats.sort((a, b) => b.score - a.score);
+      const retenus = candidats.slice(0, CAP_ACCESSOIRES);
+      // Applique la sélection.
+      selectionPrincipale = etatVide(emps);
+      retenus.forEach(c => { selectionPrincipale[c.slot] = c.opt.id; });
+      afficherEmplacements("zone-accessoires-principale", emps, selectionPrincipale, rafraichirPrincipale);
+      rafraichirPrincipale();
+      const note = document.getElementById("ia-note");
+      if (note) {
+        note.textContent = retenus.length
+          ? `Classe « ${LABELS_OBJECTIFS[obj]} » générée pour ${armePrincipale.nom} (${retenus.length} accessoire${retenus.length > 1 ? "s" : ""}).`
+          : "Aucun accessoire utile trouvé pour cet objectif sur cette arme.";
+      }
+    }
+
     // -- NAVIGATION (menu de gauche) + CLASSES ENREGISTRÉES --------------
 
     // Affiche une vue ("createur" ou "classes") et met le menu à jour.
@@ -1115,6 +1190,7 @@
       n.addEventListener("click", () => montrerVue(n.dataset.vue));
     });
     document.getElementById("btn-enregistrer").addEventListener("click", enregistrerClasse);
+    document.getElementById("btn-generer-classe").addEventListener("click", (e) => { e.stopPropagation(); genererClasse(); });
     document.getElementById("mode-warzone").addEventListener("click", () => changerMode("warzone"));
     document.getElementById("mode-blackops").addEventListener("click", () => changerMode("blackops"));
     montrerVue("createur");
