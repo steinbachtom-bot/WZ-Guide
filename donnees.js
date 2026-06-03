@@ -17,6 +17,15 @@
 
 const CAP_ACCESSOIRES = 5;   // règle Black Ops 7 Warzone : 5 max par arme
 
+// Fraîcheur des données : à mettre à jour à chaque nouvelle saison / MAJ.
+const META_DONNEES = {
+  saison: "Saison 4",
+  jeu: "Black Ops 7 / Warzone",
+  maj: "juin 2026",          // mois de la dernière mise à jour des stats
+  source: "codmunity.gg",
+  sourceUrl: "https://codmunity.gg"
+};
+
 // Définition et affichage des statistiques.
 const INFOS_STATS = {
   degats:                  { label: "Dégâts",                 court: "Dégâts",               plusGrandEstMieux: true,  max: 80 },
