@@ -275,6 +275,12 @@
     .ia-titre { font-weight: 700; color: #9be7ff; }
     .ia-select { background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 10px; font-size: 13px; }
     .ia-note { color: #9aa0a6; font-size: 13px; }
+    .ttk-box { background: #161a20; border: 1px solid #2c3a45; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .ttk-val { font-size: 26px; font-weight: 800; color: #4fd0e6; line-height: 1; }
+    .ttk-val small { font-size: 13px; color: #9aa0a6; font-weight: 600; }
+    .ttk-detail { font-size: 13px; color: #c7ccd1; }
+    .ttk-pv { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13px; color: #9aa0a6; }
+    .ttk-pv select { background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 4px 8px; font-size: 13px; }
     .tier-armes { flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-content: center; background: #1e2127; border: 1px solid #2c3038; border-radius: 10px; padding: 10px; }
     .tier-arme { background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
     .tier-arme small { color: #9aa0a6; }
@@ -390,6 +396,7 @@
       </div>
       <div class="gs-stats">
         <h2>Statistiques</h2>
+        <div id="zone-ttk-principale" class="ttk-box"></div>
         <div id="zone-stats-principale"></div>
       </div>
     </div>
@@ -517,6 +524,8 @@
     let mode = "warzone";
     let ATOUTS = ATOUTS_WARZONE;
     let EQUIPEMENTS = EQUIPEMENTS_WARZONE;
+    // Points de vie de la cible pour le calcul du TTK (Warzone = 100 PV + 150 d'armure = 250).
+    let pvCible = 250;
 
     // -- B) LE CALCUL ----------------------------------------------------
     function appliquerMod(valeurBase, valeurActuelle, modificateur) {
@@ -894,10 +903,47 @@
       afficherImageArme(armeSecondaire, "image-arme-secondaire");
     }
 
+    // -- CALCUL DU TTK (temps pour tuer) ---------------------------------
+    // STK = balles nécessaires = arrondi sup. de (PV / dégâts par balle).
+    // Intervalle entre balles = 60000 / cadence (ms). TTK = (STK - 1) * intervalle.
+    // Approximation : tir au corps, dégâts à courte portée (un seul profil de dégâts dans nos données).
+    function calculerTTK(finales, pv) {
+      const deg = finales.degats, cad = finales.cadence_cpm;
+      if (!deg || !cad) return null;
+      const stk = Math.max(1, Math.ceil(pv / deg));
+      const intervalle = 60000 / cad;        // ms entre deux balles
+      const ttk = Math.round((stk - 1) * intervalle);
+      return { stk, ttk };
+    }
+
+    function afficherTTK(arme, etatEmplacements, emplacements) {
+      const zone = document.getElementById("zone-ttk-principale");
+      if (!zone) return;
+      const finales = calculerStatsFinales(arme, etatEmplacements, emplacements, true);
+      const r = calculerTTK(finales, pvCible);
+      const txt = r ? `${r.ttk} <small>ms</small>` : "—";
+      const detail = r ? `${r.stk} balle${r.stk > 1 ? "s" : ""} · cadence ${Math.round(finales.cadence_cpm)} c/min` : "Données insuffisantes";
+      zone.innerHTML = `
+        <div>
+          <div class="ttk-val">TTK ≈ ${txt}</div>
+          <div class="ttk-detail">${detail} <span style="color:#6b7280">(tir au corps, courte portée)</span></div>
+        </div>
+        <label class="ttk-pv">Cible :
+          <select id="ttk-pv-select">
+            <option value="250"${pvCible === 250 ? " selected" : ""}>Warzone (250 PV)</option>
+            <option value="150"${pvCible === 150 ? " selected" : ""}>Multijoueur (150 PV)</option>
+            <option value="100"${pvCible === 100 ? " selected" : ""}>Sans armure (100 PV)</option>
+          </select>
+        </label>`;
+      const sel = document.getElementById("ttk-pv-select");
+      if (sel) sel.addEventListener("change", (e) => { pvCible = parseInt(e.target.value, 10); afficherTTK(armePrincipale, selectionPrincipale, armePrincipale.emplacements); });
+    }
+
     // -- Raccourcis pour rafraîchir les stats de chaque arme -------------
     function rafraichirPrincipale() {
       document.getElementById("nom-arme-principale").textContent = armePrincipale.nom;
       afficherStats("zone-stats-principale", armePrincipale, selectionPrincipale, armePrincipale.emplacements, true);
+      afficherTTK(armePrincipale, selectionPrincipale, armePrincipale.emplacements);
     }
     function rafraichirSecondaire() {
       document.getElementById("nom-arme-secondaire").textContent = armeSecondaire.nom;
