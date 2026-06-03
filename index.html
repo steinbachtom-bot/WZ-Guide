@@ -581,12 +581,28 @@
       for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
       return h >>> 0;
     }
+    // Facteur de "recul 1re balle" combiné des accessoires équipés (1 = normal, 0.4 = −60%).
+    // Lu depuis effets_extra["Recul 1re balle"] (ex: "−60%"). Plusieurs accessoires se multiplient.
+    function facteurPremiereBalle(arme, etat, emplacements) {
+      let f = 1;
+      emplacements.forEach(emp => {
+        const opt = emp.options.find(o => o.id === etat[emp.id]);
+        if (opt && opt.effets_extra && opt.effets_extra["Recul 1re balle"]) {
+          const p = parseFloat(String(opt.effets_extra["Recul 1re balle"]).replace("−", "-"));
+          if (!isNaN(p)) f *= (1 + p / 100);
+        }
+      });
+      return Math.max(0, f);
+    }
+
     // Renvoie les points (en pixels, dans une vue WxH) du tracé de recul estimé.
-    function trajectoireRecul(finales, seed, nBalles, W, H) {
+    // fsr = facteur de recul de la 1re balle (1 = normal).
+    function trajectoireRecul(finales, seed, nBalles, W, H, fsr) {
       const rand = mulberry32(seed);
       const V = finales.recul_vertical || 0;
       const Hr = finales.recul_horizontal || 0;
       const K = finales.gun_kick || 0;
+      const facteur1re = (typeof fsr === "number") ? fsr : 1;
       const monteeParBalle = V * 0.13;   // px verticaux par balle
       const ampliH = Hr * 0.9;           // amplitude du balancement horizontal
       const gigue = K * 0.18;            // tremblement par balle
@@ -594,12 +610,13 @@
       let x = 0, y = 0, vitesseH = 0;
       const pts = [];
       for (let i = 0; i < nBalles; i++) {
+        const mult = (i === 0) ? facteur1re : 1;   // la 1re balle subit le "recul 1re balle"
         // Montée verticale (un peu plus marquée vers la fin du chargeur).
-        y += monteeParBalle * (0.7 + 0.7 * (i / nBalles));
+        y += monteeParBalle * (0.7 + 0.7 * (i / nBalles)) * mult;
         // Marche horizontale amortie + tremblement.
-        vitesseH += (rand() - 0.5) * ampliH * 0.7;
+        vitesseH += (rand() - 0.5) * ampliH * 0.7 * mult;
         vitesseH *= 0.78;
-        x += vitesseH + (rand() - 0.5) * gigue;
+        x += vitesseH + (rand() - 0.5) * gigue * mult;
         const X = Math.max(10, Math.min(W - 10, cx + x));
         const Y = Math.max(12, Math.min(baseY, baseY - y));
         pts.push({ X, Y });
@@ -719,10 +736,11 @@
     }
 
     // Tracé de recul estimé (spray pattern simulé), animé balle par balle à la vraie cadence.
-    function SprayPattern({ finales, armeId, capacite }) {
+    function SprayPattern({ finales, armeId, capacite, fsr }) {
       const W = 210, H = 240, cx = W / 2, baseY = H - 14;
       const n = Math.max(8, Math.min(30, Math.round(capacite || 20)));
-      const pts = trajectoireRecul(finales, hashChaine(armeId), n, W, H);
+      const facteur1re = (typeof fsr === "number") ? fsr : 1;
+      const pts = trajectoireRecul(finales, hashChaine(armeId), n, W, H, facteur1re);
       // Intervalle réel entre deux balles = 60000 / cadence (coups/min). Borné en bas
       // pour rester visible sur les armes très rapides.
       const cadence = finales.cadence_cpm || 600;
@@ -785,6 +803,10 @@
             <span style={{ color: "hsl(140,70%,55%)" }}>● 1re balle</span> &nbsp;→&nbsp; <span style={{ color: "hsl(0,70%,55%)" }}>● dernière</span>
             &nbsp;({n} balles · {Math.round(cadence)} c/min)
           </p>
+          {facteur1re < 0.999 &&
+            <p className="spray-note" style={{ textAlign: "center", marginTop: "2px", color: "#9fd4e4" }}>
+              Recul 1re balle simulé : {Math.round(facteur1re * 100)}% du normal
+            </p>}
         </div>
       );
     }
@@ -929,6 +951,8 @@
 
       const finalesP = calculerStatsFinales(armeP, selP, armeP.emplacements, ATOUTS, atouts);
       const finalesS = calculerStatsFinales(armeS, selS, armeS.emplacements, null, null);
+      const fsrP = facteurPremiereBalle(armeP, selP, armeP.emplacements);
+      const fsrS = facteurPremiereBalle(armeS, selS, armeS.emplacements);
 
       /* --- Sélecteurs ARME PRINCIPALE --- */
       function choisirArmeP(arme) { setArmeP(arme); setSelP(etatVide(arme.emplacements)); setAlerteP(false); }
@@ -1170,7 +1194,7 @@
                       <h2>Statistiques</h2>
                       <div className="ttk-box"><TTKBox finales={finalesP} pvCible={pvCible} setPvCible={setPvCible} /></div>
                       <div><StatBars arme={armeP} finales={finalesP} /></div>
-                      <SprayPattern finales={finalesP} armeId={armeP.id} capacite={finalesP.capacite_chargeur} />
+                      <SprayPattern finales={finalesP} armeId={armeP.id} capacite={finalesP.capacite_chargeur} fsr={fsrP} />
                     </div>
                   </div>
                   <div className="gs-attachments">
@@ -1215,7 +1239,7 @@
                     <div className="gs-stats">
                       <h2>Statistiques</h2>
                       <div><StatBars arme={armeS} finales={finalesS} /></div>
-                      <SprayPattern finales={finalesS} armeId={armeS.id} capacite={finalesS.capacite_chargeur} />
+                      <SprayPattern finales={finalesS} armeId={armeS.id} capacite={finalesS.capacite_chargeur} fsr={fsrS} />
                     </div>
                   </div>
                   <div className="gs-attachments">
