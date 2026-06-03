@@ -265,7 +265,10 @@
     .tier-A .tier-lettre { background: #fbbf24; }
     .tier-B .tier-lettre { background: #4ade80; }
     .tier-C .tier-lettre { background: #6fb2c6; }
+    .tier-D .tier-lettre { background: #a78bfa; }
     .tier-N .tier-lettre { background: #4b5563; color: #e8eaed; }
+    .meta-categorie { margin-bottom: 26px; }
+    .meta-cat-titre { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #e8eaed; border-bottom: 1px solid #2c3038; padding-bottom: 6px; }
     .tier-armes { flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-content: center; background: #1e2127; border: 1px solid #2c3038; border-radius: 10px; padding: 10px; }
     .tier-arme { background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
     .tier-arme small { color: #9aa0a6; }
@@ -1013,21 +1016,34 @@
 
     // -- MÉTA / TIER LIST ------------------------------------------------
     function afficherMeta() {
-      const groupes = {};
-      TOUTES_ARMES.forEach(a => {
-        const t = TIERS[a.id] || "N";   // N = non classé
-        (groupes[t] = groupes[t] || []).push(a);
-      });
+      // Ordre des catégories = ordre d'apparition des armes
+      const ordreCats = [];
+      TOUTES_ARMES.forEach(a => { if (!ordreCats.includes(a.categorie)) ordreCats.push(a.categorie); });
+
       let html = "";
-      TIERS_ORDRE.concat(["N"]).forEach(t => {
-        const armes = groupes[t];
-        if (!armes || !armes.length) return;
-        const lettre = (t === "N") ? "?" : t;
-        html += `<div class="tier tier-${t}">
-            <div class="tier-lettre">${lettre}</div>
-            <div class="tier-armes">` +
-            armes.map(a => `<span class="tier-arme">${a.nom} <small>(${a.categorie})</small></span>`).join("") +
-          `</div>
+      ordreCats.forEach(cat => {
+        const armesCat = TOUTES_ARMES.filter(a => a.categorie === cat);
+        // Regroupe les armes de cette catégorie par tier
+        const groupes = {};
+        armesCat.forEach(a => {
+          const t = TIERS[a.id] || "N";   // N = non classé
+          (groupes[t] = groupes[t] || []).push(a);
+        });
+        let lignes = "";
+        TIERS_ORDRE.concat(["N"]).forEach(t => {
+          const armes = groupes[t];
+          if (!armes || !armes.length) return;
+          const lettre = (t === "N") ? "?" : t;
+          lignes += `<div class="tier tier-${t}">
+              <div class="tier-lettre">${lettre}</div>
+              <div class="tier-armes">` +
+              armes.map(a => `<span class="tier-arme">${a.nom}</span>`).join("") +
+            `</div>
+            </div>`;
+        });
+        html += `<div class="meta-categorie">
+            <h3 class="meta-cat-titre">${cat}</h3>
+            ${lignes}
           </div>`;
       });
       document.getElementById("liste-meta").innerHTML = html;

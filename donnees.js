@@ -69,17 +69,45 @@ const JEUX = [
    LA MÉTA (tier list). Indicative, basée sur la méta codmunity —
    à ajuster librement. Clé = id de l'arme, valeur = tier.
    ------------------------------------------------------------ */
-const TIERS_ORDRE = ["S", "A", "B", "C"];
+const TIERS_ORDRE = ["S", "A", "B", "C", "D"];
 const TIERS = {
-  c9: "A",
-  xmg: "A",
-  grekhova: "A",
-  krig_c: "B",
-  lr_762: "B",
+  // --- Fusils d'assaut ---
+  voyak_kt3: "S", m15_mod0: "S", peacekeeper_mk1: "S", mxr_17: "S",
+  x9_maverick: "A", mk35_isr: "A", egrt_17: "A",
+  ak_27: "B", maddox_rfb: "B", ds20_mirage: "B", krig_c: "B",
+  // --- Mitraillettes ---
+  sturmwolf_45: "S", mpc_25: "S", carbon_57: "S", kogot_7: "S",
+  vst: "A", ryden_45k: "A", c9: "A",
+  dravec_45: "B", rk_9: "B", razor_9mm: "B",
+  rev_46: "C",
+  // --- Fusils-mitrailleurs ---
+  mk78: "S",
+  xm325: "A", xmg: "A",
+  sokol_545: "B",
+  // --- Fusils tactiques ---
+  m8a1: "S", m34_novaline: "S",
+  warden_308: "A",
+  swordfish_a1: "B",
   tsarkov_762: "C",
-  asg_89: "C",
-  cigma_2b: "C",
-  couteau: "C"
+  // --- Fusils de précision ---
+  strider_300: "S",
+  vs_recon: "A", hawker_hx: "A",
+  xr3_ion: "B", shadow_sk: "B", lr_762: "B",
+  // --- Fusils à pompe ---
+  sg_12: "A",
+  echo_12: "B", m10_breacher: "B",
+  akita: "C", asg_89: "C",
+  // --- Pistolets ---
+  grekhova: "A",
+  velox_57: "B", coda_9: "B",
+  jager_45: "C", pistolet_1911: "C",
+  // --- Armes spéciales ---
+  siren: "B", nx_ravager: "C",
+  // --- Lanceurs ---
+  cigma_2b: "C", arc_m1: "C", aarow_109: "C",
+  // --- Armes de mêlée ---
+  couteau: "C", katana: "C", couteau_balistique: "C",
+  flatline_mk2: "D", poings: "D", h311_saw: "D"
 };
 
 /* ------------------------------------------------------------
