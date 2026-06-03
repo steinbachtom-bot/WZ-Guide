@@ -777,6 +777,8 @@
 
       const [iaObjectif, setIaObjectif] = useState("polyvalent");
       const [iaNote, setIaNote] = useState("");
+      const [iaObjectifS, setIaObjectifS] = useState("polyvalent");
+      const [iaNoteS, setIaNoteS] = useState("");
       const [notePartage, setNotePartage] = useState("");
 
       const [classes, setClasses] = useState(() => chargerStockage());
@@ -834,6 +836,13 @@
         setSelP(sel); setAlerteP(false);
         setIaNote(retenus.length
           ? `Classe « ${LABELS_OBJECTIFS[iaObjectif]} » générée pour ${armeP.nom} (${retenus.length} accessoire${retenus.length > 1 ? "s" : ""}).`
+          : "Aucun accessoire utile trouvé pour cet objectif sur cette arme.");
+      }
+      function genererClasseS() {
+        const { sel, retenus } = genererSelection(armeS, iaObjectifS);
+        setSelS(sel); setAlerteS(false);
+        setIaNoteS(retenus.length
+          ? `Classe « ${LABELS_OBJECTIFS[iaObjectifS]} » générée pour ${armeS.nom} (${retenus.length} accessoire${retenus.length > 1 ? "s" : ""}).`
           : "Aucun accessoire utile trouvé pour cet objectif sur cette arme.");
       }
 
@@ -1072,6 +1081,19 @@
                     </div>
                   </div>
                   <div className="gs-attachments">
+                    <div className="ia-bar">
+                      <span className="ia-titre">✨ Générateur de classe</span>
+                      <label>Objectif :</label>
+                      <select className="ia-select" value={iaObjectifS} onChange={(e) => setIaObjectifS(e.target.value)}>
+                        <option value="polyvalent">Polyvalent</option>
+                        <option value="longue">Longue portée</option>
+                        <option value="courte">Courte portée</option>
+                        <option value="mobilite">Mobilité</option>
+                        <option value="recul">Recul minimal</option>
+                      </select>
+                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasseS(); }}>Générer la classe</button>
+                      <span className="ia-note">{iaNoteS}</span>
+                    </div>
                     <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} alerte={alerteS} afficherValeurs={afficherValeurs} />
                   </div>
                 </div>
