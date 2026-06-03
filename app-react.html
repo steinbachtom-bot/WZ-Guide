@@ -279,8 +279,12 @@
     .recherche-item:hover { background: #1e2630; }
     .recherche-item small { color: #9aa0a6; }
     .tier-armes { flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-content: center; background: #1e2127; border: 1px solid #2c3038; border-radius: 10px; padding: 10px; }
-    .tier-arme { background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
+    .tier-arme { display: inline-flex; align-items: center; gap: 8px; background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
     .tier-arme small { color: #9aa0a6; }
+    .tier-arme img { height: 24px; width: auto; max-width: 56px; object-fit: contain; }
+
+    /* Miniatures du comparateur */
+    .cmp-vignette { display: block; margin-top: 10px; height: 70px; width: auto; max-width: 200px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
 
     /* ===================== PAGE D'ACCUEIL (hero + cartes) ===================== */
     .hero {
@@ -1115,8 +1119,18 @@
                 <Banniere icone={navItems.find(n => n.id === "comparateur").ico} titre="Comparateur d'armes"
                   sous="Compare les statistiques de base de deux armes — le vert indique la meilleure des deux." />
                 <div className="cmp-choix">
-                  <div><label>Arme A :</label><Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpA.id} onChange={(id) => setCmpA(TOUTES_ARMES.find(a => a.id === id))} /></div>
-                  <div><label>Arme B :</label><Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpB.id} onChange={(id) => setCmpB(TOUTES_ARMES.find(a => a.id === id))} /></div>
+                  <div>
+                    <label>Arme A :</label>
+                    <Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpA.id} onChange={(id) => setCmpA(TOUTES_ARMES.find(a => a.id === id))} />
+                    {typeof IMAGES_ARMES !== "undefined" && IMAGES_ARMES[cmpA.id] &&
+                      <img className="cmp-vignette" src={IMAGES_ARMES[cmpA.id]} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                  </div>
+                  <div>
+                    <label>Arme B :</label>
+                    <Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpB.id} onChange={(id) => setCmpB(TOUTES_ARMES.find(a => a.id === id))} />
+                    {typeof IMAGES_ARMES !== "undefined" && IMAGES_ARMES[cmpB.id] &&
+                      <img className="cmp-vignette" src={IMAGES_ARMES[cmpB.id]} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                  </div>
                 </div>
                 <div>
                   <div className="cmp-ligne tete">
@@ -1166,7 +1180,15 @@
                               <div className={"tier tier-" + t} key={t}>
                                 <div className="tier-lettre">{t === "N" ? "?" : t}</div>
                                 <div className="tier-armes">
-                                  {armes.map(a => <span className="tier-arme" key={a.id}>{a.nom}</span>)}
+                                  {armes.map(a => {
+                                    const src = (typeof IMAGES_ARMES !== "undefined") ? IMAGES_ARMES[a.id] : null;
+                                    return (
+                                      <span className="tier-arme" key={a.id}>
+                                        {src && <img src={src} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                                        {a.nom}
+                                      </span>
+                                    );
+                                  })}
                                 </div>
                               </div>
                             );
