@@ -3592,7 +3592,7 @@ const ARMES_PRINCIPALES = [
     nom: "SG-12",
     categorie: "Fusil à pompe",
     jeu: "Black Ops 7",
-    // Pompe semi-auto. Stats de base RÉELLES (Warzone, codmunity.gg). Accessoires réels ; codmunity ne publie pas de chiffres d'effet (sauf capacité chargeur).
+    // Accessoires COMPLETS du SG-12 (liste exhaustive, source codmunity.gg Warzone). Pompe semi-auto — codmunity ne publie de chiffres que pour la capacité chargeur.
     stats_base: {
       degats: 95, portee_m: 14, cadence_cpm: 212, velocite_ms: 320,
       capacite_chargeur: 9, vitesse_visee_ms: 220, sprint_to_fire_ms: 200,
@@ -3607,54 +3607,68 @@ const ARMES_PRINCIPALES = [
       ]},
       { id: "bouche", label: "Bouche", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "akita_choke", nom: "Étrangleur Akita Full Bore-12", description: "Resserre la gerbe en stance tactique (visée)." },
-        { id: "fang_choke", nom: "Étrangleur Fang Modified", description: "Resserre la gerbe au tir à la hanche." },
+        { id: "hko_supp", nom: "Suppresseur HKO", description: "Tir silencieux." },
         { id: "onyx_brake", nom: "Frein Breacher Onyx", description: "Réduit le recul (effet non chiffré)." },
-        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Discret (pas d'effet de stat publié)." }
+        { id: "akita_choke", nom: "Étrangleur Akita Full Bore-12", description: "Resserre la gerbe en stance tactique (visée)." },
+        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Tir silencieux (pas de chiffre d'effet publié)." },
+        { id: "fang_choke", nom: "Étrangleur Fang Modified", description: "Resserre la gerbe au tir à la hanche." },
+        { id: "stentorian", nom: "Frein LTI Stentorian", description: "Bouche du Battle Pass S4." },
+        { id: "redwell", nom: "Suppresseur Redwell Shade-X", description: "Réduit le recul (effet non chiffré)." }
       ]},
       { id: "canon", label: "Canon", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "hawker_reach", nom: "Canon long 20\" Hawker Reach", description: "Portée utile accrue." },
         { id: "universal", nom: "Canon hybride 17\" Universal", description: "Canon polyvalent." },
         { id: "lockshot", nom: "Canon vélocité 19\" Lockshot", description: "Vélocité des plombs accrue." },
-        { id: "crit_strike", nom: "Canon dégâts 18\" Crit-Strike", description: "Dégâts accrus." },
-        { id: "mini_cut", nom: "Canon court 15\" EAM-Mini Cut", description: "Manie plus vite." }
+        { id: "mini_cut", nom: "Canon court 15\" EAM-Mini Cut", description: "Manie plus vite." },
+        { id: "crit_strike", nom: "Canon dégâts 18\" Crit-Strike", description: "Dégâts accrus." }
       ]},
       { id: "sous_canon", label: "Sous-canon", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "force_stab", nom: "Poignée Force Stabilizer", description: "Améliore le contrôle." },
+        { id: "ironhold", nom: "Poignée Ironhold", description: "Réduit le recul horizontal (effet non chiffré)." },
         { id: "redwell_dash", nom: "Poignée Redwell Dash", description: "Améliore la mobilité." },
-        { id: "sapper", nom: "Poignée Sapper Guard", description: "Recul réduit et mobilité (effet non chiffré)." }
+        { id: "force_stab", nom: "Poignée Force Stabilizer", description: "Améliore le contrôle du recul." },
+        { id: "sapper", nom: "Poignée Sapper Guard", description: "Recul réduit et mobilité (effet non chiffré)." },
+        { id: "vas_convergence", nom: "Poignée VAS Convergence", description: "Réduit la déviation des plombs." }
       ]},
       { id: "chargeur", label: "Chargeur", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "collie", nom: "Chargeur Flip Collie (8)", description: "Recharge plus vite, -1 cartouche.", modificateurs: { capacite_chargeur: "-1" } },
         { id: "hcomb", nom: "Chargeur H-Comb (10)", description: "+1 cartouche.", modificateurs: { capacite_chargeur: "+1" } },
-        { id: "bighorn", nom: "Tambour Bowen Bighorn (14)", description: "+5 cartouches.", modificateurs: { capacite_chargeur: "+5" } },
         { id: "streamline", nom: "Chargeur rapide Streamline (6)", description: "Recharge plus vite, -3 cartouches.", modificateurs: { capacite_chargeur: "-3" } },
-        { id: "collie", nom: "Chargeur Flip Collie (8)", description: "Recharge plus vite, -1 cartouche.", modificateurs: { capacite_chargeur: "-1" } }
+        { id: "bighorn", nom: "Tambour Bowen Bighorn (14)", description: "+5 cartouches.", modificateurs: { capacite_chargeur: "+5" } }
       ]},
       { id: "poignee_arr", label: "Poignée arrière", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "eam_buffer", nom: "Poignée EAM Buffer", description: "Stabilise le recul (effet non chiffré)." },
         { id: "alignlite", nom: "Poignée Align-Lite (Quickdraw)", description: "Visée plus rapide (effet non chiffré)." },
         { id: "dashbound", nom: "Poignée Dashbound (tir-sprint)", description: "Tir après sprint plus rapide (effet non chiffré)." },
-        { id: "dawnvoid", nom: "Poignée LTI DawnVoid (précision)", description: "Améliore la précision (effet non chiffré)." }
+        { id: "dawnvoid", nom: "Poignée LTI DawnVoid (précision)", description: "Améliore la précision (effet non chiffré)." },
+        { id: "dropzone", nom: "Poignée Dropzone", description: "Visée plus rapide (mobile, effet non chiffré)." }
       ]},
       { id: "crosse", label: "Crosse", options: [
         { id: "aucun", nom: "— Crosse standard —" },
-        { id: "overrun", nom: "Crosse Overrun (mobilité)", description: "Améliore la mobilité (effet non chiffré)." },
+        { id: "beadline", nom: "Crosse Beadline Tactical (tactique)", description: "Améliore le tir en stance tactique." },
         { id: "b3_dragstep", nom: "Crosse B3-Dragstep (ADS mobilité)", description: "Déplacement en visée amélioré." },
+        { id: "control_frame", nom: "Crosse Control Frame", description: "Réduit le flinch (encaissement)." },
+        { id: "overrun", nom: "Crosse Overrun (mobilité)", description: "Améliore la mobilité (effet non chiffré)." },
         { id: "anchor", nom: "Crosse Anchor (contrôle)", description: "Réduit le recul (effet non chiffré)." }
       ]},
       { id: "laser", label: "Laser", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "instinct_1mw", nom: "Laser 1mW Instinct", description: "Améliore le tir à la hanche (visible)." },
-        { id: "convergence", nom: "Laser Convergence Box", description: "Améliore la stabilité de visée (visible)." }
+        { id: "lockstep_5mw", nom: "Laser 5mW Lockstep", description: "Précision tir à la hanche (visible)." },
+        { id: "motion_3mw", nom: "Laser 3mW Motion Strike", description: "Précision tir à la hanche (visible)." },
+        { id: "convergence", nom: "Laser Convergence Box", description: "Précision tir à la hanche (visible)." },
+        { id: "tactical_2mw", nom: "Laser tactique 2mW Adaptive", description: "Précision tir à la hanche (visible)." },
+        { id: "instinct_1mw", nom: "Laser 1mW Instinct", description: "Manie plus vite (visible)." },
+        { id: "pulse_fire", nom: "Lampe tactique MFS Pulse Fire", description: "Lampe tactique (tir binaire)." }
       ]},
       { id: "mode_tir", label: "Mode de tir", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "slug", nom: "12 Gauge Slug", description: "Projectile unique : portée et précision accrues." },
-        { id: "dragons_breath", nom: "12 Gauge Dragon's Breath", description: "Munitions incendiaires." },
-        { id: "lw_trigger", nom: "Détente allégée (LW Trigger)", description: "Cadence de tir plus rapide." }
+        { id: "ars", nom: "Système de recul accéléré", description: "Réduit le recul (effet non chiffré)." },
+        { id: "dragons_breath", nom: "12 Gauge Dragon's Breath", description: "Munitions incendiaires (fortement nerfées en S4)." },
+        { id: "lw_trigger", nom: "Détente allégée (LW Trigger)", description: "Cadence de tir plus rapide." },
+        { id: "slug", nom: "12 Gauge Slug", description: "Projectile unique : portée et précision accrues." }
       ]}
     ]
   },
@@ -3663,10 +3677,10 @@ const ARMES_PRINCIPALES = [
     nom: "Echo 12",
     categorie: "Fusil à pompe",
     jeu: "Black Ops 7",
-    // Pompe. Stats de base RÉELLES (Warzone, codmunity.gg). Accessoires réels ; chiffres d'effet publiés uniquement sur quelques-uns.
+    // Accessoires COMPLETS de l'Echo 12 (liste exhaustive, source codmunity.gg Warzone). Pompe — codmunity ne publie de chiffres que sur quelques accessoires.
     stats_base: {
       degats: 100, portee_m: 13, cadence_cpm: 75, velocite_ms: 320,
-      capacite_chargeur: 12, vitesse_visee_ms: 240, sprint_to_fire_ms: 230,
+      capacite_chargeur: 12, vitesse_visee_ms: 240, sprint_to_fire_ms: 180,
       vitesse_rechargement_ms: 2853, gun_kick: 36.9, recul_horizontal: 35.86,
       recul_vertical: 106.19, mobilite: 4.6
     },
@@ -3675,48 +3689,62 @@ const ARMES_PRINCIPALES = [
         { id: "aucun", nom: "— Aucun —" },
         { id: "ks_slim", nom: "K&S Slim Reflex", description: "Point rouge fin." },
         { id: "lethal_elo", nom: "Lethal Tools ELO", description: "Viseur holographique." },
-        { id: "kepler_dot", nom: "Kepler-Pro Red Dot", description: "Point rouge." }
+        { id: "kepler_dot", nom: "Kepler-Pro Red Dot", description: "Point rouge." },
+        { id: "eam_xl", nom: "EAM xL Reflex", description: "Point rouge ouvert." },
+        { id: "mm_scanner", nom: "Millimeter Scanner", description: "Détecte les ennemis proches." }
       ]},
       { id: "bouche", label: "Bouche", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "binary_choke", nom: "Étrangleur Binary Echo", description: "Resserre la gerbe (portée utile accrue)." },
-        { id: "echo_choke", nom: "Étrangleur Echo Modified", description: "Resserre la gerbe au tir à la hanche." },
-        { id: "twin_damp", nom: "Twin Dampener", description: "Réduit le recul (effet non chiffré)." },
-        { id: "redwell", nom: "Suppresseur Redwell Shade-X", description: "Réduit tout le recul, moins de vélocité.", modificateurs: { gun_kick: "-11%", recul_horizontal: "-11%", recul_vertical: "-11%", velocite_ms: "-13%" } }
+        { id: "dual_clone", nom: "Suppresseur Dual Clone", description: "Tir silencieux." },
+        { id: "echo_choke", nom: "Étrangleur Echo Modified", description: "Resserre la gerbe en visée." },
+        { id: "twin_damp", nom: "Twin Dampener", description: "Réduit le recul de la 1re balle.", effets_extra: { "Recul 1re balle": "−50%" } },
+        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Tir silencieux (pas de chiffre d'effet publié)." },
+        { id: "binary_choke", nom: "Étrangleur Binary Echo", description: "Resserre la gerbe au tir à la hanche." },
+        { id: "stentorian", nom: "Frein LTI Stentorian", description: "Bouche du Battle Pass S4." },
+        { id: "redwell", nom: "Suppresseur Redwell Shade-X", description: "Réduit tout le recul, moins de vélocité/portée.", modificateurs: { gun_kick: "-11%", recul_horizontal: "-11%", recul_vertical: "-11%", velocite_ms: "-13%", portee_m: "-15%" } }
       ]},
       { id: "canon", label: "Canon", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "magellan", nom: "Canon 18.7\" Magellan Dual", description: "Bon équilibre portée/contrôle." },
-        { id: "nero_twin", nom: "Canon 17.3\" Nero-Twin", description: "Canon polyvalent." },
-        { id: "proton", nom: "Canon 16.1\" Proton", description: "Canon polyvalent." },
-        { id: "ghostline", nom: "Canon court 15\" Ghostline", description: "Manie plus vite." }
+        { id: "nero_twin", nom: "Canon dégâts 17.3\" Nero-Twin", description: "Dégâts accrus." },
+        { id: "ghostline", nom: "Canon court 15\" Ghostline", description: "Manie plus vite." },
+        { id: "proton", nom: "Canon hybride 16.1\" Proton", description: "Canon polyvalent." },
+        { id: "magellan", nom: "Canon long 18.7\" Magellan Dual", description: "Bon équilibre portée/contrôle." },
+        { id: "greyhound", nom: "Canon vélocité 18\" MFS Greyhound", description: "Vélocité des plombs stabilisée." }
       ]},
       { id: "chargeur", label: "Chargeur", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "bravotap", nom: "Tambour VAS BravoTap", description: "Capacité augmentée (tambour)." },
+        { id: "bravotap", nom: "Tambour VAS BravoTap", description: "Recharge plus vite (tambour rapide)." },
         { id: "fortrex", nom: "Tambour Greaves Fortrex", description: "Capacité augmentée (tambour)." }
       ]},
       { id: "poignee_arr", label: "Poignée arrière", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "traverse", nom: "Poignée Traverse", description: "Améliore la maniabilité." },
-        { id: "phantom17", nom: "Poignée Phantom-17", description: "Améliore la stabilité." },
-        { id: "axel", nom: "Poignée Axel Control", description: "Améliore le contrôle." }
+        { id: "eam_ignition", nom: "Poignée EAM Ignition (tir-sprint)", description: "Tir après sprint plus rapide (effet non chiffré)." },
+        { id: "harbinger", nom: "Poignée Harbinger", description: "Stabilise le recul (effet non chiffré)." },
+        { id: "phantom17", nom: "Poignée Phantom-17 (Quickdraw)", description: "Visée plus rapide (effet non chiffré)." },
+        { id: "axel", nom: "Poignée Axel Control (précision)", description: "Réduit le recul de la 1re balle.", effets_extra: { "Recul 1re balle": "−60%" } },
+        { id: "traverse", nom: "Poignée Traverse", description: "Visée plus rapide (mobile, effet non chiffré)." }
       ]},
       { id: "crosse", label: "Crosse", options: [
         { id: "aucun", nom: "— Crosse standard —" },
-        { id: "scatterproof", nom: "Crosse Scatterproof", description: "Resserre la gerbe en stance tactique." },
-        { id: "stalker", nom: "Crosse Greaves Stalker", description: "Améliore le contrôle." },
-        { id: "stonewall", nom: "Crosse EAM Stonewall (ADS mobilité)", description: "Déplacement en visée amélioré." }
+        { id: "bowen_defender", nom: "Crosse Bowen Defender (contrôle)", description: "Crosse de contrôle (stabilité)." },
+        { id: "stalker", nom: "Crosse Greaves Stalker (mobilité)", description: "Améliore la mobilité." },
+        { id: "scatterproof", nom: "Crosse Scatterproof (tactique)", description: "Resserre la gerbe en stance tactique." },
+        { id: "extraction", nom: "Crosse Extraction (ADS mobilité)", description: "Déplacement en visée amélioré." },
+        { id: "stonewall", nom: "Crosse EAM Stonewall", description: "Plus mobile en visée.", effets_extra: { "Mobilité ADS": "+9%" } }
       ]},
       { id: "laser", label: "Laser", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "instinct_1mw", nom: "Laser 1mW Instinct", description: "Améliore le tir à la hanche (visible)." },
-        { id: "convergence", nom: "Laser Convergence Box", description: "Améliore la stabilité de visée (visible)." }
+        { id: "instinct_1mw", nom: "Laser 1mW Instinct", description: "Manie plus vite (visible)." },
+        { id: "tactical_2mw", nom: "Laser tactique 2mW Adaptive", description: "Précision tir à la hanche (visible)." },
+        { id: "convergence", nom: "Laser Convergence Box", description: "Précision tir à la hanche (visible)." },
+        { id: "lockstep_5mw", nom: "Laser 5mW Lockstep", description: "Précision tir à la hanche (visible)." },
+        { id: "motion_3mw", nom: "Laser 3mW Motion Strike", description: "Précision tir à la hanche (visible)." }
       ]},
       { id: "mode_tir", label: "Mode de tir", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "slug", nom: "12 Gauge Slug", description: "Projectile unique : portée/précision, recul réduit, moins de vélocité.", modificateurs: { gun_kick: "-15%", recul_horizontal: "-15%", recul_vertical: "-15%", velocite_ms: "-25%" } },
+        { id: "sync_recul", nom: "Unité de synchro recul", description: "Réduit le recul (effet non chiffré)." },
         { id: "dragons_breath", nom: "12 Gauge Dragon's Breath", description: "Munitions incendiaires." },
+        { id: "slug", nom: "12 Gauge Slug", description: "Projectile unique : portée/précision, recul réduit, moins de vélocité.", modificateurs: { gun_kick: "-15%", recul_horizontal: "-15%", recul_vertical: "-15%", velocite_ms: "-25%" } },
         { id: "turnkey", nom: "Turnkey Rapid Drum", description: "Cadence de tir accrue." },
         { id: "backlash", nom: "Kit lance-grenade Echo 12 Backlash", description: "Ajoute un tir explosif, mais réduit la cadence.", modificateurs: { cadence_cpm: "-18%" } }
       ]}
