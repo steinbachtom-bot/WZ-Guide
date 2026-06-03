@@ -363,6 +363,8 @@
             <button id="mode-blackops">Black Ops</button>
           </div>
           <button class="btn btn-principal" id="btn-enregistrer">Enregistrer la classe</button>
+          <button class="btn" id="btn-partager">🔗 Partager</button>
+          <span class="ia-note" id="note-partage"></span>
         </div>
 
   <!-- ARME PRINCIPALE (vue Gunsmith, façon écran du jeu) -->
@@ -986,6 +988,7 @@
     function classeActuelle() {
       return {
         nom: "",
+        mode,
         armePrincipale: armePrincipale.id, categoriePrincipale,
         selectionPrincipale: { ...selectionPrincipale },
         armeSecondaire: armeSecondaire.id, categorieSecondaire,
@@ -1004,24 +1007,32 @@
       montrerVue("classes");
     }
 
-    // Recharge une classe enregistrée et réaffiche tout.
-    function chargerClasse(i) {
-      const c = classesMemoire[i];
+    // Applique un objet "classe" (depuis une sauvegarde OU un lien partagé) et réaffiche tout.
+    function appliquerClasse(c) {
       if (!c) return;
+      // Mode de jeu (atouts/équipement en dépendent) — on l'applique d'abord.
+      if (c.mode && c.mode !== mode) {
+        mode = c.mode;
+        ATOUTS = (mode === "warzone") ? ATOUTS_WARZONE : ATOUTS_BLACKOPS;
+        EQUIPEMENTS = (mode === "warzone") ? EQUIPEMENTS_WARZONE : EQUIPEMENTS_BLACKOPS;
+        document.getElementById("titre-mode").textContent = (mode === "warzone") ? "Warzone" : "Black Ops";
+        document.getElementById("mode-warzone").classList.toggle("actif", mode === "warzone");
+        document.getElementById("mode-blackops").classList.toggle("actif", mode === "blackops");
+      }
       armePrincipale = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale) || ARMES_PRINCIPALES[0];
       opusPrincipal = armePrincipale.jeu;
       categoriePrincipale = c.categoriePrincipale || armePrincipale.categorie;
       selectionPrincipale = etatVide(armePrincipale.emplacements);
-      for (const k in c.selectionPrincipale) if (k in selectionPrincipale) selectionPrincipale[k] = c.selectionPrincipale[k];
+      for (const k in (c.selectionPrincipale || {})) if (k in selectionPrincipale) selectionPrincipale[k] = c.selectionPrincipale[k];
 
       armeSecondaire = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire) || ARMES_SECONDAIRES[0];
       opusSecondaire = armeSecondaire.jeu;
       categorieSecondaire = c.categorieSecondaire || armeSecondaire.categorie;
       selectionSecondaire = etatVide(armeSecondaire.emplacements);
-      for (const k in c.selectionSecondaire) if (k in selectionSecondaire) selectionSecondaire[k] = c.selectionSecondaire[k];
+      for (const k in (c.selectionSecondaire || {})) if (k in selectionSecondaire) selectionSecondaire[k] = c.selectionSecondaire[k];
 
-      for (const k in c.atouts) if (k in atoutsSelection) atoutsSelection[k] = c.atouts[k];
-      for (const k in c.equipement) if (k in equipementSelection) equipementSelection[k] = c.equipement[k];
+      for (const k in (c.atouts || {})) if (k in atoutsSelection) atoutsSelection[k] = c.atouts[k];
+      for (const k in (c.equipement || {})) if (k in equipementSelection) equipementSelection[k] = c.equipement[k];
 
       // On redessine l'ensemble du créateur.
       dessinerOpusPrincipal(); dessinerCategoriePrincipale(); dessinerArmePrincipale();
@@ -1034,6 +1045,34 @@
       afficherSlots("zone-equipement", EQUIPEMENTS, equipementSelection, null);
       rafraichirPrincipale(); rafraichirSecondaire();
       montrerVue("createur");
+    }
+
+    // Recharge une classe enregistrée.
+    function chargerClasse(i) { appliquerClasse(classesMemoire[i]); }
+
+    // -- PARTAGE PAR LIEN ------------------------------------------------
+    // Encode/décode en base64 (compatible UTF-8).
+    function encoderClasse(c) { return btoa(unescape(encodeURIComponent(JSON.stringify(c)))); }
+    function decoderClasse(code) {
+      try { return JSON.parse(decodeURIComponent(escape(atob(code)))); } catch (e) { return null; }
+    }
+    function partagerClasse() {
+      const code = encoderClasse(classeActuelle());
+      const lien = location.origin + location.pathname + "?c=" + code;
+      const note = document.getElementById("note-partage");
+      const ok = () => { if (note) note.textContent = "Lien copié ! 📋"; setTimeout(() => { if (note) note.textContent = ""; }, 4000); };
+      const echec = () => { if (note) note.textContent = "Copie impossible — lien : " + lien; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(lien).then(ok, echec);
+      } else { echec(); }
+    }
+    // Au chargement : si l'URL contient une classe partagée, on l'applique.
+    function chargerDepuisURL() {
+      const code = new URLSearchParams(location.search).get("c");
+      if (!code) return false;
+      const c = decoderClasse(code);
+      if (c) { appliquerClasse(c); return true; }
+      return false;
     }
 
     function supprimerClasse(i) {
@@ -1192,10 +1231,14 @@
       n.addEventListener("click", () => montrerVue(n.dataset.vue));
     });
     document.getElementById("btn-enregistrer").addEventListener("click", enregistrerClasse);
+    document.getElementById("btn-partager").addEventListener("click", (e) => { e.stopPropagation(); partagerClasse(); });
     document.getElementById("btn-generer-classe").addEventListener("click", (e) => { e.stopPropagation(); genererClasse(); });
     document.getElementById("mode-warzone").addEventListener("click", () => changerMode("warzone"));
     document.getElementById("mode-blackops").addEventListener("click", () => changerMode("blackops"));
     montrerVue("createur");
+
+    // 7) Si un lien de classe partagée est présent dans l'URL, on l'ouvre.
+    chargerDepuisURL();
   </script>
 </body>
 </html>
