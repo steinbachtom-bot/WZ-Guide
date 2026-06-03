@@ -400,6 +400,7 @@
           <option value="longue">Longue portée</option>
           <option value="courte">Courte portée</option>
           <option value="mobilite">Mobilité</option>
+          <option value="recul">Recul minimal</option>
         </select>
         <button class="btn btn-principal" id="btn-generer-classe">Générer la classe</button>
         <span class="ia-note" id="ia-note"></span>
@@ -909,9 +910,10 @@
       polyvalent: { recul_vertical: 1.5, recul_horizontal: 1.5, gun_kick: 1, portee_m: 1.2, velocite_ms: 1, vitesse_visee_ms: 1, sprint_to_fire_ms: 1, mobilite: 0.8, capacite_chargeur: 0.6, vitesse_rechargement_ms: 0.5 },
       longue:     { portee_m: 3, velocite_ms: 2, recul_vertical: 2.5, recul_horizontal: 2.5, gun_kick: 1.5, capacite_chargeur: 0.6, vitesse_visee_ms: 0.2 },
       courte:     { vitesse_visee_ms: 3, sprint_to_fire_ms: 3, mobilite: 2, recul_horizontal: 1, recul_vertical: 1, gun_kick: 0.8, cadence_cpm: 0.8, capacite_chargeur: 0.4 },
-      mobilite:   { mobilite: 3, vitesse_visee_ms: 2.5, sprint_to_fire_ms: 2.5, vitesse_rechargement_ms: 1, recul_horizontal: 0.6, recul_vertical: 0.6 }
+      mobilite:   { mobilite: 3, vitesse_visee_ms: 2.5, sprint_to_fire_ms: 2.5, vitesse_rechargement_ms: 1, recul_horizontal: 0.6, recul_vertical: 0.6 },
+      recul:      { gun_kick: 3, recul_horizontal: 3, recul_vertical: 3 }
     };
-    const LABELS_OBJECTIFS = { polyvalent: "Polyvalent", longue: "Longue portée", courte: "Courte portée", mobilite: "Mobilité" };
+    const LABELS_OBJECTIFS = { polyvalent: "Polyvalent", longue: "Longue portée", courte: "Courte portée", mobilite: "Mobilité", recul: "Recul minimal" };
 
     // Note (positive = bonne pour l'objectif) d'un accessoire.
     function noterOption(arme, option, poids) {
