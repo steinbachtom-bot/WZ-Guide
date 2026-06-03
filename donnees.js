@@ -2863,7 +2863,7 @@ const ARMES_PRINCIPALES = [
     nom: "XR-3 Ion",
     categorie: "Fusil de précision",
     jeu: "Black Ops 7",
-    // Sniper semi-auto (cadence plus élevée, faible recul). Stats de base et accessoires RÉELS (Warzone, codmunity.gg).
+    // Accessoires COMPLETS du XR-3 Ion (liste exhaustive, source codmunity.gg Warzone). Sniper semi-auto, faible recul.
     stats_base: {
       degats: 70, portee_m: 78, cadence_cpm: 136, velocite_ms: 820,
       capacite_chargeur: 12, vitesse_visee_ms: 620, sprint_to_fire_ms: 250,
@@ -2875,56 +2875,74 @@ const ARMES_PRINCIPALES = [
         { id: "aucun", nom: "— Lunette standard —" },
         { id: "vas_led", nom: "VAS LED", description: "Point rouge." },
         { id: "greaves_zoom", nom: "Greaves Ultra Zoom", description: "Lunette à zoom variable." },
+        { id: "emt3_holo", nom: "EMT3 Holo Mk.2", description: "Viseur holographique." },
+        { id: "lti_target", nom: "LTI Target Finder v.2", description: "Détecteur de cible." },
+        { id: "eam_dyad", nom: "EAM Dyad xL", description: "Viseur hybride." },
         { id: "strix_thermal", nom: "VAS Strix 6x Thermal", description: "Lunette thermique 6x." },
         { id: "rangefinder", nom: "Circuit-Z Rangefinder", description: "Lunette télémètre." }
       ]},
       { id: "bouche", label: "Bouche", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Plus de vélocité/portée, vise plus lentement.", modificateurs: { velocite_ms: "+20%", portee_m: "+7.5%", vitesse_visee_ms: "+9%" } },
+        { id: "lti_triad", nom: "Suppresseur LTI Triad", description: "Tir silencieux." },
         { id: "trishot_comp", nom: "Compensateur TriShot", description: "Réduit le recul vertical.", modificateurs: { gun_kick: "-14%", recul_vertical: "-15%" } },
-        { id: "triptych_brake", nom: "Frein Triptych", description: "Réduit le recul vertical.", modificateurs: { gun_kick: "-8%", recul_vertical: "-8%" } },
-        { id: "lti_triad", nom: "Suppresseur LTI Triad", description: "Discret (pas d'effet de stat notable)." }
+        { id: "triptych_brake", nom: "Frein Triptych", description: "Réduit le recul vertical et la 1re balle.", modificateurs: { gun_kick: "-8%", recul_vertical: "-8%" }, effets_extra: { "Recul 1re balle": "−50%" } },
+        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Plus de vélocité/portée, vise plus lentement.", modificateurs: { velocite_ms: "+20%", portee_m: "+7.5%", vitesse_visee_ms: "+9%" } },
+        { id: "stentorian", nom: "Frein LTI Stentorian", description: "Bouche du Battle Pass S4." },
+        { id: "mfs_3x3", nom: "Compensateur MFS 3x3", description: "Améliore le tir en glissade/saut, mais vise et tire plus lentement.", modificateurs: { vitesse_visee_ms: "+24%", cadence_cpm: "-21%" } },
+        { id: "redwell", nom: "Suppresseur Redwell Shade-X", description: "Réduit tout le recul, moins de vélocité/portée.", modificateurs: { gun_kick: "-11%", recul_horizontal: "-11%", recul_vertical: "-11%", velocite_ms: "-13%", portee_m: "-15%" } }
       ]},
       { id: "canon", label: "Canon", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "ion_trinity", nom: "Canon vélocité 20\" Ion Trinity", description: "Forte hausse de vélocité.", modificateurs: { velocite_ms: "+40%" } },
         { id: "lti_infinity", nom: "Canon long 21\" LTI Infinity", description: "Plus de portée.", modificateurs: { portee_m: "+25%" } },
-        { id: "xr_adapt", nom: "Canon hybride 17\" XR-Adapt", description: "Plus de vélocité et de portée.", modificateurs: { velocite_ms: "+15%", portee_m: "+12.5%" } },
+        { id: "ion_trinity", nom: "Canon vélocité 20\" Ion Trinity", description: "Forte hausse de vélocité.", modificateurs: { velocite_ms: "+40%" } },
+        { id: "fringe", nom: "Canon court 15\" Fringe", description: "Manie plus vite.", modificateurs: { vitesse_visee_ms: "-5%", sprint_to_fire_ms: "-10%" } },
         { id: "revolution", nom: "Canon dégâts 19\" Revolution", description: "Réduit le recul, vise un peu plus lentement.", modificateurs: { gun_kick: "-10%", recul_horizontal: "-10%", recul_vertical: "-10%", vitesse_visee_ms: "+13%" } },
-        { id: "fringe", nom: "Canon court 15\" Fringe", description: "Manie plus vite.", modificateurs: { vitesse_visee_ms: "-5%", sprint_to_fire_ms: "-10%" } }
+        { id: "xr_adapt", nom: "Canon hybride 17\" XR-Adapt", description: "Plus de vélocité et de portée.", modificateurs: { velocite_ms: "+15%", portee_m: "+12.5%" } }
       ]},
       { id: "sous_canon", label: "Sous-canon", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "stalwart", nom: "Garde-main Stalwart-5", description: "Stabilité de visée (pas d'effet de stat notable)." },
         { id: "neutralize", nom: "Garde-main Neutralize-XR", description: "Réduit fortement le recul horizontal.", modificateurs: { gun_kick: "-1%", recul_horizontal: "-25%" } },
-        { id: "zero_s", nom: "Garde-main Zero-S", description: "Réduit le recul horizontal.", modificateurs: { recul_horizontal: "-15%" } }
+        { id: "zero_s", nom: "Garde-main Zero-S", description: "Réduit le recul horizontal.", modificateurs: { recul_horizontal: "-15%" } },
+        { id: "advanced_step", nom: "Garde-main Advanced Step", description: "Améliore la mobilité (maniabilité)." },
+        { id: "lti_enforcer", nom: "Garde-main LTI Enforcer", description: "Réduit le recul horizontal et améliore la mobilité.", modificateurs: { recul_horizontal: "-15%", mobilite: "+9%" }, effets_extra: { "Vitesse sprint": "+4%", "Mobilité accroupi": "+10%" } },
+        { id: "vulcan", nom: "Conversion XR-3 Ion Vulcan Minigun", description: "Convertit l'arme en minigun (cadence extrême)." }
       ]},
       { id: "chargeur", label: "Chargeur", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "phantom_v", nom: "Chargeur rapide Phantom-V", description: "Recharge plus vite (rechargement tactique)." },
         { id: "overload", nom: "Chargeur Overload étendu", description: "+2 balles, manie un peu plus lentement.", modificateurs: { capacite_chargeur: "+2", vitesse_visee_ms: "+3%", sprint_to_fire_ms: "+8%" } },
-        { id: "phantom_v", nom: "Chargeur rapide Phantom-V", description: "Recharge plus vite (rechargement tactique)." }
+        { id: "mammoth", nom: "Chargeur Mammoth Stack étendu II", description: "+4 balles, manie/recharge plus lentement.", modificateurs: { capacite_chargeur: "+4", vitesse_visee_ms: "+5%", sprint_to_fire_ms: "+12%", vitesse_rechargement_ms: "+12%" } }
       ]},
       { id: "poignee_arr", label: "Poignée arrière", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "lt_sling", nom: "Poignée L.T. Sling (Quickdraw)", description: "Visée plus rapide.", modificateurs: { vitesse_visee_ms: "-9%" } },
         { id: "xr_omega", nom: "Poignée XR-Omega (tir-sprint)", description: "Tir après sprint bien plus rapide.", modificateurs: { sprint_to_fire_ms: "-38%" } },
-        { id: "xr_init", nom: "Poignée XR-Initialize (précision)", description: "Réduit le recul vertical.", modificateurs: { gun_kick: "-11%", recul_vertical: "-12%" } },
-        { id: "l9_vertigo", nom: "Poignée L9 Vertigo", description: "Réduit le recul horizontal.", modificateurs: { recul_horizontal: "-8%" } }
+        { id: "lt_sling", nom: "Poignée L.T. Sling (Quickdraw)", description: "Visée plus rapide.", modificateurs: { vitesse_visee_ms: "-9%" } },
+        { id: "l9_vertigo", nom: "Poignée L9 Vertigo", description: "Réduit le recul horizontal.", modificateurs: { recul_horizontal: "-8%" } },
+        { id: "transit_ion", nom: "Poignée Transit-Ion", description: "Visée plus rapide.", modificateurs: { vitesse_visee_ms: "-5%" } },
+        { id: "xr_init", nom: "Poignée XR-Initialize (précision)", description: "Réduit le recul vertical et la 1re balle.", modificateurs: { gun_kick: "-11%", recul_vertical: "-12%" }, effets_extra: { "Recul 1re balle": "−60%" } }
       ]},
       { id: "crosse", label: "Crosse", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "lti_collapsed", nom: "Crosse LTI Collapsed (mobilité)", description: "Améliore la mobilité.", modificateurs: { mobilite: "+18%" } },
-        { id: "padded_crush", nom: "Crosse Padded Crush (ADS mobilité)", description: "Déplacement en visée amélioré." },
-        { id: "lightshield", nom: "Crosse Lightshield", description: "Déplacement en visée amélioré." }
+        { id: "lti_collapsed", nom: "Crosse LTI Collapsed (mobilité)", description: "Améliore la mobilité.", modificateurs: { mobilite: "+18%" }, effets_extra: { "Vitesse sprint": "+4%", "Mobilité accroupi": "+34%" } },
+        { id: "lethal_absorb", nom: "Crosse Lethal Absorb", description: "Réduit le flinch (encaissement)." },
+        { id: "padded_crush", nom: "Crosse Padded Crush (ADS mobilité)", description: "Plus mobile en visée.", effets_extra: { "Mobilité ADS": "+28%" } },
+        { id: "exposed73", nom: "Crosse Exposed-73 (tactique)", description: "Améliore le tir en stance tactique." },
+        { id: "lightshield", nom: "Crosse Lightshield", description: "Plus mobile en visée.", effets_extra: { "Mobilité ADS": "+19%" } }
       ]},
       { id: "laser", label: "Laser", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "convergence", nom: "Laser Convergence Box", description: "Précision tir à la hanche (visible)." },
+        { id: "tactical_2mw", nom: "Laser tactique 2mW Adaptive", description: "Précision tir à la hanche (visible)." },
         { id: "instinct_1mw", nom: "Laser 1mW Instinct", description: "Manie plus vite (visible).", modificateurs: { vitesse_visee_ms: "-4%", sprint_to_fire_ms: "-8%" } },
+        { id: "lockstep_5mw", nom: "Laser 5mW Lockstep", description: "Précision tir à la hanche (visible)." },
         { id: "motion_3mw", nom: "Laser 3mW Motion Strike", description: "Plus de portée (visible).", modificateurs: { portee_m: "+12%" } }
       ]},
       { id: "mode_tir", label: "Mode de tir", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "overpressured", nom: "7.62 NATO Surpressurisé", description: "Plus de vélocité de balle.", modificateurs: { velocite_ms: "+15%" } },
+        { id: "fmj", nom: "7.62 NATO FMJ", description: "Pénétration des surfaces (pas d'effet de stat notable)." },
         { id: "ars", nom: "Système de recul accéléré", description: "Réduit l'ensemble du recul.", modificateurs: { gun_kick: "-10%", recul_horizontal: "-10%", recul_vertical: "-10%" } },
+        { id: "overpressured", nom: "7.62 NATO Surpressurisé", description: "Plus de vélocité de balle.", modificateurs: { velocite_ms: "+15%" } },
         { id: "quick_charge", nom: "Tir rapide (Quick Charge)", description: "Cadence accrue, mais recul et vélocité dégradés.", modificateurs: { cadence_cpm: "+5%", velocite_ms: "-15%", gun_kick: "+20%", recul_horizontal: "+20%", recul_vertical: "+20%" } }
       ]}
     ]
@@ -2934,7 +2952,7 @@ const ARMES_PRINCIPALES = [
     nom: "Shadow SK",
     categorie: "Fusil de précision",
     jeu: "Black Ops 7",
-    // Sniper avec emplacement « Crosse (joue) ». Stats de base et accessoires RÉELS (Warzone, codmunity.gg).
+    // Accessoires COMPLETS du Shadow SK (liste exhaustive, source codmunity.gg Warzone). Sniper avec emplacement « Crosse (joue) ».
     stats_base: {
       degats: 75, portee_m: 78, cadence_cpm: 100, velocite_ms: 920,
       capacite_chargeur: 10, vitesse_visee_ms: 500, sprint_to_fire_ms: 260,
@@ -2945,58 +2963,77 @@ const ARMES_PRINCIPALES = [
       { id: "viseur", label: "Optique", options: [
         { id: "aucun", nom: "— Lunette standard —" },
         { id: "greaves_dot", nom: "Greaves Red Dot", description: "Point rouge." },
+        { id: "iron_sight", nom: "Œilleton de sniper", description: "Visée fer à visée rapide." },
+        { id: "eam_dual", nom: "EAM Dual Zoom", description: "Lunette à double grossissement." },
         { id: "redwell_2x", nom: "Redwell 30-S 2x", description: "Lunette grossissement 2x." },
+        { id: "lethal_elo", nom: "Lethal Tools ELO", description: "Viseur holographique." },
+        { id: "prisma_holo", nom: "PrismaTech Digital Holo", description: "Viseur holographique." },
+        { id: "kepler_wvt", nom: "Kepler Custom WVT-08", description: "Lunette à grossissement variable." },
         { id: "solaris", nom: "Solaris Holo-IR", description: "Viseur holographique thermique." }
       ]},
       { id: "bouche", label: "Bouche", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Plus de vélocité/portée, vise plus lentement.", modificateurs: { velocite_ms: "+20%", portee_m: "+7.1%", vitesse_visee_ms: "+10%" } },
         { id: "emt3_comp", nom: "Compensateur EMT3", description: "Réduit le recul vertical.", modificateurs: { gun_kick: "-15%", recul_vertical: "-15%" } },
-        { id: "eclipse_brake", nom: "Frein Eclipse 7.62", description: "Réduit le recul vertical.", modificateurs: { gun_kick: "-8%", recul_vertical: "-8%" } },
+        { id: "tishina_supp", nom: "Suppresseur SWF Tishina-11", description: "Tir silencieux." },
+        { id: "emt3_ported", nom: "Compensateur EMT3 Ported-70", description: "Améliore le tir en glissade/saut." },
+        { id: "eclipse_brake", nom: "Frein Eclipse 7.62", description: "Réduit le recul vertical et la 1re balle.", modificateurs: { gun_kick: "-8%", recul_vertical: "-8%" }, effets_extra: { "Recul 1re balle": "−50%" } },
+        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Plus de vélocité/portée, vise plus lentement.", modificateurs: { velocite_ms: "+20%", portee_m: "+7.1%", vitesse_visee_ms: "+10%" } },
+        { id: "stentorian", nom: "Frein LTI Stentorian", description: "Bouche du Battle Pass S4." },
         { id: "redwell", nom: "Suppresseur Redwell Shade-X", description: "Réduit tout le recul, moins de vélocité/portée.", modificateurs: { gun_kick: "-11%", recul_horizontal: "-11%", recul_vertical: "-11%", velocite_ms: "-13%", portee_m: "-15%" } }
       ]},
       { id: "canon", label: "Canon", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "thrust", nom: "Canon court 17\" Thrust", description: "Manie plus vite.", modificateurs: { vitesse_visee_ms: "-4%", sprint_to_fire_ms: "-10%" } },
         { id: "strand", nom: "Canon long 22.4\" Strand", description: "Plus de portée.", modificateurs: { portee_m: "+19.6%" } },
         { id: "dimpled", nom: "Canon 18.3\" Dimpled-4150", description: "Plus de vélocité et de portée.", modificateurs: { velocite_ms: "+13%", portee_m: "+8.9%" } },
-        { id: "thrust", nom: "Canon court 17\" Thrust", description: "Manie plus vite.", modificateurs: { vitesse_visee_ms: "-4%", sprint_to_fire_ms: "-10%" } },
+        { id: "bellx1", nom: "Canon vélocité 19.6\" Bell-X1", description: "Améliore la vélocité de balle." },
         { id: "emt3_fluted", nom: "Canon 19.6\" EMT3 Fluted", description: "Plus de vélocité mais recul fortement accru.", modificateurs: { velocite_ms: "+10%", vitesse_visee_ms: "+16%", gun_kick: "+40%", recul_horizontal: "+20%", recul_vertical: "+40%" } }
       ]},
       { id: "chargeur", label: "Chargeur", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "targil", nom: "Chargeur Targil étendu", description: "+2 balles, manie un peu plus lentement.", modificateurs: { capacite_chargeur: "+2", vitesse_visee_ms: "+4%", sprint_to_fire_ms: "+8%" } },
-        { id: "progenitor", nom: "Chargeur Progenitor étendu II", description: "+4 balles, manie/recharge plus lentement.", modificateurs: { capacite_chargeur: "+4", vitesse_visee_ms: "+5%", sprint_to_fire_ms: "+12%", vitesse_rechargement_ms: "+25%" } },
-        { id: "riptide", nom: "Chargeur rapide Riptide", description: "Manie/recharge plus vite.", modificateurs: { vitesse_visee_ms: "-3%", sprint_to_fire_ms: "-6%", vitesse_rechargement_ms: "-19%" } }
+        { id: "riptide", nom: "Chargeur rapide Riptide", description: "Manie/recharge plus vite.", modificateurs: { vitesse_visee_ms: "-3%", sprint_to_fire_ms: "-6%", vitesse_rechargement_ms: "-19%" } },
+        { id: "rapid_gulf", nom: "Chargeur rapide Rapid Gulf II", description: "Manie/recharge plus vite, -2 balles.", modificateurs: { vitesse_visee_ms: "-4%", sprint_to_fire_ms: "-8%", vitesse_rechargement_ms: "-19%", capacite_chargeur: "-2" } },
+        { id: "progenitor", nom: "Chargeur Progenitor étendu II", description: "+4 balles, manie/recharge plus lentement.", modificateurs: { capacite_chargeur: "+4", vitesse_visee_ms: "+5%", sprint_to_fire_ms: "+12%", vitesse_rechargement_ms: "+25%" } }
       ]},
       { id: "poignee_arr", label: "Poignée arrière", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "e3_billet", nom: "Poignée E-3 Billet (Quickdraw)", description: "Visée plus rapide.", modificateurs: { vitesse_visee_ms: "-12%" } },
         { id: "custom_flier", nom: "Poignée Custom Flier (tir-sprint)", description: "Tir après sprint bien plus rapide.", modificateurs: { sprint_to_fire_ms: "-37%" } },
-        { id: "stippled", nom: "Poignée Stippled Comfort (précision)", description: "Réduit le recul vertical.", modificateurs: { gun_kick: "-8%", recul_vertical: "-8%" } },
-        { id: "freehold", nom: "Poignée Freehold Control", description: "Réduit le recul horizontal.", modificateurs: { recul_horizontal: "-8%" } }
+        { id: "freehold", nom: "Poignée Freehold Control", description: "Réduit le recul horizontal.", modificateurs: { recul_horizontal: "-8%" } },
+        { id: "stippled", nom: "Poignée Stippled Comfort (précision)", description: "Réduit le recul vertical et la 1re balle.", modificateurs: { gun_kick: "-8%", recul_vertical: "-8%" }, effets_extra: { "Recul 1re balle": "−60%" } },
+        { id: "vital_grace", nom: "Poignée Vital Grace", description: "Visée plus rapide.", modificateurs: { vitesse_visee_ms: "-6%" } }
       ]},
       { id: "comb", label: "Crosse (joue)", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "masterkey", nom: "Joue 12-Gauge Masterkey", description: "Réduit fortement tout le recul.", modificateurs: { gun_kick: "-25%", recul_horizontal: "-25%", recul_vertical: "-25%", vitesse_visee_ms: "+4%" } },
         { id: "parapet", nom: "Joue Parapet Riser", description: "Réduit le recul horizontal.", modificateurs: { recul_horizontal: "-20%" } },
-        { id: "squadron", nom: "Joue Squadron Riser", description: "Réduit le recul horizontal et améliore la mobilité.", modificateurs: { recul_horizontal: "-10%", mobilite: "+7%" } },
-        { id: "flowline", nom: "Joue EMT3 Flowline", description: "Améliore la mobilité.", modificateurs: { mobilite: "+7%" } }
+        { id: "vanquish", nom: "Joue EMT3 Vanquish", description: "Stabilité de visée (pas d'effet de stat notable)." },
+        { id: "flowline", nom: "Joue EMT3 Flowline", description: "Améliore la mobilité.", modificateurs: { mobilite: "+7%" }, effets_extra: { "Mobilité accroupi": "+9%", "Mobilité ADS": "+15%" } },
+        { id: "efirm", nom: "Joue E-Firm Riser", description: "Réduit le recul horizontal.", modificateurs: { recul_horizontal: "-20%" } },
+        { id: "squadron", nom: "Joue Squadron Riser", description: "Réduit le recul horizontal et améliore la mobilité.", modificateurs: { recul_horizontal: "-10%", mobilite: "+7%" }, effets_extra: { "Vitesse sprint": "+4%", "Mobilité accroupi": "+9%" } },
+        { id: "masterkey", nom: "Fusil sous-canon 12-Gauge Masterkey", description: "Réduit fortement tout le recul (canon à pompe sous le canon).", modificateurs: { gun_kick: "-25%", recul_horizontal: "-25%", recul_vertical: "-25%", vitesse_visee_ms: "+4%" } }
       ]},
       { id: "crosse", label: "Crosse", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "preservation", nom: "Crosse Preservation (mobilité)", description: "Améliore la mobilité.", modificateurs: { mobilite: "+16%" } },
-        { id: "tflux", nom: "Crosse T-Flux (ADS mobilité)", description: "Déplacement en visée amélioré." },
-        { id: "friction", nom: "Crosse Friction (anti-flinch)", description: "Réduit le tremblement quand on est touché." }
+        { id: "friction", nom: "Crosse Friction (anti-flinch)", description: "Réduit le tremblement quand on est touché." },
+        { id: "preservation", nom: "Crosse Preservation (mobilité)", description: "Améliore la mobilité.", modificateurs: { mobilite: "+16%" }, effets_extra: { "Vitesse sprint": "+4%", "Mobilité accroupi": "+29%" } },
+        { id: "skeletal", nom: "Crosse Skeletal (tactique)", description: "Améliore le tir en stance tactique." },
+        { id: "tflux", nom: "Crosse T-Flux (ADS mobilité)", description: "Plus mobile en visée.", effets_extra: { "Mobilité ADS": "+29%" } },
+        { id: "flourish", nom: "Crosse Flourish Full", description: "Plus mobile en visée.", effets_extra: { "Mobilité ADS": "+15%" } }
       ]},
       { id: "laser", label: "Laser", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "tactical_2mw", nom: "Laser tactique 2mW Adaptive", description: "Précision tir à la hanche (visible)." },
+        { id: "lockstep_5mw", nom: "Laser 5mW Lockstep", description: "Précision tir à la hanche (visible)." },
+        { id: "motion_3mw", nom: "Laser 3mW Motion Strike", description: "Plus de portée (visible).", modificateurs: { portee_m: "+10%" } },
         { id: "instinct_1mw", nom: "Laser 1mW Instinct", description: "Manie plus vite (visible).", modificateurs: { vitesse_visee_ms: "-3%", sprint_to_fire_ms: "-8%" } },
-        { id: "motion_3mw", nom: "Laser 3mW Motion Strike", description: "Plus de portée (visible).", modificateurs: { portee_m: "+10%" } }
+        { id: "mfs_convergence", nom: "Laser MFS Convergence Box", description: "Tir après sprint quasi instantané (visible).", modificateurs: { sprint_to_fire_ms: "-96%" } }
       ]},
       { id: "mode_tir", label: "Mode de tir", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "overpressured", nom: ".300 WM Surpressurisé", description: "Plus de vélocité de balle.", modificateurs: { velocite_ms: "+20%" } },
         { id: "buffer", nom: "Ressorts amortisseurs", description: "Réduit l'ensemble du recul.", modificateurs: { gun_kick: "-10%", recul_horizontal: "-10%", recul_vertical: "-10%" } },
+        { id: "fmj", nom: ".300 WM FMJ", description: "Pénétration des surfaces (pas d'effet de stat notable)." },
+        { id: "overpressured", nom: ".300 WM Surpressurisé", description: "Plus de vélocité de balle.", modificateurs: { velocite_ms: "+20%" } },
         { id: "lw_trigger", nom: "Détente allégée (LW Trigger)", description: "Cadence accrue, mais recul fortement dégradé.", modificateurs: { cadence_cpm: "+8%", gun_kick: "+25%", recul_horizontal: "+25%", recul_vertical: "+25%" } }
       ]}
     ]
