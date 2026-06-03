@@ -281,6 +281,15 @@
     .ttk-detail { font-size: 13px; color: #c7ccd1; }
     .ttk-pv { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13px; color: #9aa0a6; }
     .ttk-pv select { background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 4px 8px; font-size: 13px; }
+    .toggle-valeurs { margin-left: 12px; color: #c7ccd1; font-size: 13px; cursor: pointer; white-space: nowrap; }
+    .toggle-valeurs input { vertical-align: middle; margin-right: 4px; }
+    .recherche-wrap { position: relative; }
+    .recherche-input { width: 100%; background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 7px 10px; font-size: 13px; box-sizing: border-box; }
+    .recherche-resultats { position: absolute; left: 0; right: 0; top: calc(100% + 4px); background: #161a20; border: 1px solid #2c3a45; border-radius: 8px; overflow: hidden; z-index: 30; display: none; max-height: 260px; overflow-y: auto; }
+    .recherche-resultats.ouvert { display: block; }
+    .recherche-item { padding: 8px 10px; font-size: 13px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+    .recherche-item:hover { background: #1e2630; }
+    .recherche-item small { color: #9aa0a6; }
     .tier-armes { flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-content: center; background: #1e2127; border: 1px solid #2c3038; border-radius: 10px; padding: 10px; }
     .tier-arme { background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
     .tier-arme small { color: #9aa0a6; }
@@ -362,7 +371,9 @@
         <div class="entete-vue">
           <div>
             <h1>Éditeur de classe — <span id="titre-mode">Warzone</span></h1>
-            <p class="sous-titre">5 accessoires max par arme, un seul par emplacement. Étiquettes : <span style="color:#4ade80">vert = bonus</span>, <span style="color:#f87171">rouge = malus</span>.</p>
+            <p class="sous-titre">5 accessoires max par arme, un seul par emplacement. Étiquettes : <span style="color:#4ade80">vert = bonus</span>, <span style="color:#f87171">rouge = malus</span>.
+              <label class="toggle-valeurs"><input type="checkbox" id="toggle-valeurs"> Afficher les valeurs (%)</label>
+            </p>
           </div>
           <div class="mode-toggle">
             <button id="mode-warzone" class="actif">Warzone</button>
@@ -392,6 +403,11 @@
           <div id="choix-categorie-principale" class="menu-cible-cat"></div>
           <label>Arme :</label>
           <div id="choix-arme-principale" class="menu-cible-arme"></div>
+          <label>Recherche rapide :</label>
+          <div class="recherche-wrap">
+            <input type="text" id="recherche-arme" class="recherche-input" placeholder="Tape un nom d'arme…" autocomplete="off">
+            <div id="resultats-recherche" class="recherche-resultats"></div>
+          </div>
         </div>
       </div>
       <div class="gs-stats">
@@ -526,6 +542,8 @@
     let EQUIPEMENTS = EQUIPEMENTS_WARZONE;
     // Points de vie de la cible pour le calcul du TTK (Warzone = 100 PV + 150 d'armure = 250).
     let pvCible = 250;
+    // Afficher (ou non) les valeurs chiffrées des effets sur les étiquettes.
+    let afficherValeurs = false;
 
     // -- B) LE CALCUL ----------------------------------------------------
     function appliquerMod(valeurBase, valeurActuelle, modificateur) {
@@ -582,7 +600,9 @@
         const valeur = parseFloat(val);   // ex: "-12%" -> -12  (on regarde juste le signe)
         // Pour le recul/visée/recharge, une BAISSE est un bonus -> on inverse selon "plusGrandEstMieux".
         const estBonus = infos.plusGrandEstMieux ? (valeur > 0) : (valeur < 0);
-        return `<span class="chip ${estBonus ? "bonus" : "malus"}">${infos.court}</span>`;
+        // Option "afficher les valeurs" : on ajoute le pourcentage/chiffre exact.
+        const texte = afficherValeurs ? `${infos.court} ${val}` : infos.court;
+        return `<span class="chip ${estBonus ? "bonus" : "malus"}">${texte}</span>`;
       }).join("");
     }
 
@@ -950,6 +970,45 @@
       afficherStats("zone-stats-secondaire", armeSecondaire, selectionSecondaire, armeSecondaire.emplacements, false);
     }
 
+    // -- RECHERCHE RAPIDE D'ARME (principale) ----------------------------
+    function selectionnerArmePrincipale(id) {
+      const a = ARMES_PRINCIPALES.find(x => x.id === id);
+      if (!a) return;
+      armePrincipale = a;
+      opusPrincipal = a.jeu;
+      categoriePrincipale = a.categorie;
+      selectionPrincipale = etatVide(a.emplacements);
+      dessinerOpusPrincipal(); dessinerCategoriePrincipale(); dessinerArmePrincipale();
+      afficherEmplacements("zone-accessoires-principale", a.emplacements, selectionPrincipale, rafraichirPrincipale);
+      majEnteteArmePrincipale(); rafraichirPrincipale();
+    }
+    function chercherArmes(q) {
+      const zone = document.getElementById("resultats-recherche");
+      if (!zone) return;
+      q = q.trim().toLowerCase();
+      if (!q) { zone.classList.remove("ouvert"); zone.innerHTML = ""; return; }
+      const res = ARMES_PRINCIPALES.filter(a => a.nom.toLowerCase().includes(q)).slice(0, 8);
+      zone.innerHTML = res.length
+        ? res.map(a => `<div class="recherche-item" data-id="${a.id}"><span>${a.nom}</span><small>${a.categorie} · ${a.jeu}</small></div>`).join("")
+        : `<div class="recherche-item"><span style="color:#9aa0a6">Aucune arme trouvée</span></div>`;
+      zone.classList.add("ouvert");
+      zone.querySelectorAll(".recherche-item[data-id]").forEach(el => {
+        el.addEventListener("click", (e) => {
+          e.stopPropagation();
+          selectionnerArmePrincipale(el.dataset.id);
+          document.getElementById("recherche-arme").value = "";
+          zone.classList.remove("ouvert"); zone.innerHTML = "";
+        });
+      });
+    }
+
+    // -- AFFICHER LES VALEURS (%) sur les étiquettes ---------------------
+    function basculerValeurs(on) {
+      afficherValeurs = on;
+      afficherEmplacements("zone-accessoires-principale", armePrincipale.emplacements, selectionPrincipale, rafraichirPrincipale);
+      afficherEmplacements("zone-accessoires-secondaire", armeSecondaire.emplacements, selectionSecondaire, rafraichirSecondaire);
+    }
+
     // -- GÉNÉRATEUR DE CLASSE (IA "maison", 100% local) ------------------
     // Pour chaque objectif, on donne un poids (importance) à certaines stats.
     // Le générateur choisit, par emplacement, l'accessoire qui améliore le plus
@@ -1278,6 +1337,12 @@
     });
     document.getElementById("btn-enregistrer").addEventListener("click", enregistrerClasse);
     document.getElementById("btn-partager").addEventListener("click", (e) => { e.stopPropagation(); partagerClasse(); });
+    const champRecherche = document.getElementById("recherche-arme");
+    champRecherche.addEventListener("input", (e) => { e.stopPropagation(); chercherArmes(e.target.value); });
+    champRecherche.addEventListener("click", (e) => e.stopPropagation());
+    document.getElementById("resultats-recherche").addEventListener("click", (e) => e.stopPropagation());
+    document.addEventListener("click", () => { const z = document.getElementById("resultats-recherche"); if (z) z.classList.remove("ouvert"); });
+    document.getElementById("toggle-valeurs").addEventListener("change", (e) => basculerValeurs(e.target.checked));
     document.getElementById("btn-generer-classe").addEventListener("click", (e) => { e.stopPropagation(); genererClasse(); });
     document.getElementById("mode-warzone").addEventListener("click", () => changerMode("warzone"));
     document.getElementById("mode-blackops").addEventListener("click", () => changerMode("blackops"));
