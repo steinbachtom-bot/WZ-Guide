@@ -205,62 +205,78 @@ const ARMES_PRINCIPALES = [
       vitesse_rechargement_ms: 2933, gun_kick: 18.38, recul_horizontal: 15.25,
       recul_vertical: 50.44, mobilite: 4.8
     },
-    // Accessoires RÉELS du Krig C (ordre du jeu).
+    // Accessoires COMPLETS du Krig C (liste exhaustive, source codmunity.gg Warzone).
     emplacements: [
       { id: "viseur", label: "Optique", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "volzhskiy", nom: "Volzhskiy Reflex", description: "Point rouge net, sans effet de stat notable." },
-        { id: "willis3x", nom: "Willis 3x", description: "Lunette 3x pour la longue portée." },
+        { id: "volzhskiy", nom: "Volzhskiy Reflex", description: "Point rouge net." },
+        { id: "otero", nom: "Otero Red Dot", description: "Point rouge compact." },
+        { id: "jason2x", nom: "Jason Armory 2x", description: "Lunette 2x." },
+        { id: "willis3x", nom: "Willis 3x", description: "Lunette 3x longue portée." },
         { id: "hawker", nom: "Hawker Hybrid", description: "Viseur hybride polyvalent." }
       ]},
       { id: "bouche", label: "Bouche", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "suppresseur", nom: "Suppresseur", description: "Discret, pas d'effet de stat notable." },
         { id: "compensateur", nom: "Compensateur", description: "Réduit fortement le recul vertical.", modificateurs: { gun_kick: "-27%", recul_vertical: "-30%" } },
+        { id: "frein_bouche", nom: "Frein de bouche", description: "Stabilise sans effet de stat chiffré." },
         { id: "comp_ported", nom: "Compensateur ventilé", description: "Stabilise verticalement.", modificateurs: { gun_kick: "-22%", recul_vertical: "-25%" } },
         { id: "supp_mono", nom: "Suppresseur monolithique", description: "Discret, gagne en portée mais vise plus lentement.", modificateurs: { velocite_ms: "+20%", portee_m: "+10%", vitesse_visee_ms: "+21%" } }
       ]},
       { id: "canon", label: "Canon", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "gain_twist", nom: "Canon Gain-Twist", description: "Forte hausse de vélocité.", modificateurs: { velocite_ms: "+45%" } },
         { id: "canon_long", nom: "Canon long", description: "Allonge la portée.", modificateurs: { portee_m: "+40%" } },
-        { id: "canon_renforce", nom: "Canon renforcé", description: "Plus de vélocité et de portée.", modificateurs: { velocite_ms: "+20%", portee_m: "+20%" } },
-        { id: "canon_chf", nom: "Canon CHF", description: "Tir plus serré mais recul nettement accru.", modificateurs: { gun_kick: "+48%", recul_horizontal: "+20%", recul_vertical: "+50%" } }
+        { id: "gain_twist", nom: "Canon Gain-Twist", description: "Forte hausse de vélocité.", modificateurs: { velocite_ms: "+45%" } },
+        { id: "canon_chf", nom: "Canon CHF", description: "Tir plus serré mais recul nettement accru.", modificateurs: { gun_kick: "+48%", recul_horizontal: "+20%", recul_vertical: "+50%" } },
+        { id: "canon_court", nom: "Canon court", description: "Plus maniable, sans effet de stat chiffré." },
+        { id: "canon_renforce", nom: "Canon renforcé", description: "Plus de vélocité et de portée.", modificateurs: { velocite_ms: "+20%", portee_m: "+20%" } }
       ]},
       { id: "sous_canon", label: "Sous-canon", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "poignee_vert", nom: "Poignée verticale", description: "Réduit fortement le recul horizontal.", modificateurs: { gun_kick: "-3%", recul_horizontal: "-35%" } },
+        { id: "poignee_marksman", nom: "Poignée Marksman", description: "Réduit le recul en visée focalisée (non chiffré ici)." },
+        { id: "poignee_legere", nom: "Poignée légère", description: "Légère, sans effet de stat chiffré." },
         { id: "poignee_prec", nom: "Poignée de précision", description: "Réduit le recul horizontal.", modificateurs: { gun_kick: "-2%", recul_horizontal: "-20%" } },
-        { id: "poignee_ranger", nom: "Poignée Ranger", description: "Réduit le recul horizontal.", modificateurs: { gun_kick: "-2%", recul_horizontal: "-20%" } }
+        { id: "poignee_ranger", nom: "Poignée Ranger", description: "Réduit le recul horizontal.", modificateurs: { gun_kick: "-2%", recul_horizontal: "-20%" } },
+        { id: "g_grip", nom: "Poignée G-Grip", description: "Réduit le recul horizontal.", modificateurs: { gun_kick: "-2%", recul_horizontal: "-20%" } }
       ]},
       { id: "chargeur", label: "Chargeur", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "mag_etendu1", nom: "Chargeur étendu I", description: "+15 balles, rechargement plus lent.", modificateurs: { capacite_chargeur: "+15", vitesse_rechargement_ms: "+10%" } },
-        { id: "mag_etendu2", nom: "Chargeur étendu II", description: "+40 balles, vise et recharge plus lentement.", modificateurs: { capacite_chargeur: "+40", vitesse_visee_ms: "+8%", sprint_to_fire_ms: "+10%", vitesse_rechargement_ms: "+14%" } },
-        { id: "fast_mag2", nom: "Chargeur rapide II", description: "Recharge et dégaine plus vite, mais −10 balles.", modificateurs: { vitesse_visee_ms: "-10%", sprint_to_fire_ms: "-10%", vitesse_rechargement_ms: "-26%", capacite_chargeur: "-10" } }
+        { id: "fast_mag2", nom: "Chargeur rapide II", description: "Recharge et dégaine plus vite, mais −10 balles.", modificateurs: { vitesse_visee_ms: "-10%", sprint_to_fire_ms: "-10%", vitesse_rechargement_ms: "-26%", capacite_chargeur: "-10" } },
+        { id: "flip_mag", nom: "Chargeur Flip", description: "Recharge plus vite, manie plus vite, −5 balles.", modificateurs: { vitesse_visee_ms: "-10%", sprint_to_fire_ms: "-10%", vitesse_rechargement_ms: "-18%", capacite_chargeur: "-5" } },
+        { id: "mag_etendu2", nom: "Chargeur étendu II", description: "+40 balles, vise et recharge plus lentement.", modificateurs: { capacite_chargeur: "+40", vitesse_visee_ms: "+8%", sprint_to_fire_ms: "+10%", vitesse_rechargement_ms: "+14%" } }
       ]},
       { id: "poignee_arr", label: "Poignée arrière", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "quickdraw", nom: "Poignée Quickdraw", description: "Visée nettement plus rapide.", modificateurs: { vitesse_visee_ms: "-29%" } },
-        { id: "ergonomique", nom: "Poignée ergonomique", description: "Visée plus rapide.", modificateurs: { vitesse_visee_ms: "-17%" } },
         { id: "assaut", nom: "Poignée d'assaut", description: "Tir après sprint nettement plus rapide.", modificateurs: { sprint_to_fire_ms: "-45%" } },
+        { id: "ergonomique", nom: "Poignée ergonomique", description: "Visée plus rapide.", modificateurs: { vitesse_visee_ms: "-17%" } },
+        { id: "cqb", nom: "Poignée CQB", description: "Tir après sprint plus rapide.", modificateurs: { sprint_to_fire_ms: "-30%" } },
         { id: "commando", nom: "Poignée Commando", description: "Visée et tir après sprint plus rapides.", modificateurs: { vitesse_visee_ms: "-13%", sprint_to_fire_ms: "-20%" } }
       ]},
       { id: "crosse", label: "Crosse", options: [
         { id: "aucun", nom: "— Aucun —" },
+        { id: "crosse_infiltrateur", nom: "Crosse Infiltrateur", description: "Plus mobile en visée (non chiffré ici)." },
         { id: "sans_crosse", nom: "Sans crosse", description: "Déplacement nettement plus rapide.", modificateurs: { mobilite: "+24%" } },
+        { id: "crosse_lourde", nom: "Crosse lourde", description: "Réduit le flinch (encaissement des tirs)." },
         { id: "crosse_equilibree", nom: "Crosse équilibrée", description: "Déplacement plus rapide.", modificateurs: { mobilite: "+12%" } },
-        { id: "crosse_lourde", nom: "Crosse lourde", description: "Réduit le flinch (encaissement des tirs)." }
+        { id: "crosse_combat", nom: "Crosse de combat", description: "Plus mobile en visée (non chiffré ici)." }
       ]},
       { id: "laser", label: "Laser", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "laser_visee_stable", nom: "Laser visée stable", description: "Réduit la dispersion à la hanche (visible par l'ennemi)." },
-        { id: "laser_tactique", nom: "Laser tactique", description: "Améliore le tir à la hanche (visible par l'ennemi)." }
+        { id: "laser_strelok", nom: "Laser Strelok", description: "Laser de visée (visible par l'ennemi)." },
+        { id: "laser_mvt_rapide", nom: "Laser mouvement rapide", description: "Améliore la manœuvrabilité (visible par l'ennemi)." },
+        { id: "laser_tactique", nom: "Laser tactique", description: "Améliore le tir à la hanche (visible par l'ennemi)." },
+        { id: "laser_visee", nom: "Laser de visée", description: "Laser de visée (visible par l'ennemi)." }
       ]},
       { id: "mode_tir", label: "Mode de tir", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "tir_rapide", nom: "Tir rapide", description: "Cadence accrue, mais recul et perte de portée/vélocité.", modificateurs: { cadence_cpm: "+12%", velocite_ms: "-15%", gun_kick: "+21%", recul_horizontal: "+30%", recul_vertical: "+20%", portee_m: "-10%" } },
+        { id: "surpressurise", nom: "5.56 NATO surpressurisé", description: "Augmente la vélocité de balle.", modificateurs: { velocite_ms: "+20%" } },
         { id: "ressorts_recul", nom: "Ressorts de recul", description: "Réduit l'ensemble du recul.", modificateurs: { gun_kick: "-13%", recul_horizontal: "-18%", recul_vertical: "-13%" } },
-        { id: "surpressurise", nom: "5.56 surpressurisé", description: "Augmente la vélocité de balle.", modificateurs: { velocite_ms: "+20%" } }
+        { id: "fmj", nom: "5.56 NATO FMJ", description: "Perforation, sans effet de stat chiffré." },
+        { id: "tir_rapide", nom: "Tir rapide", description: "Cadence accrue, mais recul et perte de portée/vélocité.", modificateurs: { cadence_cpm: "+12%", velocite_ms: "-15%", gun_kick: "+21%", recul_horizontal: "+30%", recul_vertical: "+20%", portee_m: "-10%" } }
       ]}
     ]
   },
