@@ -285,6 +285,12 @@
     .tier-arme small { color: #9aa0a6; }
     .tier-arme img { height: 24px; width: auto; max-width: 56px; object-fit: contain; }
 
+    /* Spray pattern simulé */
+    .spray-box { margin-top: 18px; background: rgba(0,0,0,.25); border: 1px solid #16414f; border-radius: 12px; padding: 14px; }
+    .spray-titre { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #9fd4e4; margin: 0 0 4px; }
+    .spray-note { font-size: 11px; color: #6b7280; margin: 0 0 10px; line-height: 1.4; }
+    .spray-svg { display: block; width: 100%; max-width: 220px; height: auto; margin: 0 auto; background: rgba(0,0,0,.2); border-radius: 8px; }
+
     /* Miniatures du comparateur */
     .cmp-vignette { display: block; margin-top: 10px; height: 70px; width: auto; max-width: 200px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
 
@@ -542,6 +548,50 @@
       retenus.forEach(c => { sel[c.slot] = c.opt.id; });
       return { sel, retenus };
     }
+    // -- SPRAY PATTERN SIMULÉ ---------------------------------------------
+    // IMPORTANT : ce n'est PAS le vrai tracé in-game (non disponible en données
+    // ouvertes). C'est une ESTIMATION calculée à partir des stats de recul
+    // (vertical, horizontal, gun kick) qui réagit aux accessoires.
+    // Générateur pseudo-aléatoire déterministe (même arme = même tracé).
+    function mulberry32(a) {
+      return function () {
+        a |= 0; a = (a + 0x6D2B79F5) | 0;
+        let t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    function hashChaine(s) {
+      let h = 2166136261;
+      for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+      return h >>> 0;
+    }
+    // Renvoie les points (en pixels, dans une vue WxH) du tracé de recul estimé.
+    function trajectoireRecul(finales, seed, nBalles, W, H) {
+      const rand = mulberry32(seed);
+      const V = finales.recul_vertical || 0;
+      const Hr = finales.recul_horizontal || 0;
+      const K = finales.gun_kick || 0;
+      const monteeParBalle = V * 0.13;   // px verticaux par balle
+      const ampliH = Hr * 0.9;           // amplitude du balancement horizontal
+      const gigue = K * 0.18;            // tremblement par balle
+      const cx = W / 2, baseY = H - 14;
+      let x = 0, y = 0, vitesseH = 0;
+      const pts = [];
+      for (let i = 0; i < nBalles; i++) {
+        // Montée verticale (un peu plus marquée vers la fin du chargeur).
+        y += monteeParBalle * (0.7 + 0.7 * (i / nBalles));
+        // Marche horizontale amortie + tremblement.
+        vitesseH += (rand() - 0.5) * ampliH * 0.7;
+        vitesseH *= 0.78;
+        x += vitesseH + (rand() - 0.5) * gigue;
+        const X = Math.max(10, Math.min(W - 10, cx + x));
+        const Y = Math.max(12, Math.min(baseY, baseY - y));
+        pts.push({ X, Y });
+      }
+      return pts;
+    }
+
     const SILHOUETTE_ARME = `
       <svg viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Silhouette d'arme">
         <defs>
@@ -650,6 +700,35 @@
             );
           })}
         </Fragment>
+      );
+    }
+
+    // Tracé de recul estimé (spray pattern simulé).
+    function SprayPattern({ finales, armeId, capacite }) {
+      const W = 210, H = 240;
+      const n = Math.max(8, Math.min(30, Math.round(capacite || 20)));
+      const pts = trajectoireRecul(finales, hashChaine(armeId), n, W, H);
+      const poly = pts.map(p => `${p.X.toFixed(1)},${p.Y.toFixed(1)}`).join(" ");
+      const cx = W / 2, baseY = H - 14;
+      return (
+        <div className="spray-box">
+          <h3 className="spray-titre">Spray pattern</h3>
+          <p className="spray-note">Estimation simulée d'après le recul (vertical, horizontal, gun kick) — pas le tracé exact du jeu. Réagit aux accessoires.</p>
+          <svg className="spray-svg" viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg">
+            <line x1={cx} y1="12" x2={cx} y2={baseY} stroke="#1f3a44" strokeWidth="1" strokeDasharray="3 4" />
+            <line x1="14" y1={baseY} x2={W - 14} y2={baseY} stroke="#1f3a44" strokeWidth="1" />
+            <polyline points={poly} fill="none" stroke="#4fd0e6" strokeWidth="1.5" opacity="0.55" />
+            {pts.map((p, i) => {
+              const t = n > 1 ? i / (n - 1) : 0;          // 0 = 1re balle, 1 = dernière
+              const hue = 140 - 140 * t;                   // vert -> rouge
+              return <circle key={i} cx={p.X} cy={p.Y} r={i === 0 ? 4 : 3} fill={`hsl(${hue},70%,55%)`} />;
+            })}
+            <circle cx={cx} cy={baseY} r="4.5" fill="none" stroke="#ffffff" strokeWidth="1.5" />
+          </svg>
+          <p className="spray-note" style={{ textAlign: "center", marginTop: "6px" }}>
+            <span style={{ color: "hsl(140,70%,55%)" }}>● 1re balle</span> &nbsp;→&nbsp; <span style={{ color: "hsl(0,70%,55%)" }}>● dernière</span> ({n} balles)
+          </p>
+        </div>
       );
     }
 
@@ -1034,6 +1113,7 @@
                       <h2>Statistiques</h2>
                       <div className="ttk-box"><TTKBox finales={finalesP} pvCible={pvCible} setPvCible={setPvCible} /></div>
                       <div><StatBars arme={armeP} finales={finalesP} /></div>
+                      <SprayPattern finales={finalesP} armeId={armeP.id} capacite={finalesP.capacite_chargeur} />
                     </div>
                   </div>
                   <div className="gs-attachments">
@@ -1078,6 +1158,7 @@
                     <div className="gs-stats">
                       <h2>Statistiques</h2>
                       <div><StatBars arme={armeS} finales={finalesS} /></div>
+                      <SprayPattern finales={finalesS} armeId={armeS.id} capacite={finalesS.capacite_chargeur} />
                     </div>
                   </div>
                   <div className="gs-attachments">
