@@ -85,6 +85,7 @@
     .chip { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
     .chip.bonus { background: rgba(74,222,128,.15); color: #4ade80; }
     .chip.malus { background: rgba(248,113,113,.15); color: #f87171; }
+    .chip.info { background: rgba(159,212,228,.16); color: #9fd4e4; }
     .chips-ligne { display: inline-flex; gap: 5px; flex-wrap: wrap; }
 
     .dd { position: relative; }
@@ -478,14 +479,25 @@
       return finales;
     }
     function chipsAffectes(option, afficherValeurs) {
-      if (!option.modificateurs) return "";
-      return Object.entries(option.modificateurs).map(([stat, val]) => {
-        const infos = INFOS_STATS[stat];
-        const valeur = parseFloat(val);
-        const estBonus = infos.plusGrandEstMieux ? (valeur > 0) : (valeur < 0);
-        const texte = afficherValeurs ? `${infos.court} ${val}` : infos.court;
-        return `<span class="chip ${estBonus ? "bonus" : "malus"}">${texte}</span>`;
-      }).join("");
+      let html = "";
+      // 1) Effets simulés (modifient les stats) : vert = bonus, rouge = malus.
+      if (option.modificateurs) {
+        html += Object.entries(option.modificateurs).map(([stat, val]) => {
+          const infos = INFOS_STATS[stat];
+          const valeur = parseFloat(val);
+          const estBonus = infos.plusGrandEstMieux ? (valeur > 0) : (valeur < 0);
+          const texte = afficherValeurs ? `${infos.court} ${val}` : infos.court;
+          return `<span class="chip ${estBonus ? "bonus" : "malus"}">${texte}</span>`;
+        }).join("");
+      }
+      // 2) Effets affichés mais NON simulés (flinch, mobilité ADS, tir à la hanche…) : étiquette info.
+      if (option.effets_extra) {
+        html += Object.entries(option.effets_extra).map(([label, val]) => {
+          const texte = afficherValeurs ? `${label} ${val}` : label;
+          return `<span class="chip info" title="Effet réel non pris en compte dans le calcul des stats">${texte}</span>`;
+        }).join("");
+      }
+      return html;
     }
     function calculerTTK(finales, pv) {
       const deg = finales.degats, cad = finales.cadence_cpm;

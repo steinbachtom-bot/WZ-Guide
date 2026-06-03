@@ -234,10 +234,10 @@ const ARMES_PRINCIPALES = [
       { id: "sous_canon", label: "Sous-canon", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "poignee_vert", nom: "Poignée verticale", description: "Réduit fortement le recul horizontal.", modificateurs: { gun_kick: "-3%", recul_horizontal: "-35%" } },
-        { id: "poignee_marksman", nom: "Poignée Marksman", description: "Réduit le recul en visée focalisée (non chiffré ici)." },
+        { id: "poignee_marksman", nom: "Poignée Marksman", description: "Réduit le recul en visée focalisée.", effets_extra: { "Recul en visée": "réduit" } },
         { id: "poignee_legere", nom: "Poignée légère", description: "Légère, sans effet de stat chiffré." },
         { id: "poignee_prec", nom: "Poignée de précision", description: "Réduit le recul horizontal.", modificateurs: { gun_kick: "-2%", recul_horizontal: "-20%" } },
-        { id: "poignee_ranger", nom: "Poignée Ranger", description: "Réduit le recul horizontal.", modificateurs: { gun_kick: "-2%", recul_horizontal: "-20%" } },
+        { id: "poignee_ranger", nom: "Poignée Ranger", description: "Réduit le recul horizontal, sprinte plus vite.", modificateurs: { gun_kick: "-2%", recul_horizontal: "-20%" }, effets_extra: { "Vitesse sprint": "+7%" } },
         { id: "g_grip", nom: "Poignée G-Grip", description: "Réduit le recul horizontal.", modificateurs: { gun_kick: "-2%", recul_horizontal: "-20%" } }
       ]},
       { id: "chargeur", label: "Chargeur", options: [
@@ -257,15 +257,15 @@ const ARMES_PRINCIPALES = [
       ]},
       { id: "crosse", label: "Crosse", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "crosse_infiltrateur", nom: "Crosse Infiltrateur", description: "Plus mobile en visée (non chiffré ici)." },
-        { id: "sans_crosse", nom: "Sans crosse", description: "Déplacement nettement plus rapide.", modificateurs: { mobilite: "+24%" } },
-        { id: "crosse_lourde", nom: "Crosse lourde", description: "Réduit le flinch (encaissement des tirs)." },
-        { id: "crosse_equilibree", nom: "Crosse équilibrée", description: "Déplacement plus rapide.", modificateurs: { mobilite: "+12%" } },
-        { id: "crosse_combat", nom: "Crosse de combat", description: "Plus mobile en visée (non chiffré ici)." }
+        { id: "crosse_infiltrateur", nom: "Crosse Infiltrateur", description: "Plus mobile en visée.", effets_extra: { "Mobilité ADS": "+21%" } },
+        { id: "sans_crosse", nom: "Sans crosse", description: "Déplacement nettement plus rapide.", modificateurs: { mobilite: "+24%" }, effets_extra: { "Mobilité accroupi": "+36%" } },
+        { id: "crosse_lourde", nom: "Crosse lourde", description: "Réduit le flinch (encaissement des tirs).", effets_extra: { "Flinch": "−55%" } },
+        { id: "crosse_equilibree", nom: "Crosse équilibrée", description: "Déplacement plus rapide.", modificateurs: { mobilite: "+12%" }, effets_extra: { "Mobilité accroupi": "+18%", "Mobilité ADS": "+11%" } },
+        { id: "crosse_combat", nom: "Crosse de combat", description: "Plus mobile en visée, réduit le flinch.", effets_extra: { "Mobilité ADS": "+12%", "Flinch": "−30%" } }
       ]},
       { id: "laser", label: "Laser", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "laser_visee_stable", nom: "Laser visée stable", description: "Réduit la dispersion à la hanche (visible par l'ennemi)." },
+        { id: "laser_visee_stable", nom: "Laser visée stable", description: "Réduit la dispersion à la hanche (visible par l'ennemi).", effets_extra: { "Tir à la hanche": "−20%" } },
         { id: "laser_strelok", nom: "Laser Strelok", description: "Laser de visée (visible par l'ennemi)." },
         { id: "laser_mvt_rapide", nom: "Laser mouvement rapide", description: "Améliore la manœuvrabilité (visible par l'ennemi)." },
         { id: "laser_tactique", nom: "Laser tactique", description: "Améliore le tir à la hanche (visible par l'ennemi)." },
