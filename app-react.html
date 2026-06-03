@@ -339,6 +339,20 @@
       .hero::before, .hero-arme, .hero-logo, .hero-slogan, .hero-sous, .hero .badge-maj, .hero-cta, .carte-nav { animation: none; }
     }
 
+    /* Bandeau d'en-tête des vues (Classes, Comparateur, Méta) */
+    .banniere {
+      display: flex; align-items: center; gap: 16px; padding: 20px 24px; margin-bottom: 24px;
+      border-radius: 14px; position: relative; overflow: hidden;
+      background: radial-gradient(620px 220px at 0% -50%, rgba(79,208,230,.20), transparent 60%),
+                  linear-gradient(160deg, #0f2c36 0%, #0a1c24 70%, #07141a 100%);
+      border: 1px solid #16414f; box-shadow: 0 8px 28px rgba(0,0,0,.3);
+      animation: apparition .5s ease both;
+    }
+    .banniere-ico { width: 48px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: rgba(79,208,230,.12); color: #4fd0e6; }
+    .banniere-ico svg { width: 26px; height: 26px; }
+    .banniere-titre { font-size: 22px; margin: 0; color: #fff; }
+    .banniere-sous { margin: 4px 0 0; color: #9aa0a6; font-size: 14px; }
+
     .accueil-titre { font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: #9fd4e4; margin: 0 0 14px; }
     .accueil-cartes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
     .carte-nav {
@@ -714,6 +728,19 @@
       );
     }
 
+    // Bandeau d'en-tête réutilisable pour les vues secondaires.
+    function Banniere({ icone, titre, sous }) {
+      return (
+        <div className="banniere">
+          {icone && <div className="banniere-ico">{icone}</div>}
+          <div>
+            <h1 className="banniere-titre">{titre}</h1>
+            {sous && <p className="banniere-sous">{sous}</p>}
+          </div>
+        </div>
+      );
+    }
+
     /* ===== APPLICATION PRINCIPALE ===== */
     function App() {
       const [mode, setMode] = useState("warzone");
@@ -1051,8 +1078,8 @@
 
             {vue === "classes" && (
               <div>
-                <h1>Classes enregistrées</h1>
-                <p className="sous-titre">Tes classes sauvegardées sur cet ordinateur. Clique « Charger » pour réappliquer une classe.</p>
+                <Banniere icone={navItems.find(n => n.id === "classes").ico} titre="Classes enregistrées"
+                  sous="Tes classes sauvegardées sur cet ordinateur. Clique « Charger » pour réappliquer une classe." />
                 {classes.length === 0
                   ? <p className="vide">Aucune classe enregistrée pour l'instant. Compose une classe dans le créateur, puis clique « Enregistrer la classe ».</p>
                   : classes.map((c, i) => {
@@ -1076,8 +1103,8 @@
 
             {vue === "comparateur" && (
               <div>
-                <h1>Comparateur d'armes</h1>
-                <p className="sous-titre">Compare les statistiques de base de deux armes. <span style={{ color: "#4ade80" }}>Vert</span> = meilleure des deux.</p>
+                <Banniere icone={navItems.find(n => n.id === "comparateur").ico} titre="Comparateur d'armes"
+                  sous="Compare les statistiques de base de deux armes — le vert indique la meilleure des deux." />
                 <div className="cmp-choix">
                   <div><label>Arme A :</label><Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpA.id} onChange={(id) => setCmpA(TOUTES_ARMES.find(a => a.id === id))} /></div>
                   <div><label>Arme B :</label><Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpB.id} onChange={(id) => setCmpB(TOUTES_ARMES.find(a => a.id === id))} /></div>
@@ -1110,8 +1137,8 @@
 
             {vue === "meta" && (
               <div>
-                <h1>Méta — Tier list</h1>
-                <p className="sous-titre">Classement indicatif des armes (basé sur la méta codmunity, modifiable dans <code>donnees.js</code>).</p>
+                <Banniere icone={navItems.find(n => n.id === "meta").ico} titre="Méta — Tier list"
+                  sous="Classement indicatif des armes, basé sur la méta codmunity (modifiable dans donnees.js)." />
                 <div>
                   {(() => {
                     const ordreCats = [];
