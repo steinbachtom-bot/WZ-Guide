@@ -3755,7 +3755,7 @@ const ARMES_PRINCIPALES = [
     nom: "Akita",
     categorie: "Fusil à pompe",
     jeu: "Black Ops 7",
-    // Fusil à pompe automatique (cadence élevée). Stats de base RÉELLES (Warzone, codmunity.gg). Accessoires réels (effets peu publiés).
+    // Accessoires COMPLETS de l'Akita (liste exhaustive, source codmunity.gg Warzone). Pompe automatique — codmunity ne publie de chiffres que sur quelques accessoires.
     stats_base: {
       degats: 70, portee_m: 12, cadence_cpm: 400, velocite_ms: 320,
       capacite_chargeur: 12, vitesse_visee_ms: 210, sprint_to_fire_ms: 160,
@@ -3765,50 +3765,76 @@ const ARMES_PRINCIPALES = [
     emplacements: [
       { id: "viseur", label: "Optique", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "reflex", nom: "Reflex", description: "Point rouge ouvert." },
-        { id: "lunette_2x", nom: "Lunette 2x", description: "Faible grossissement." }
+        { id: "vas_led", nom: "VAS LED", description: "Point rouge reflex." },
+        { id: "eam_micro", nom: "EAM Micro Dot", description: "Mini point rouge." },
+        { id: "emt3_holo", nom: "EMT3 Holo Mk.2", description: "Viseur holographique." },
+        { id: "redwell_2x", nom: "Redwell 30-S 2x", description: "Lunette grossissement 2x." },
+        { id: "kepler_trange", nom: "Kepler T-Range Holo", description: "Holo avec télémètre." }
       ]},
       { id: "bouche", label: "Bouche", options: [
         { id: "aucun", nom: "— Aucun —" },
         { id: "akita_choke", nom: "Étrangleur Akita Full Bore-12", description: "Resserre la gerbe en stance tactique." },
-        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Discret (pas d'effet de stat publié)." },
-        { id: "redwell", nom: "Suppresseur Redwell Shade-X", description: "Réduit tout le recul, moins de vélocité.", modificateurs: { gun_kick: "-11%", recul_horizontal: "-11%", recul_vertical: "-11%", velocite_ms: "-13%" } }
+        { id: "hko_supp", nom: "Suppresseur HKO", description: "Tir silencieux." },
+        { id: "phantasm_brake", nom: "Frein Phantasm 12G", description: "Réduit le recul de la 1re balle.", effets_extra: { "Recul 1re balle": "−50%" } },
+        { id: "supp_mono", nom: "Suppresseur monolithique", description: "Tir silencieux (pas de chiffre d'effet publié)." },
+        { id: "fang_choke", nom: "Étrangleur Fang Modified", description: "Resserre la gerbe au tir à la hanche." },
+        { id: "stentorian", nom: "Frein LTI Stentorian", description: "Bouche du Battle Pass S4." },
+        { id: "redwell", nom: "Suppresseur Redwell Shade-X", description: "Réduit tout le recul, moins de vélocité/portée.", modificateurs: { gun_kick: "-11%", recul_horizontal: "-11%", recul_vertical: "-11%", velocite_ms: "-13%", portee_m: "-15%" } }
       ]},
       { id: "canon", label: "Canon", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "canon_long", nom: "Canon long", description: "Portée utile accrue." },
-        { id: "canon_court", nom: "Canon court", description: "Manie plus vite." },
-        { id: "canon_velocite", nom: "Canon vélocité", description: "Vélocité des plombs accrue." }
+        { id: "security_cipher", nom: "Canon vélocité 12\" Security Cipher", description: "Vélocité des plombs accrue." },
+        { id: "lightpad", nom: "Canon court 10.3\" Lightpad Strike", description: "Manie plus vite." },
+        { id: "phobos", nom: "Canon dégâts 9.4\" Phobos Heavy", description: "Dégâts accrus." },
+        { id: "splice_mix", nom: "Canon hybride 10\" Splice Mix", description: "Canon polyvalent." },
+        { id: "retriever", nom: "Canon long 14\" Retriever Hunt", description: "Portée utile accrue." }
       ]},
       { id: "sous_canon", label: "Sous-canon", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "force_stab", nom: "Poignée Force Stabilizer", description: "Améliore le contrôle." },
-        { id: "mobility_grip", nom: "Poignée mobilité", description: "Améliore la mobilité." }
+        { id: "sapper", nom: "Poignée Sapper Guard", description: "Recul réduit et mobilité (effet non chiffré)." },
+        { id: "force_stab", nom: "Poignée Force Stabilizer", description: "Améliore le contrôle du recul." },
+        { id: "strider", nom: "Poignée Strider", description: "Améliore la mobilité." },
+        { id: "zero_shift", nom: "Poignée Zero Shift", description: "Améliore la stabilité de visée." },
+        { id: "vas_convergence", nom: "Poignée VAS Convergence", description: "Réduit la déviation des plombs." }
       ]},
       { id: "chargeur", label: "Chargeur", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "ext_mag", nom: "Chargeur étendu", description: "Capacité augmentée.", modificateurs: { capacite_chargeur: "+6" } },
-        { id: "fast_mag", nom: "Chargeur rapide", description: "Recharge plus vite, capacité réduite.", modificateurs: { capacite_chargeur: "-3" } }
+        { id: "shell_ext1", nom: "Porte-cartouches étendu I", description: "Capacité augmentée." },
+        { id: "bravo_rack", nom: "Chargeur rapide Bravo Speed Rack", description: "Recharge plus vite (Fast Mag)." },
+        { id: "thinpoint", nom: "Chargeur rapide Thinpoint", description: "Manie/recharge plus vite (Fast Mag II)." },
+        { id: "bulk_feed", nom: "Porte-cartouches étendu II Bulk Feed", description: "Capacité augmentée." }
       ]},
       { id: "poignee_arr", label: "Poignée arrière", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "quickdraw", nom: "Poignée Quickdraw", description: "Visée plus rapide (effet non chiffré)." },
-        { id: "s2f", nom: "Poignée tir-sprint", description: "Tir après sprint plus rapide (effet non chiffré)." }
+        { id: "pioneer", nom: "Poignée Pioneer Blaze (tir-sprint)", description: "Tir après sprint plus rapide (effet non chiffré)." },
+        { id: "stippled", nom: "Poignée Stippled Control", description: "Stabilise le recul (effet non chiffré)." },
+        { id: "granulated", nom: "Poignée Granulated Fast (Quickdraw)", description: "Visée plus rapide (effet non chiffré)." },
+        { id: "paradise", nom: "Poignée Paradise Gen-4 (précision)", description: "Réduit le recul de la 1re balle.", effets_extra: { "Recul 1re balle": "−60%" } },
+        { id: "s47", nom: "Poignée S-47 Response", description: "Visée plus rapide (mobile, effet non chiffré)." }
       ]},
       { id: "crosse", label: "Crosse", options: [
         { id: "aucun", nom: "— Crosse standard —" },
-        { id: "mobility_stock", nom: "Crosse mobilité", description: "Améliore la mobilité." },
-        { id: "control_stock", nom: "Crosse contrôle", description: "Réduit le recul (effet non chiffré)." }
+        { id: "venomous", nom: "Crosse Venomous (ADS mobilité)", description: "Déplacement en visée amélioré." },
+        { id: "vagabond", nom: "Crosse Vagabond (tactique)", description: "Améliore le tir en stance tactique." },
+        { id: "mobile_security", nom: "Crosse Mobile Security (mobilité)", description: "Améliore la mobilité." },
+        { id: "illicit", nom: "Crosse Illicit Motion", description: "Réduit le flinch (encaissement)." },
+        { id: "mfs_gd7", nom: "Crosse MFS GD-7 Shock", description: "Maniabilité améliorée." },
+        { id: "scorchlink", nom: "Akita ScorchLink Akimbo (double, belt-fed)", description: "Double maniement alimenté par bande : énorme volume de feu mais recul et tir après sprint dégradés.", modificateurs: { sprint_to_fire_ms: "+25%", gun_kick: "+25%", recul_horizontal: "+100%", recul_vertical: "+100%" } }
       ]},
       { id: "laser", label: "Laser", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "instinct_1mw", nom: "Laser 1mW Instinct", description: "Améliore le tir à la hanche (visible)." },
-        { id: "convergence", nom: "Laser Convergence Box", description: "Améliore la stabilité de visée (visible)." }
+        { id: "scatterline", nom: "Laser EAM ScatterLine", description: "Précision tir à la hanche (visible)." },
+        { id: "redwell_tac", nom: "Laser tactique Redwell", description: "Précision tir à la hanche (visible)." },
+        { id: "emt3_agile", nom: "Laser EMT3 Agile", description: "Précision tir à la hanche (visible)." },
+        { id: "vas_shift", nom: "Laser VAS Precision Shift", description: "Précision tir à la hanche (visible)." },
+        { id: "swiftpoint", nom: "Laser LTI SwiftPoint", description: "Manie plus vite (visible)." }
       ]},
       { id: "mode_tir", label: "Mode de tir", options: [
         { id: "aucun", nom: "— Aucun —" },
-        { id: "slug", nom: "12 Gauge Slug", description: "Projectile unique : portée et précision accrues." },
-        { id: "dragons_breath", nom: "12 Gauge Dragon's Breath", description: "Munitions incendiaires." }
+        { id: "buffer", nom: "Ressorts amortisseurs", description: "Réduit le recul (effet non chiffré)." },
+        { id: "dragons_breath", nom: "12 Gauge Short Dragon's Breath", description: "Munitions incendiaires." },
+        { id: "enhanced_cycle", nom: "Système de cycle amélioré", description: "Cadence de tir accrue." },
+        { id: "slug", nom: "12 Gauge Short Slug", description: "Projectile unique : portée et précision accrues (buff dégâts S3R)." }
       ]}
     ]
   }
