@@ -350,6 +350,18 @@
     }
     @keyframes flotter { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-12px) rotate(-3deg); } }
 
+    /* Armes flottantes supplémentaires (décor) */
+    .hero-arme2, .hero-arme3, .hero-arme4, .hero-arme5 {
+      position: absolute; z-index: 0; pointer-events: none;
+      filter: drop-shadow(0 0 18px rgba(79,208,230,.4));
+    }
+    .hero-arme2 { left: -42px; top: -26px; width: 30%; max-width: 360px; opacity: .12; animation: flotter2 8s ease-in-out infinite; }
+    .hero-arme3 { left: 9%; bottom: -30px; width: 22%; max-width: 280px; opacity: .08; animation: flotter3 9s ease-in-out infinite .6s; }
+    .hero-arme4 { right: 13%; top: -22px; width: 20%; max-width: 250px; opacity: .09; animation: flotter2 7.5s ease-in-out infinite .3s; }
+    .hero-arme5 { right: 31%; bottom: -42px; width: 26%; max-width: 300px; opacity: .07; animation: flotter3 8.5s ease-in-out infinite 1s; }
+    @keyframes flotter2 { 0%, 100% { transform: translateY(0) rotate(6deg); } 50% { transform: translateY(-14px) rotate(6deg); } }
+    @keyframes flotter3 { 0%, 100% { transform: translateY(0) rotate(-9deg); } 50% { transform: translateY(-10px) rotate(-9deg); } }
+
     /* Vignettes d'armes sur les cartes */
     .carte-vignettes { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
     .carte-vignettes img { height: 32px; width: auto; max-width: 84px; object-fit: contain; opacity: .9; filter: drop-shadow(0 2px 4px rgba(0,0,0,.4)); }
@@ -367,7 +379,7 @@
     .accueil-cartes .carte-nav:nth-child(3) { animation-delay: .19s; }
     .accueil-cartes .carte-nav:nth-child(4) { animation-delay: .26s; }
     @media (prefers-reduced-motion: reduce) {
-      .hero::before, .hero-arme, .hero-logo, .hero-slogan, .hero-sous, .hero .badge-maj, .hero-cta, .carte-nav { animation: none; }
+      .hero::before, .hero-arme, .hero-arme2, .hero-arme3, .hero-arme4, .hero-arme5, .hero-logo, .hero-slogan, .hero-sous, .hero .badge-maj, .hero-cta, .carte-nav { animation: none; }
     }
 
     /* Bandeau d'en-tête des vues (Classes, Comparateur, Méta) */
@@ -427,7 +439,7 @@
       .hero { padding: 40px 16px 34px; }
       .hero-logo { font-size: 38px; letter-spacing: 4px; }
       .hero-slogan { font-size: 17px; }
-      .hero-arme { display: none; }
+      .hero-arme, .hero-arme2, .hero-arme3, .hero-arme4, .hero-arme5 { display: none; }
     }
   </style>
 </head>
