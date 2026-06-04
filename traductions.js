@@ -479,7 +479,7 @@ window.TRAD = {
     "Fusil d'assaut": "Sturmgewehr",
     "Mitraillette": "MP",
     "Fusil-mitrailleur": "LMG",
-    "Fusil tactique": "Markierungsgewehr",
+    "Fusil tactique": "Schützengewehre",
     "Fusil de précision": "Scharfschützengewehr",
     "Fusil à pompe": "Schrotflinte",
     "Pistolet": "Pistole",
