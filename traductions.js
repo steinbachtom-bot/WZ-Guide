@@ -646,3 +646,215 @@ window.TRAD = {
     "Grenade à fragmentation à délai (peut être cuisinée).": "Splittergranate mit Zeitzünder (kann „gekocht“ werden)."
   }
 };
+
+/* ============================================================
+   TRADUCTEUR D'ACCESSOIRES (fallback par tokens)
+   Les noms d'accessoires suivent le schéma : <nom de pièce> + <modificateurs FR> + <marque>.
+   On traduit le nom de pièce et les modificateurs connus (terminologie du jeu),
+   on conserve la marque (nom propre) telle quelle. Utilisé seulement quand
+   aucune traduction exacte n'existe dans window.TRAD.
+   - EN : adjectif placé avant le nom (Canon long -> Long Barrel).
+   - DE : déclinaison forte au nominatif (m -er / f -e / n -es) ou mot composé
+          (Crosse de combat -> Kampfschaft ; Munitions haute vélocité -> Hochgeschwindigkeitsmunition).
+   ============================================================ */
+// Noms de pièce : [FR, {en, de, g(genre m/f/n pour déclinaison), nd(pas de déclinaison)}]
+// Ordre : expressions les plus longues d'abord.
+window.TRAD_TETES = [
+  ["Poignée arrière", { en: "Rear Grip", de: "Hinterer Griff", nd: true }],
+  ["Frein de bouche", { en: "Muzzle Brake", de: "Mündungsbremse", g: "f" }],
+  ["Groupe culasse", { en: "Bolt Carrier Group", de: "Verschlussträger", nd: true }],
+  ["Porte-cartouches", { en: "Shell Holder", de: "Patronenhalter", g: "m" }],
+  ["Garde-main", { en: "Handguard", de: "Handschutz", g: "m" }],
+  ["Sans crosse", { en: "No Stock", de: "Ohne Schaft", nd: true }],
+  ["Tir rapide", { en: "Rapid Fire", de: "Schnellfeuer", nd: true }],
+  ["Poignée", { en: "Grip", de: "Griff", g: "m" }],
+  ["Canon", { en: "Barrel", de: "Lauf", g: "m" }],
+  ["Crosse", { en: "Stock", de: "Schaft", g: "m" }],
+  ["Chargeur", { en: "Magazine", de: "Magazin", g: "n" }],
+  ["Laser", { en: "Laser", de: "Laser", g: "m" }],
+  ["Compensateur", { en: "Compensator", de: "Kompensator", g: "m" }],
+  ["Suppresseur", { en: "Suppressor", de: "Schalldämpfer", g: "m" }],
+  ["Frein", { en: "Muzzle Brake", de: "Mündungsbremse", g: "f" }],
+  ["Munitions", { en: "Rounds", de: "Munition", g: "f" }],
+  ["Joue", { en: "Cheek Rest", de: "Wangenauflage", g: "f" }],
+  ["Tambour", { en: "Drum Mag", de: "Trommelmagazin", g: "n" }],
+  ["Bande", { en: "Belt", de: "Gurt", g: "m" }],
+  ["Étrangleur", { en: "Choke", de: "Würger", g: "m" }],
+  ["Lunette", { en: "Scope", de: "Visier", g: "n" }],
+  ["Ressorts", { en: "Springs", de: "Federn", nd: true }],
+  ["Détente", { en: "Trigger", de: "Abzug", g: "m" }],
+  ["Couteau", { en: "Bayonet", de: "Bajonett", g: "n" }],
+  ["Optique", { en: "Optic", de: "Optik", g: "f" }],
+  ["Conversion", { en: "Conversion", de: "Umbau", g: "m" }],
+  ["Châssis", { en: "Chassis", de: "Chassis", g: "n" }],
+  ["Extension", { en: "Extension", de: "Erweiterung", g: "f" }],
+  ["Système", { en: "System", de: "System", g: "n" }],
+  ["Unité", { en: "Unit", de: "Einheit", g: "f" }],
+  ["Kit", { en: "Kit", de: "Kit", g: "n" }],
+  ["Mode", { en: "Mode", de: "Modus", g: "m" }]
+];
+// Modificateurs adjectivaux : FR -> {en, de(radical à décliner)}
+window.TRAD_MODS_ADJ = {
+  "long": { en: "Long", de: "lang" }, "longue": { en: "Long", de: "lang" },
+  "court": { en: "Short", de: "kurz" }, "courte": { en: "Short", de: "kurz" },
+  "léger": { en: "Light", de: "leicht" }, "légère": { en: "Light", de: "leicht" },
+  "lourd": { en: "Heavy", de: "schwer" }, "lourde": { en: "Heavy", de: "schwer" },
+  "renforcé": { en: "Reinforced", de: "verstärkt" }, "renforcée": { en: "Reinforced", de: "verstärkt" },
+  "ventilé": { en: "Vented", de: "ventiliert" }, "ventilée": { en: "Vented", de: "ventiliert" },
+  "monolithique": { en: "Monolithic", de: "monolithisch" },
+  "tactique": { en: "Tactical", de: "taktisch" },
+  "vertical": { en: "Vertical", de: "vertikal" }, "verticale": { en: "Vertical", de: "vertikal" },
+  "ergonomique": { en: "Ergonomic", de: "ergonomisch" },
+  "étendu": { en: "Extended", de: "verlängert" }, "étendue": { en: "Extended", de: "verlängert" },
+  "rapide": { en: "Rapid", de: "schnell" },
+  "stable": { en: "Steady", de: "stabil" },
+  "équilibré": { en: "Balanced", de: "ausgewogen" }, "équilibrée": { en: "Balanced", de: "ausgewogen" },
+  "réglable": { en: "Adjustable", de: "verstellbar" },
+  "hybride": { en: "Hybrid", de: "hybrid" },
+  "mobile": { en: "Mobile", de: "mobil" },
+  "maniable": { en: "Agile", de: "wendig" },
+  "lesté": { en: "Weighted", de: "beschwert" }, "lestée": { en: "Weighted", de: "beschwert" },
+  "allégé": { en: "Lightened", de: "erleichtert" }, "allégée": { en: "Lightened", de: "erleichtert" },
+  "pliable": { en: "Folding", de: "klappbar" },
+  "repliable": { en: "Collapsible", de: "einklappbar" },
+  "intégré": { en: "Integrated", de: "integriert" }, "intégrée": { en: "Integrated", de: "integriert" },
+  "amélioré": { en: "Improved", de: "verbessert" }, "améliorée": { en: "Improved", de: "verbessert" },
+  "angulaire": { en: "Angled", de: "gewinkelt" },
+  "accéléré": { en: "Accelerated", de: "beschleunigt" }, "accélérée": { en: "Accelerated", de: "beschleunigt" },
+  "imprimé": { en: "Printed", de: "gedruckt" }, "imprimée": { en: "Printed", de: "gedruckt" },
+  "balistique": { en: "Ballistic", de: "ballistisch" },
+  "automatique": { en: "Automatic", de: "automatisch" },
+  "semi-automatique": { en: "Semi-Auto", de: "halbautomatisch" },
+  "moyen": { en: "Medium", de: "mittler" }, "moyenne": { en: "Medium", de: "mittler" }
+};
+// Modificateurs « nom » -> {en, de(préfixe composé)}
+window.TRAD_MODS_CMP = {
+  "d'assaut": { en: "Assault", de: "Sturm" }, "assaut": { en: "Assault", de: "Sturm" },
+  "focus": { en: "Focus", de: "Fokus" },
+  "mobilité": { en: "Mobility", de: "Mobilitäts" },
+  "maniabilité": { en: "Handling", de: "Handling" },
+  "contrôle": { en: "Control", de: "Kontroll" },
+  "précision": { en: "Precision", de: "Präzisions" },
+  "stabilisation": { en: "Stabilizing", de: "Stabilisierungs" },
+  "dégâts": { en: "Damage", de: "Schadens" },
+  "déviation": { en: "Deflection", de: "Ablenkungs" },
+  "synchro": { en: "Sync", de: "Synchron" },
+  "dispersion": { en: "Spread", de: "Streuungs" },
+  "recul": { en: "Recoil", de: "Rückstoß" },
+  "charge": { en: "Charge", de: "Lade" },
+  "saut": { en: "Jump", de: "Sprung" },
+  "cible": { en: "Target", de: "Ziel" },
+  "carabine": { en: "Carbine", de: "Karabiner" },
+  "revolver": { en: "Revolver", de: "Revolver" },
+  "portée": { en: "Range", de: "Reichweiten" },
+  "rafale": { en: "Burst", de: "Salven" },
+  "grenade": { en: "Grenade", de: "Granat" },
+  "amortisseurs": { en: "Buffer", de: "Puffer" }, "amortisseur": { en: "Buffer", de: "Puffer" },
+  "vélocité": { en: "Velocity", de: "Geschwindigkeit" },
+  "suppresseur": { en: "Suppressor", de: "Schalldämpfer" },
+  "cycle": { en: "Cycle", de: "Zyklus" },
+  "visée": { en: "Aiming", de: "Visier" },
+  "harpon": { en: "Harpoon", de: "Harpunen" },
+  "bande": { en: "Belt", de: "Gurt" }
+};
+// Modificateurs à deux mots -> {en, de(préfixe composé)}
+window.TRAD_MODS_W2 = {
+  "de précision": { en: "Precision", de: "Präzisions" },
+  "de visée": { en: "Aiming", de: "Ziel" },
+  "de combat": { en: "Combat", de: "Kampf" },
+  "de tireur": { en: "Marksman", de: "Schützen" },
+  "de recul": { en: "Recoil", de: "Rückstoß" },
+  "haute vélocité": { en: "High-Velocity", de: "Hochgeschwindigkeits" },
+  "mouvement rapide": { en: "Fast-Motion", de: "Schnellbewegungs" },
+  "visée stable": { en: "Steady-Aim", de: "Stabilvisier" },
+  "contrôle de recul": { en: "Recoil-Control", de: "Rückstoßkontroll" },
+  "moyenne portée": { en: "Mid-Range", de: "Mittelstrecken" },
+  "longue portée": { en: "Long-Range", de: "Langstrecken" },
+  "courte portée": { en: "Short-Range", de: "Kurzstrecken" },
+  "anti-flinch": { en: "Anti-Flinch", de: "Anti-Flinch" },
+  "tir-sprint": { en: "Sprint-Fire", de: "Sprint-Feuer" },
+  "mobilité ads": { en: "ADS-Mobility", de: "ZV-Mobilitäts" },
+  "lance-grenade": { en: "Grenade-Launcher", de: "Granatwerfer" },
+  "lance-harpon": { en: "Harpoon-Launcher", de: "Harpunenwerfer" }
+};
+window.trArme = function (nom, lang) {
+  if ((lang !== "en" && lang !== "de") || nom == null) return nom;
+  let tete = null, headStr = "";
+  for (let i = 0; i < window.TRAD_TETES.length; i++) {
+    const fr = window.TRAD_TETES[i][0];
+    if (nom === fr || nom.indexOf(fr + " ") === 0 || nom.indexOf(fr + "-") === 0 || nom.indexOf(fr + "(") === 0) {
+      tete = window.TRAD_TETES[i][1]; headStr = fr; break;
+    }
+  }
+  if (!tete) return nom;
+  let rest = nom.slice(headStr.length).trim();
+  const adjsEn = [], adjsDe = [];
+  let cmpEn = "", cmpDe = "";
+  let guard = 0;
+  while (rest && guard++ < 6) {
+    const low = rest.toLowerCase();
+    // 1) deux mots
+    let matched = false;
+    for (const k in window.TRAD_MODS_W2) {
+      if (low === k || low.indexOf(k + " ") === 0 || low.indexOf(k + "-") === 0 || low.indexOf(k + "(") === 0) {
+        cmpEn = window.TRAD_MODS_W2[k].en; cmpDe = window.TRAD_MODS_W2[k].de;
+        rest = rest.slice(k.length).trim(); matched = true; break;
+      }
+    }
+    if (matched) continue;
+    // 2) un mot
+    const tok = rest.split(/[ (\-]/)[0];
+    const tl = tok.toLowerCase();
+    if (window.TRAD_MODS_ADJ[tl]) {
+      adjsEn.push(window.TRAD_MODS_ADJ[tl].en); adjsDe.push(window.TRAD_MODS_ADJ[tl].de);
+      rest = rest.slice(tok.length).trim(); continue;
+    }
+    if (window.TRAD_MODS_CMP[tl]) {
+      cmpEn = window.TRAD_MODS_CMP[tl].en; cmpDe = window.TRAD_MODS_CMP[tl].de;
+      rest = rest.slice(tok.length).trim(); continue;
+    }
+    break; // mot inconnu = marque -> on garde tel quel
+  }
+  let remainder = rest.replace(/^[\s\-]+/, "");
+  // Nettoyage : traduire aussi les modificateurs FR situés APRÈS une marque/calibre
+  // (ex : « Chargeur 5.56 NATO étendu »), au cas par cas, sans toucher aux noms propres.
+  if (remainder) {
+    // phrases à deux mots d'abord
+    for (const k in window.TRAD_MODS_W2) {
+      const re = new RegExp("(^|[ (\\-])" + k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?=$|[ )\\-])", "ig");
+      remainder = remainder.replace(re, (m, p1) => p1 + window.TRAD_MODS_W2[k][lang]);
+    }
+    // mots simples
+    remainder = remainder.replace(/[A-Za-zÀ-ÿ']+/g, (w) => {
+      const tl = w.toLowerCase();
+      if (window.TRAD_MODS_ADJ[tl]) return window.TRAD_MODS_ADJ[tl][lang];
+      if (window.TRAD_MODS_CMP[tl]) {
+        if (lang === "en") return window.TRAD_MODS_CMP[tl].en;
+        // DE : forme autonome lisible (on retire le 's' de liaison du composé)
+        return window.TRAD_MODS_CMP[tl].de.replace(/s$/, "");
+      }
+      return w;
+    });
+  }
+  if (lang === "en") {
+    const parts = [];
+    if (adjsEn.length) parts.push(adjsEn.join(" "));
+    if (cmpEn) parts.push(cmpEn);
+    parts.push(tete.en);
+    let out = parts.join(" ");
+    if (remainder) out += " " + remainder;
+    return out;
+  }
+  // allemand
+  function declEnd(g) { return g === "f" ? "e" : g === "n" ? "es" : g === "m" ? "er" : ""; }
+  let noun = tete.de;
+  if (cmpDe) noun = cmpDe + noun.toLowerCase();   // mot composé (même pour les têtes pluriel/fixe)
+  let out;
+  if (adjsDe.length && !tete.nd) {
+    out = adjsDe.map(s => s + declEnd(tete.g)).join(" ") + " " + noun;
+  } else {
+    out = noun;
+  }
+  if (remainder) out += " " + remainder;
+  return out;
+};

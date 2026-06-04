@@ -493,7 +493,10 @@
       if (fr == null) return fr;
       if (LANGUE === "fr") return fr;
       const dico = (typeof window.TRAD !== "undefined") ? window.TRAD[LANGUE] : null;
-      return (dico && dico[fr] != null) ? dico[fr] : fr;
+      if (dico && dico[fr] != null) return dico[fr];
+      // repli : traducteur d'accessoires par tokens (noms propres conservés)
+      if (typeof window.trArme === "function") return window.trArme(fr, LANGUE);
+      return fr;
     }
 
     /* ===== LOGIQUE PURE (reprise de index.html, sans dépendance au DOM) ===== */
