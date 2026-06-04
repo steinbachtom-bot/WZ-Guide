@@ -1498,12 +1498,12 @@
                       return (
                         <div className="meta-categorie" key={cat}>
                           <h3 className="meta-cat-titre">{t(cat)}</h3>
-                          {TIERS_ORDRE.concat(["N"]).map(t => {
-                            const armes = groupes[t];
+                          {TIERS_ORDRE.concat(["N"]).map(tl => {
+                            const armes = groupes[tl];
                             if (!armes || !armes.length) return null;
                             return (
-                              <div className={"tier tier-" + t} key={t}>
-                                <div className="tier-lettre">{t === "N" ? "?" : t}</div>
+                              <div className={"tier tier-" + tl} key={tl}>
+                                <div className="tier-lettre">{tl === "N" ? "?" : tl}</div>
                                 <div className="tier-armes">
                                   {armes.map(a => {
                                     const src = (typeof IMAGES_ARMES !== "undefined") ? IMAGES_ARMES[a.id] : null;
