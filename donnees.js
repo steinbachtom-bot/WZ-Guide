@@ -182,8 +182,16 @@ const IMAGES_ARMES = {
   pistolet_1911: IMG_BASE + "1911.webp",
   // Armes spéciales BO7
   siren: IMG_BASE + "siren_bo7_icon.webp",
-  nx_ravager: IMG_BASE + "NX-Ravager.webp"
-  // (Lanceurs et armes de mêlée : pas de visuel propre sur codmunity → silhouette)
+  nx_ravager: IMG_BASE + "NX-Ravager.webp",
+  // Lanceurs BO7
+  arc_m1: IMG_BASE + "A.R.C.-M1-Green.webp",
+  aarow_109: IMG_BASE + "AAROW-109-Green.webp",
+  // Armes de mêlée BO7
+  couteau: IMG_BASE + "Knife-Green.webp",
+  couteau_balistique: IMG_BASE + "ballisticknife_bo7_Icon.webp",
+  katana: IMG_BASE + "katana_bo7_melee_icon.webp",
+  h311_saw: IMG_BASE + "H311SAW_bo7_Icon.webp"
+  // (Flatline Mk.II et Poings : pas de page/visuel sur codmunity → silhouette)
 };
 
 /* ------------------------------------------------------------
