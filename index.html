@@ -304,12 +304,19 @@
 
     /* Spray pattern simulé */
     .spray-box { margin-top: 18px; background: rgba(0,0,0,.25); border: 1px solid #16414f; border-radius: 12px; padding: 14px; }
-    .spray-tete { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+    .spray-tete { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
     .spray-titre { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #9fd4e4; margin: 0; }
     .spray-btn { display: inline-flex; align-items: center; gap: 6px; background: #1f6feb; color: #fff; border: none; border-radius: 8px; padding: 5px 12px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; }
     .spray-btn:hover { background: #2a7bff; }
+    .spray-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .spray-zoom { display: inline-flex; align-items: center; gap: 2px; background: #11242c; border: 1px solid #1d3a45; border-radius: 8px; padding: 2px; }
+    .spray-zbtn { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; padding: 0 4px; background: transparent; color: #cfe6ee; border: none; border-radius: 6px; font-size: 15px; font-weight: 700; line-height: 1; cursor: pointer; font-family: inherit; }
+    .spray-zbtn:hover:not(:disabled) { background: #16323d; color: #fff; }
+    .spray-zbtn:disabled { opacity: .35; cursor: default; }
+    .spray-zreset { font-size: 13px; }
+    .spray-zval { min-width: 38px; text-align: center; font-size: 11px; font-weight: 700; color: #9fd4e4; font-variant-numeric: tabular-nums; }
     .spray-note { font-size: 11px; color: #6b7280; margin: 0 0 10px; line-height: 1.4; }
-    .spray-svg { display: block; width: 100%; max-width: 220px; height: auto; margin: 0 auto; background: rgba(0,0,0,.2); border-radius: 8px; }
+    .spray-svg { display: block; width: 100%; max-width: 220px; height: auto; margin: 0 auto; background: rgba(0,0,0,.2); border-radius: 8px; overflow: hidden; }
 
     /* Miniatures du comparateur */
     .cmp-vignette { display: block; margin-top: 10px; height: 70px; width: auto; max-width: 200px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
@@ -468,7 +475,7 @@
   <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=2"></script>
+  <script src="traductions.js?v=3"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -680,9 +687,9 @@
         vitesseH += (rand() - 0.5) * ampliH * 0.7 * mult;
         vitesseH *= 0.78;
         x += vitesseH + (rand() - 0.5) * gigue * mult;
-        const X = Math.max(10, Math.min(W - 10, cx + x));
-        const Y = Math.max(12, Math.min(baseY, baseY - y));
-        pts.push({ X, Y });
+        // Coordonnées brutes (non bornées) : le zoom/cadrage est géré à l'affichage,
+        // ce qui permet de voir TOUTES les balles même quand le recul est important.
+        pts.push({ X: cx + x, Y: baseY - y });
       }
       return pts;
     }
@@ -816,6 +823,7 @@
 
       const [visibles, setVisibles] = useState(n);   // par défaut : tout affiché (statique)
       const [joue, setJoue] = useState(false);
+      const [zoom, setZoom] = useState(1);           // facteur de zoom manuel (1 = cadrage auto)
       const rafRef = useRef(null);
       const debutRef = useRef(0);
 
@@ -840,18 +848,43 @@
         };
         rafRef.current = requestAnimationFrame(etape);
       }
-      // Changement d'arme / de chargeur -> on stoppe l'anim et on réaffiche tout.
-      useEffect(() => { stop(); setVisibles(n); /* eslint-disable-next-line */ }, [armeId, n]);
+      // Changement d'arme / de chargeur -> on stoppe l'anim, on réaffiche tout, on remet le zoom auto.
+      useEffect(() => { stop(); setVisibles(n); setZoom(1); /* eslint-disable-next-line */ }, [armeId, n]);
       // Nettoyage à la disparition du composant.
       useEffect(() => () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); }, []);
 
-      const montres = pts.slice(0, visibles);
+      // Cadrage automatique : on calcule l'étendue de TOUTES les balles (pas seulement
+      // les visibles) pour que l'échelle reste stable pendant l'animation, puis on borne
+      // pour que tout tienne dans la vue. Le zoom manuel multiplie ce cadrage de base.
+      const padX = 12, padTop = 14;
+      let maxAbsX = 1, maxUp = 1;
+      pts.forEach(p => {
+        maxAbsX = Math.max(maxAbsX, Math.abs(p.X - cx));
+        maxUp = Math.max(maxUp, baseY - p.Y);
+      });
+      const fitH = (W / 2 - padX) / maxAbsX;
+      const fitV = (baseY - padTop) / maxUp;
+      const baseFit = Math.min(1, fitH, fitV);       // ne jamais agrandir au-delà de l'échelle naturelle
+      const echelle = baseFit * zoom;
+      const mapPt = p => ({ X: cx + echelle * (p.X - cx), Y: baseY + echelle * (p.Y - baseY) });
+      const ZMIN = 0.4, ZMAX = 4;
+      const zoomer = (f) => setZoom(z => Math.max(ZMIN, Math.min(ZMAX, +(z * f).toFixed(3))));
+
+      const montres = pts.slice(0, visibles).map(mapPt);
       const poly = montres.map(p => `${p.X.toFixed(1)},${p.Y.toFixed(1)}`).join(" ");
       return (
         <div className="spray-box">
           <div className="spray-tete">
             <h3 className="spray-titre">{t("Spray pattern")}</h3>
-            <button className="spray-btn" onClick={joue ? stop : lire}>{joue ? t("⏸ Stop") : t("▶ Rejouer")}</button>
+            <div className="spray-actions">
+              <div className="spray-zoom" role="group" aria-label="Zoom">
+                <button type="button" className="spray-zbtn" title={t("Dézoomer")} onClick={() => zoomer(1 / 1.4)} disabled={echelle <= ZMIN + 0.001}>−</button>
+                <span className="spray-zval">{Math.round(zoom * 100)}%</span>
+                <button type="button" className="spray-zbtn" title={t("Zoomer")} onClick={() => zoomer(1.4)} disabled={zoom >= ZMAX - 0.001}>+</button>
+                <button type="button" className="spray-zbtn spray-zreset" title={t("Réinitialiser le zoom")} onClick={() => setZoom(1)} disabled={Math.abs(zoom - 1) < 0.001}>⤢</button>
+              </div>
+              <button className="spray-btn" onClick={joue ? stop : lire}>{joue ? t("⏸ Stop") : t("▶ Rejouer")}</button>
+            </div>
           </div>
           <p className="spray-note">{t("Estimation simulée d'après le recul (vertical, horizontal, gun kick) — pas le tracé exact du jeu. Réagit aux accessoires. L'animation rejoue les impacts à la cadence réelle de l'arme.")}</p>
           <svg className="spray-svg" viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg">

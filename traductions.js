@@ -93,6 +93,9 @@ window.TRAD = {
     "● dernière": "● last",
     "Recul 1re balle simulé :": "Simulated first-shot recoil:",
     "du normal": "of normal",
+    "Zoomer": "Zoom in",
+    "Dézoomer": "Zoom out",
+    "Réinitialiser le zoom": "Reset zoom",
 
     /* ---------- Recherche ---------- */
     "Tape un nom d'arme…": "Type a weapon name…",
@@ -410,6 +413,9 @@ window.TRAD = {
     "● dernière": "● letzter",
     "Recul 1re balle simulé :": "Simulierter Erstschuss-Rückstoß:",
     "du normal": "vom Normalwert",
+    "Zoomer": "Vergrößern",
+    "Dézoomer": "Verkleinern",
+    "Réinitialiser le zoom": "Zoom zurücksetzen",
 
     /* ---------- Recherche ---------- */
     "Tape un nom d'arme…": "Waffennamen eingeben…",
