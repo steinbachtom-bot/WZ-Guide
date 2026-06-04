@@ -190,8 +190,11 @@ const IMAGES_ARMES = {
   couteau: IMG_BASE + "Knife-Green.webp",
   couteau_balistique: IMG_BASE + "ballisticknife_bo7_Icon.webp",
   katana: IMG_BASE + "katana_bo7_melee_icon.webp",
-  h311_saw: IMG_BASE + "H311SAW_bo7_Icon.webp"
-  // (Flatline Mk.II et Poings : pas de page/visuel sur codmunity → silhouette)
+  h311_saw: IMG_BASE + "H311SAW_bo7_Icon.webp",
+  // Flatline Mk.II : pas sur codmunity → render officiel Call of Duty
+  flatline_mk2: "https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/guides/games/blackops7/weapons-matrix/navigation/COD-BO7-MELEE-FLATLINE-MK-II.webp",
+  // Poings : aucun render officiel (mêlée par défaut) → icône poing intégrée
+  poings: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><g fill='%237d8c63'><rect x='15' y='26' width='35' height='26' rx='7'/><rect x='16' y='20' width='8' height='12' rx='4'/><rect x='25' y='17' width='8' height='15' rx='4'/><rect x='34' y='18' width='8' height='14' rx='4'/><rect x='43' y='22' width='8' height='11' rx='4'/><rect x='44' y='31' width='13' height='9' rx='4'/></g></svg>"
 };
 
 /* ------------------------------------------------------------
