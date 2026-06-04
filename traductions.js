@@ -120,6 +120,7 @@ window.TRAD = {
     /* ---------- Méta / tier list ---------- */
     "Méta — Tier list": "Meta — Tier list",
     "Classement indicatif des armes, basé sur la méta codmunity (modifiable dans donnees.js).": "Indicative weapon ranking based on the codmunity meta (editable in donnees.js).",
+    "Ouvrir dans le créateur de classe": "Open in the class builder",
 
     /* ---------- Stats (label + court) ---------- */
     "Dégâts": "Damage",
@@ -440,6 +441,7 @@ window.TRAD = {
     /* ---------- Méta ---------- */
     "Méta — Tier list": "Meta — Tier-Liste",
     "Classement indicatif des armes, basé sur la méta codmunity (modifiable dans donnees.js).": "Richtwert-Rangliste der Waffen, basierend auf der codmunity-Meta (anpassbar in donnees.js).",
+    "Ouvrir dans le créateur de classe": "Im Klassen-Editor öffnen",
 
     /* ---------- Stats ---------- */
     "Dégâts": "Schaden",

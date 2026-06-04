@@ -298,7 +298,10 @@
     .recherche-item:hover { background: #1e2630; }
     .recherche-item small { color: #9aa0a6; }
     .tier-armes { flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-content: center; background: #1e2127; border: 1px solid #2c3038; border-radius: 10px; padding: 10px; }
-    .tier-arme { display: inline-flex; align-items: center; gap: 8px; background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; }
+    .tier-arme { display: inline-flex; align-items: center; gap: 8px; background: #14161a; border: 1px solid #2c3a45; border-radius: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; transition: border-color .15s, background .15s, transform .1s; }
+    .tier-arme:hover { background: #1b2733; border-color: #4fd0e6; }
+    .tier-arme:active { transform: scale(.97); }
+    .tier-arme:focus-visible { outline: 2px solid #4fd0e6; outline-offset: 2px; }
     .tier-arme small { color: #9aa0a6; }
     .tier-arme img { height: 24px; width: auto; max-width: 56px; object-fit: contain; }
 
@@ -475,7 +478,7 @@
   <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=3"></script>
+  <script src="traductions.js?v=4"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -1084,6 +1087,15 @@
       function changeCatS(cat) { choisirArmeS(ARMES_SECONDAIRES.find(a => a.categorie === cat && a.jeu === opusS)); }
       function changeArmeS(id) { choisirArmeS(ARMES_SECONDAIRES.find(a => a.id === id)); }
 
+      /* --- Raccourci tier list -> créateur (arme déjà sélectionnée) --- */
+      function ouvrirDansCreateur(arme) {
+        if (!arme) return;
+        if (ARMES_PRINCIPALES.some(a => a.id === arme.id)) choisirArmeP(arme);
+        else choisirArmeS(arme);
+        setVue("createur");
+        try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {}
+      }
+
       /* --- Accessoires (règle des 5 max) --- */
       function changeAccP(empId, nouvelle) {
         if (nouvelle !== "aucun") {
@@ -1496,7 +1508,10 @@
                                   {armes.map(a => {
                                     const src = (typeof IMAGES_ARMES !== "undefined") ? IMAGES_ARMES[a.id] : null;
                                     return (
-                                      <span className="tier-arme" key={a.id}>
+                                      <span className="tier-arme" key={a.id} role="button" tabIndex={0}
+                                        title={t("Ouvrir dans le créateur de classe")}
+                                        onClick={() => ouvrirDansCreateur(a)}
+                                        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); ouvrirDansCreateur(a); } }}>
                                         {src && <img src={src} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
                                         {a.nom}
                                       </span>
