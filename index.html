@@ -283,6 +283,17 @@
     .ttk-detail { font-size: 13px; color: #c7ccd1; }
     .ttk-pv { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13px; color: #9aa0a6; }
     .ttk-pv select { background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 4px 8px; font-size: 13px; }
+    .ttkd-box { background: #161a20; border: 1px solid #2c3a45; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
+    .ttkd-titre { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #9fd4e4; margin: 0 0 10px; }
+    .ttkd-pv { color: #6b7280; font-weight: 600; letter-spacing: 0; text-transform: none; }
+    .ttkd-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .ttkd-table th { text-align: left; color: #9aa0a6; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; padding: 4px 8px; border-bottom: 1px solid #2c3a45; }
+    .ttkd-table td { padding: 6px 8px; border-bottom: 1px solid #1d2228; color: #e8eaed; font-variant-numeric: tabular-nums; }
+    .ttkd-table th:not(:first-child), .ttkd-table td:not(:first-child) { text-align: right; }
+    .ttkd-table tr:last-child td { border-bottom: none; }
+    .ttkd-table tr.ttkd-best td { color: #4ade80; }
+    .ttkd-table tr.ttkd-best td:last-child { font-weight: 800; }
+    .ttkd-table tr.ttkd-worst td:last-child { color: #f0a878; }
     .toggle-valeurs { margin-left: 12px; color: #c7ccd1; font-size: 13px; cursor: pointer; white-space: nowrap; }
     .badge-maj { display: inline-block; vertical-align: middle; margin-left: 8px; padding: 3px 10px; border-radius: 999px;
       background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.35); color: #4ade80;
@@ -478,7 +489,7 @@
   <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=5"></script>
+  <script src="traductions.js?v=6"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -937,6 +948,58 @@
       );
     }
 
+    // Tableau TTK selon la distance (paliers de dégâts réels codmunity).
+    function TTKDistanceTable({ arme, finales, pvCible }) {
+      const base = (typeof DEGATS_PALIERS !== "undefined" && DEGATS_PALIERS[arme.id]) ? DEGATS_PALIERS[arme.id] : null;
+      if (!base || !base.length) {
+        return (
+          <div className="ttkd-box">
+            <h3 className="ttkd-titre">{t("TTK selon la distance")}</h3>
+            <p className="spray-note" style={{ margin: 0 }}>{t("Données de distance indisponibles pour cette arme.")}</p>
+          </div>
+        );
+      }
+      // Les accessoires de portée étendent les distances (ratio portée finale / base).
+      const ratio = (arme.stats_base.portee_m && finales.portee_m) ? (finales.portee_m / arme.stats_base.portee_m) : 1;
+      const tbs = 60000 / (finales.cadence_cpm || 600);
+      const arrondiM = (m) => +(m * ratio).toFixed(m > 0 && m < 10 ? 1 : 0);
+      const rows = base.map((p, i) => {
+        const mStart = arrondiM(p.m);
+        const next = base[i + 1];
+        const mEnd = next ? arrondiM(next.m) : null;
+        let stk = null, ttk = null;
+        if (p.deg > 0) { stk = Math.max(1, Math.ceil(pvCible / p.deg)); ttk = Math.round((stk - 1) * tbs); }
+        return { mStart, mEnd, deg: p.deg, stk, ttk };
+      });
+      const ttks = rows.filter(r => r.ttk != null).map(r => r.ttk);
+      const ttkMin = Math.min(...ttks), ttkMax = Math.max(...ttks);
+      return (
+        <div className="ttkd-box">
+          <h3 className="ttkd-titre">{t("TTK selon la distance")} <span className="ttkd-pv">· {pvCible} {t("PV")}</span></h3>
+          <table className="ttkd-table">
+            <thead>
+              <tr><th>{t("Distance")}</th><th>{t("Dégâts")}</th><th>{t("Balles")}</th><th>TTK</th></tr>
+            </thead>
+            <tbody>
+              {rows.map((r, i) => {
+                let cls = "";
+                if (r.ttk != null && ttks.length > 1) cls = r.ttk === ttkMin ? "ttkd-best" : r.ttk === ttkMax ? "ttkd-worst" : "";
+                return (
+                  <tr key={i} className={cls}>
+                    <td>{r.mEnd != null ? `${r.mStart}–${r.mEnd} m` : `${r.mStart} m+`}</td>
+                    <td>{r.deg > 0 ? r.deg : "—"}</td>
+                    <td>{r.stk != null ? r.stk : t("hors de portée")}</td>
+                    <td>{r.ttk != null ? `${r.ttk} ms` : "—"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <p className="spray-note" style={{ margin: "8px 0 0" }}>{t("Dégâts au corps par palier de distance (codmunity). TTK = (balles − 1) × cadence. Réagit à la cadence et à la portée des accessoires.")}</p>
+        </div>
+      );
+    }
+
     // Emplacements d'accessoires (un menu par emplacement + compteur + règle des 5).
     function AttachmentSlots({ emplacements, selection, onChange, onReset, alerte, afficherValeurs }) {
       const n = compterAccessoires(selection);
@@ -1332,6 +1395,7 @@
                     <div className="gs-stats">
                       <h2>{t("Statistiques")}</h2>
                       <div className="ttk-box"><TTKBox finales={finalesP} pvCible={pvCible} setPvCible={setPvCible} /></div>
+                      <TTKDistanceTable arme={armeP} finales={finalesP} pvCible={pvCible} />
                       <div><StatBars arme={armeP} finales={finalesP} /></div>
                       <SprayPattern finales={finalesP} armeId={armeP.id} capacite={finalesP.capacite_chargeur} fsr={fsrP} />
                     </div>
@@ -1377,6 +1441,7 @@
                     </div>
                     <div className="gs-stats">
                       <h2>{t("Statistiques")}</h2>
+                      <TTKDistanceTable arme={armeS} finales={finalesS} pvCible={pvCible} />
                       <div><StatBars arme={armeS} finales={finalesS} /></div>
                       <SprayPattern finales={finalesS} armeId={armeS.id} capacite={finalesS.capacite_chargeur} fsr={fsrS} />
                     </div>

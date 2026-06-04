@@ -4537,3 +4537,60 @@ const EQUIPEMENTS_BLACKOPS = [
     { id: "sleeper", nom: "Agent dormant", description: "Te déguise brièvement en allié pour l'ennemi." }
   ]}
 ];
+
+
+/* ------------------------------------------------------------
+   PALIERS DE DÉGÂTS PAR DISTANCE (corps) — source codmunity (BO6/BO7).
+   Pour chaque arme : [{ m: distance_min_m, deg: dégâts_corps }].
+   Le dernier palier sappplique au-delà de sa distance. deg 0 = hors de portée.
+   Utilisé pour le tableau TTK selon la distance. Enrichissable par lot.
+   ------------------------------------------------------------ */
+const DEGATS_PALIERS = {
+  krig_c: [{ m: 0, deg: 28 }, { m: 41.9, deg: 22 }],
+  c9: [{ m: 0, deg: 26 }, { m: 15.2, deg: 22 }, { m: 20.3, deg: 18 }, { m: 33, deg: 15 }],
+  xmg: [{ m: 0, deg: 29 }, { m: 61, deg: 22 }],
+  tsarkov_762: [{ m: 0, deg: 75 }, { m: 43.2, deg: 60 }, { m: 71.1, deg: 47 }],
+  lr_762: [{ m: 0, deg: 112 }, { m: 76.2, deg: 110 }, { m: 101.6, deg: 108 }],
+  m15_mod0: [{ m: 0, deg: 21 }, { m: 30, deg: 18 }, { m: 46, deg: 17 }],
+  ak_27: [{ m: 0, deg: 26 }, { m: 23, deg: 22 }, { m: 51, deg: 22 }],
+  mxr_17: [{ m: 0, deg: 35 }, { m: 33, deg: 34 }, { m: 52, deg: 26 }],
+  peacekeeper_mk1: [{ m: 0, deg: 23 }, { m: 15, deg: 22 }, { m: 25, deg: 18 }, { m: 39, deg: 15 }],
+  egrt_17: [{ m: 0, deg: 22 }, { m: 44, deg: 19 }, { m: 58, deg: 16 }],
+  voyak_kt3: [{ m: 0, deg: 29 }, { m: 25, deg: 23 }, { m: 41, deg: 19 }],
+  mk35_isr: [{ m: 0, deg: 24 }, { m: 42, deg: 19 }],
+  x9_maverick: [{ m: 0, deg: 34 }, { m: 17, deg: 32 }, { m: 29, deg: 30 }, { m: 43, deg: 23 }],
+  maddox_rfb: [{ m: 0, deg: 28 }, { m: 13, deg: 22 }, { m: 28, deg: 19 }],
+  ds20_mirage: [{ m: 0, deg: 27 }, { m: 25, deg: 23 }, { m: 44, deg: 21 }],
+  kogot_7: [{ m: 0, deg: 23 }, { m: 13, deg: 19 }, { m: 20, deg: 16 }, { m: 25, deg: 13 }],
+  mpc_25: [{ m: 0, deg: 30 }, { m: 10, deg: 23 }, { m: 15, deg: 19 }, { m: 26, deg: 16 }],
+  carbon_57: [{ m: 0, deg: 24 }, { m: 15, deg: 19 }, { m: 25, deg: 16 }, { m: 36, deg: 14 }],
+  sturmwolf_45: [{ m: 0, deg: 30 }, { m: 11, deg: 23 }, { m: 18, deg: 19 }, { m: 26, deg: 16 }],
+  ryden_45k: [{ m: 0, deg: 22 }, { m: 12, deg: 21 }, { m: 18, deg: 15 }, { m: 34, deg: 13 }],
+  rk_9: [{ m: 0, deg: 34 }, { m: 10, deg: 32 }, { m: 22, deg: 24 }, { m: 30, deg: 19 }],
+  dravec_45: [{ m: 0, deg: 26 }, { m: 11, deg: 21 }, { m: 18, deg: 17 }, { m: 27, deg: 15 }],
+  vst: [{ m: 0, deg: 20 }, { m: 8, deg: 18 }, { m: 12, deg: 15 }, { m: 23, deg: 12 }],
+  razor_9mm: [{ m: 0, deg: 21 }, { m: 13, deg: 18 }, { m: 20, deg: 14 }, { m: 30, deg: 12 }],
+  rev_46: [{ m: 0, deg: 17 }, { m: 13, deg: 15 }, { m: 23, deg: 12 }, { m: 33, deg: 10 }],
+  mk78: [{ m: 0, deg: 31 }, { m: 41, deg: 24 }, { m: 61, deg: 23 }],
+  xm325: [{ m: 0, deg: 23 }, { m: 36, deg: 18 }, { m: 51, deg: 16 }],
+  sokol_545: [{ m: 0, deg: 35 }, { m: 51, deg: 34 }, { m: 71, deg: 26 }],
+  strider_300: [{ m: 0, deg: 112 }, { m: 66, deg: 98 }],
+  hawker_hx: [{ m: 0, deg: 117 }, { m: 76, deg: 107 }],
+  xr3_ion: [{ m: 0, deg: 99 }],
+  shadow_sk: [{ m: 0, deg: 112 }, { m: 51, deg: 106 }, { m: 76, deg: 98 }],
+  vs_recon: [{ m: 0, deg: 112 }, { m: 64, deg: 106 }, { m: 89, deg: 98 }],
+  swordfish_a1: [{ m: 0, deg: 37 }, { m: 38, deg: 32 }],
+  m8a1: [{ m: 0, deg: 30 }, { m: 36, deg: 29 }, { m: 48, deg: 24 }],
+  m34_novaline: [{ m: 0, deg: 50 }, { m: 66, deg: 40 }],
+  warden_308: [{ m: 0, deg: 101 }, { m: 42, deg: 97 }, { m: 57, deg: 60 }],
+  m10_breacher: [{ m: 0, deg: 220 }, { m: 3.3, deg: 200 }, { m: 8.4, deg: 151 }, { m: 16.5, deg: 90 }, { m: 30.5, deg: 0 }],
+  echo_12: [{ m: 0, deg: 148 }, { m: 3, deg: 128 }, { m: 10.2, deg: 103 }, { m: 20.8, deg: 64 }, { m: 35.6, deg: 0 }],
+  akita: [{ m: 0, deg: 81 }, { m: 2.5, deg: 59 }, { m: 6.4, deg: 44 }, { m: 12.1, deg: 30 }, { m: 23.5, deg: 0 }],
+  grekhova: [{ m: 0, deg: 20 }, { m: 8.3, deg: 17 }, { m: 17.8, deg: 15 }, { m: 21.6, deg: 13 }],
+  jager_45: [{ m: 0, deg: 31 }, { m: 15, deg: 29 }, { m: 27, deg: 23 }],
+  velox_57: [{ m: 0, deg: 33 }, { m: 6, deg: 30 }, { m: 20, deg: 20 }, { m: 25, deg: 19 }],
+  coda_9: [{ m: 0, deg: 20 }, { m: 9, deg: 17 }, { m: 14, deg: 13 }, { m: 20, deg: 11 }],
+  pistolet_1911: [{ m: 0, deg: 50 }, { m: 10, deg: 47 }, { m: 15, deg: 45 }, { m: 24, deg: 34 }],
+  siren: [{ m: 0, deg: 100 }],
+  nx_ravager: [{ m: 0, deg: 150 }]
+};
