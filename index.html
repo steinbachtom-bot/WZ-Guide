@@ -657,10 +657,13 @@
     function Dropdown({ options, value, onChange, className }) {
       const [ouvert, setOuvert] = useState(false);
       const ref = useRef(null);
+      const idRef = useRef("dd-" + Math.random().toString(36).slice(2));
       useEffect(() => {
         function onDoc(e) { if (ref.current && !ref.current.contains(e.target)) setOuvert(false); }
+        function onAutre(e) { if (e.detail !== idRef.current) setOuvert(false); }
         document.addEventListener("click", onDoc);
-        return () => document.removeEventListener("click", onDoc);
+        window.addEventListener("dd:open", onAutre);
+        return () => { document.removeEventListener("click", onDoc); window.removeEventListener("dd:open", onAutre); };
       }, []);
       const choisi = options.find(o => o.id === value) || options[0];
       const rempli = value && value !== "aucun";
@@ -668,7 +671,7 @@
         <div className={(className || "")} ref={ref}>
           <div className={"dd" + (ouvert ? " ouvert" : "")}>
             <button type="button" className={"dd-bouton" + (rempli ? " rempli" : "")}
-              onClick={(e) => { e.stopPropagation(); setOuvert(o => !o); }}>
+              onClick={(e) => { e.stopPropagation(); setOuvert(o => { const next = !o; if (next) window.dispatchEvent(new CustomEvent("dd:open", { detail: idRef.current })); return next; }); }}>
               <span className="dd-nom">{choisi ? choisi.nom : ""}</span>
               <span className="chips-ligne" dangerouslySetInnerHTML={{ __html: choisi && choisi.chips ? choisi.chips : "" }} />
               <span className="fleche-bas">▾</span>
