@@ -804,7 +804,9 @@
     // Tracé de recul estimé (spray pattern simulé), animé balle par balle à la vraie cadence.
     function SprayPattern({ finales, armeId, capacite, fsr }) {
       const W = 210, H = 240, cx = W / 2, baseY = H - 14;
-      const n = Math.max(8, Math.min(30, Math.round(capacite || 20)));
+      // Nombre de balles tracées = taille réelle du chargeur (réagit aux accessoires).
+      // Plancher à 5 pour les petits chargeurs, plafond à 60 pour rester lisible.
+      const n = Math.max(5, Math.min(60, Math.round(capacite || 20)));
       const facteur1re = (typeof fsr === "number") ? fsr : 1;
       const pts = trajectoireRecul(finales, hashChaine(armeId), n, W, H, facteur1re);
       // Intervalle réel entre deux balles = 60000 / cadence (coups/min). Borné en bas
@@ -857,10 +859,12 @@
             <line x1="14" y1={baseY} x2={W - 14} y2={baseY} stroke="#1f3a44" strokeWidth="1" />
             <polyline points={poly} fill="none" stroke="#4fd0e6" strokeWidth="1.5" opacity="0.55" />
             {montres.map((p, i) => {
-              const t = n > 1 ? i / (n - 1) : 0;          // 0 = 1re balle, 1 = dernière
-              const hue = 140 - 140 * t;                   // vert -> rouge
+              const frac = n > 1 ? i / (n - 1) : 0;        // 0 = 1re balle, 1 = dernière
+              const hue = 140 - 140 * frac;                // vert -> rouge
               const estDerniere = joue && i === montres.length - 1;
-              return <circle key={i} cx={p.X} cy={p.Y} r={estDerniere ? 5.5 : (i === 0 ? 4 : 3)}
+              // Points plus petits quand le chargeur est grand, pour rester lisible.
+              const rBase = n > 45 ? 2.2 : n > 30 ? 2.7 : 3;
+              return <circle key={i} cx={p.X} cy={p.Y} r={estDerniere ? rBase + 2.5 : (i === 0 ? rBase + 1 : rBase)}
                 fill={`hsl(${hue},70%,55%)`} stroke={estDerniere ? "#fff" : "none"} strokeWidth={estDerniere ? 1.5 : 0} />;
             })}
             <circle cx={cx} cy={baseY} r="4.5" fill="none" stroke="#ffffff" strokeWidth="1.5" />
