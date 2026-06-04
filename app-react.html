@@ -204,6 +204,16 @@
     .sidebar.replie .nav-item .txt { display: none; }
     .sidebar.replie .nav-item { justify-content: center; padding: 11px 0; }
 
+    .lang-switch { display: flex; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #1d3a45; }
+    .lang-btn {
+      flex: 1; padding: 6px 0; background: #112b34; color: #9fb2bb; border: 1px solid #1d3a45;
+      border-radius: 7px; font-size: 12px; font-weight: 700; letter-spacing: .03em; cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .lang-btn:hover { background: #16323d; color: #fff; }
+    .lang-btn.actif { background: #16414f; color: #fff; border-color: #2c6275; }
+    .sidebar.replie .lang-switch { flex-direction: column; }
+
     .contenu { flex: 1; min-width: 0; padding-left: 24px; }
 
     .entete-vue {
@@ -453,6 +463,8 @@
 
   <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js"></script>
+  <!-- TRADUCTIONS (FR / EN / DE) -->
+  <script src="traductions.js"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -462,6 +474,27 @@
   <!-- ========== APPLICATION REACT ========== -->
   <script type="text/babel" data-presets="react">
     const { useState, useEffect, useRef, Fragment } = React;
+
+    /* ===== INTERNATIONALISATION (i18n) =====
+       LANGUE : variable de module. t(fr) traduit une chaîne française
+       vers la langue active (EN/DE) via window.TRAD, sinon renvoie le FR.
+       Auto-détection au 1er chargement (navigator.language), puis mémorisée. */
+    const LANGUES_OK = ["fr", "en", "de"];
+    function detecterLangue() {
+      try {
+        const sauv = localStorage.getItem("wz_langue");
+        if (sauv && LANGUES_OK.includes(sauv)) return sauv;
+        const nav = (navigator.language || navigator.userLanguage || "fr").slice(0, 2).toLowerCase();
+        return LANGUES_OK.includes(nav) ? nav : "fr";
+      } catch (e) { return "fr"; }
+    }
+    let LANGUE = detecterLangue();
+    function t(fr) {
+      if (fr == null) return fr;
+      if (LANGUE === "fr") return fr;
+      const dico = (typeof window.TRAD !== "undefined") ? window.TRAD[LANGUE] : null;
+      return (dico && dico[fr] != null) ? dico[fr] : fr;
+    }
 
     /* ===== LOGIQUE PURE (reprise de index.html, sans dépendance au DOM) ===== */
     function etatVide(emplacements) {
@@ -509,15 +542,15 @@
           const infos = INFOS_STATS[stat];
           const valeur = parseFloat(val);
           const estBonus = infos.plusGrandEstMieux ? (valeur > 0) : (valeur < 0);
-          const texte = afficherValeurs ? `${infos.court} ${val}` : infos.court;
+          const texte = afficherValeurs ? `${t(infos.court)} ${val}` : t(infos.court);
           return `<span class="chip ${estBonus ? "bonus" : "malus"}">${texte}</span>`;
         }).join("");
       }
       // 2) Effets affichés mais NON simulés (flinch, mobilité ADS, tir à la hanche…) : étiquette info.
       if (option.effets_extra) {
         html += Object.entries(option.effets_extra).map(([label, val]) => {
-          const texte = afficherValeurs ? `${label} ${val}` : label;
-          return `<span class="chip info" title="Effet réel non pris en compte dans le calcul des stats">${texte}</span>`;
+          const texte = afficherValeurs ? `${t(label)} ${val}` : t(label);
+          return `<span class="chip info" title="${t("Effet réel non pris en compte dans le calcul des stats")}">${texte}</span>`;
         }).join("");
       }
       return html;
@@ -533,13 +566,13 @@
     function optionsCategories(listeArmes, categories, opus) {
       return categories.map(cat => {
         const aDesArmes = listeArmes.some(a => a.categorie === cat && a.jeu === opus);
-        return { id: cat, nom: aDesArmes ? cat : cat + " (à venir)", desactive: !aDesArmes };
+        return { id: cat, nom: aDesArmes ? t(cat) : t(cat) + " " + t("(à venir)"), desactive: !aDesArmes };
       });
     }
     function optionsJeux(listeArmes) {
       return JEUX.map(jeu => {
         const present = listeArmes.some(a => a.jeu === jeu);
-        return { id: jeu, nom: present ? jeu : jeu + " (à venir)", desactive: !present };
+        return { id: jeu, nom: present ? jeu : jeu + " " + t("(à venir)"), desactive: !present };
       });
     }
     function premiereCategorie(listeArmes, categories, opus) {
@@ -744,7 +777,7 @@
             return (
               <div className="stat" key={stat}>
                 <div className="stat-entete">
-                  <span className="stat-nom">{infos.label}</span>
+                  <span className="stat-nom">{t(infos.label)}</span>
                   <span className="stat-valeurs">
                     <span className="base">{base}</span>
                     <span className="fleche">→</span>
@@ -808,10 +841,10 @@
       return (
         <div className="spray-box">
           <div className="spray-tete">
-            <h3 className="spray-titre">Spray pattern</h3>
-            <button className="spray-btn" onClick={joue ? stop : lire}>{joue ? "⏸ Stop" : "▶ Rejouer"}</button>
+            <h3 className="spray-titre">{t("Spray pattern")}</h3>
+            <button className="spray-btn" onClick={joue ? stop : lire}>{joue ? t("⏸ Stop") : t("▶ Rejouer")}</button>
           </div>
-          <p className="spray-note">Estimation simulée d'après le recul (vertical, horizontal, gun kick) — pas le tracé exact du jeu. Réagit aux accessoires. L'animation rejoue les impacts à la cadence réelle de l'arme.</p>
+          <p className="spray-note">{t("Estimation simulée d'après le recul (vertical, horizontal, gun kick) — pas le tracé exact du jeu. Réagit aux accessoires. L'animation rejoue les impacts à la cadence réelle de l'arme.")}</p>
           <svg className="spray-svg" viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg">
             <line x1={cx} y1="12" x2={cx} y2={baseY} stroke="#1f3a44" strokeWidth="1" strokeDasharray="3 4" />
             <line x1="14" y1={baseY} x2={W - 14} y2={baseY} stroke="#1f3a44" strokeWidth="1" />
@@ -826,12 +859,12 @@
             <circle cx={cx} cy={baseY} r="4.5" fill="none" stroke="#ffffff" strokeWidth="1.5" />
           </svg>
           <p className="spray-note" style={{ textAlign: "center", marginTop: "6px" }}>
-            <span style={{ color: "hsl(140,70%,55%)" }}>● 1re balle</span> &nbsp;→&nbsp; <span style={{ color: "hsl(0,70%,55%)" }}>● dernière</span>
-            &nbsp;({n} balles · {Math.round(cadence)} c/min)
+            <span style={{ color: "hsl(140,70%,55%)" }}>{t("● 1re balle")}</span> &nbsp;→&nbsp; <span style={{ color: "hsl(0,70%,55%)" }}>{t("● dernière")}</span>
+            &nbsp;({n} {t("balles")} · {Math.round(cadence)} {t("c/min")})
           </p>
           {facteur1re < 0.999 &&
             <p className="spray-note" style={{ textAlign: "center", marginTop: "2px", color: "#9fd4e4" }}>
-              Recul 1re balle simulé : {Math.round(facteur1re * 100)}% du normal
+              {t("Recul 1re balle simulé :")} {Math.round(facteur1re * 100)}% {t("du normal")}
             </p>}
         </div>
       );
@@ -839,18 +872,18 @@
 
     function TTKBox({ finales, pvCible, setPvCible }) {
       const r = calculerTTK(finales, pvCible);
-      const detail = r ? `${r.stk} balle${r.stk > 1 ? "s" : ""} · cadence ${Math.round(finales.cadence_cpm)} c/min` : "Données insuffisantes";
+      const detail = r ? `${r.stk} ${t(r.stk > 1 ? "balles" : "balle")} · ${t("cadence")} ${Math.round(finales.cadence_cpm)} ${t("c/min")}` : t("Données insuffisantes");
       return (
         <Fragment>
           <div>
             <div className="ttk-val">TTK ≈ {r ? <Fragment>{r.ttk} <small>ms</small></Fragment> : "—"}</div>
-            <div className="ttk-detail">{detail} <span style={{ color: "#6b7280" }}>(tir au corps, courte portée)</span></div>
+            <div className="ttk-detail">{detail} <span style={{ color: "#6b7280" }}>{t("(tir au corps, courte portée)")}</span></div>
           </div>
-          <label className="ttk-pv">Cible :
+          <label className="ttk-pv">{t("Cible :")}
             <select value={pvCible} onChange={(e) => setPvCible(parseInt(e.target.value, 10))}>
-              <option value={250}>Warzone (250 PV)</option>
-              <option value={150}>Multijoueur (150 PV)</option>
-              <option value={100}>Sans armure (100 PV)</option>
+              <option value={250}>{t("Warzone (250 PV)")}</option>
+              <option value={150}>{t("Multijoueur (150 PV)")}</option>
+              <option value={100}>{t("Sans armure (100 PV)")}</option>
             </select>
           </label>
         </Fragment>
@@ -863,19 +896,19 @@
       return (
         <div>
           <div className={"compteur" + (n >= CAP_ACCESSOIRES ? " plein" : "") + (alerte ? " alerte" : "")}>
-            {`Accessoires équipés : ${n} / ${CAP_ACCESSOIRES}` + (alerte ? "  — maximum atteint !" : "")}
+            {`${t("Accessoires équipés :")} ${n} / ${CAP_ACCESSOIRES}` + (alerte ? "  " + t("— maximum atteint !") : "")}
           </div>
           {emplacements.map(emp => {
-            const options = emp.options.map(o => ({ id: o.id, nom: o.nom, chips: chipsAffectes(o, afficherValeurs) }));
+            const options = emp.options.map(o => ({ id: o.id, nom: t(o.nom), chips: chipsAffectes(o, afficherValeurs) }));
             return (
               <div className="slot" key={emp.id}>
-                <label className="slot-label">{emp.label}</label>
+                <label className="slot-label">{t(emp.label)}</label>
                 <Dropdown options={options} value={selection[emp.id]} onChange={(v) => onChange(emp.id, v)} />
               </div>
             );
           })}
           <button type="button" className="btn-reset" disabled={n === 0}
-            onClick={() => onReset && onReset()}>↺ Réinitialiser les accessoires</button>
+            onClick={() => onReset && onReset()}>{t("↺ Réinitialiser les accessoires")}</button>
         </div>
       );
     }
@@ -886,13 +919,13 @@
         <Fragment>
           {slots.map(slot => {
             const options = slot.options.map(o => ({
-              id: o.id, nom: o.nom,
+              id: o.id, nom: t(o.nom),
               chips: chipsAffectes(o, afficherValeurs),
-              sousTexte: o.id !== "aucun" ? (o.description || "") : ""
+              sousTexte: o.id !== "aucun" ? t(o.description || "") : ""
             }));
             return (
               <div className="slot" key={slot.id}>
-                <label className="slot-label">{slot.label}</label>
+                <label className="slot-label">{t(slot.label)}</label>
                 <Dropdown options={options} value={selection[slot.id]} onChange={(v) => onChange(slot.id, v)} />
               </div>
             );
@@ -914,16 +947,16 @@
       const res = ql ? ARMES_PRINCIPALES.filter(a => a.nom.toLowerCase().includes(ql)).slice(0, 8) : [];
       return (
         <div className="recherche-wrap" ref={ref}>
-          <input type="text" className="recherche-input" placeholder="Tape un nom d'arme…" autoComplete="off"
+          <input type="text" className="recherche-input" placeholder={t("Tape un nom d'arme…")} autoComplete="off"
             value={q} onChange={(e) => setQ(e.target.value)} onClick={(e) => e.stopPropagation()} />
           <div className={"recherche-resultats" + (ql ? " ouvert" : "")}>
             {ql && (res.length
               ? res.map(a => (
                 <div className="recherche-item" key={a.id}
                   onClick={(e) => { e.stopPropagation(); onSelect(a.id); setQ(""); }}>
-                  <span>{a.nom}</span><small>{a.categorie} · {a.jeu}</small>
+                  <span>{a.nom}</span><small>{t(a.categorie)} · {a.jeu}</small>
                 </div>))
-              : <div className="recherche-item"><span style={{ color: "#9aa0a6" }}>Aucune arme trouvée</span></div>)}
+              : <div className="recherche-item"><span style={{ color: "#9aa0a6" }}>{t("Aucune arme trouvée")}</span></div>)}
           </div>
         </div>
       );
@@ -947,6 +980,13 @@
       const [mode, setMode] = useState("warzone");
       const [vue, setVue] = useState("accueil");
       const [sidebarReplie, setSidebarReplie] = useState(false);
+      const [langue, setLangueState] = useState(LANGUE);
+      function setLangue(l) {
+        LANGUE = l;
+        try { localStorage.setItem("wz_langue", l); } catch (e) {}
+        try { document.documentElement.lang = l; } catch (e) {}
+        setLangueState(l);
+      }
       const [afficherValeurs, setAfficherValeurs] = useState(false);
       const [pvCible, setPvCible] = useState(250);
 
@@ -1023,15 +1063,15 @@
         const { sel, retenus } = genererSelection(armeP, iaObjectif);
         setSelP(sel); setAlerteP(false);
         setIaNote(retenus.length
-          ? `Classe « ${LABELS_OBJECTIFS[iaObjectif]} » générée pour ${armeP.nom} (${retenus.length} accessoire${retenus.length > 1 ? "s" : ""}).`
-          : "Aucun accessoire utile trouvé pour cet objectif sur cette arme.");
+          ? `${t("Classe")} « ${t(LABELS_OBJECTIFS[iaObjectif])} » ${t("générée pour")} ${armeP.nom} (${retenus.length} ${t(retenus.length > 1 ? "accessoires" : "accessoire")}).`
+          : t("Aucun accessoire utile trouvé pour cet objectif sur cette arme."));
       }
       function genererClasseS() {
         const { sel, retenus } = genererSelection(armeS, iaObjectifS);
         setSelS(sel); setAlerteS(false);
         setIaNoteS(retenus.length
-          ? `Classe « ${LABELS_OBJECTIFS[iaObjectifS]} » générée pour ${armeS.nom} (${retenus.length} accessoire${retenus.length > 1 ? "s" : ""}).`
-          : "Aucun accessoire utile trouvé pour cet objectif sur cette arme.");
+          ? `${t("Classe")} « ${t(LABELS_OBJECTIFS[iaObjectifS])} » ${t("générée pour")} ${armeS.nom} (${retenus.length} ${t(retenus.length > 1 ? "accessoires" : "accessoire")}).`
+          : t("Aucun accessoire utile trouvé pour cet objectif sur cette arme."));
       }
 
       /* --- Mode de jeu --- */
@@ -1072,7 +1112,7 @@
         setVue("createur");
       }
       function enregistrerClasse() {
-        const nom = prompt("Nom de la classe :", armeP.nom + " + " + armeS.nom);
+        const nom = prompt(t("Nom de la classe :"), armeP.nom + " + " + armeS.nom);
         if (!nom) return;
         const c = classeActuelle(); c.nom = nom;
         const next = [...classes, c];
@@ -1085,8 +1125,8 @@
       function partagerClasse() {
         const code = encoderClasse(classeActuelle());
         const lien = location.origin + location.pathname + "?c=" + code;
-        const ok = () => { setNotePartage("Lien copié ! 📋"); setTimeout(() => setNotePartage(""), 4000); };
-        const echec = () => setNotePartage("Copie impossible — lien : " + lien);
+        const ok = () => { setNotePartage(t("Lien copié ! 📋")); setTimeout(() => setNotePartage(""), 4000); };
+        const echec = () => setNotePartage(t("Copie impossible — lien : ") + lien);
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(lien).then(ok, echec);
         } else { echec(); }
@@ -1109,16 +1149,23 @@
       return (
         <div className="app">
           <aside className={"sidebar" + (sidebarReplie ? " replie" : "")}>
-            <button className="sidebar-toggle" title="Replier / déplier le menu"
+            <button className="sidebar-toggle" title={t("Replier / déplier le menu")}
               onClick={(e) => { e.stopPropagation(); setSidebarReplie(r => !r); }}>☰</button>
             <nav>
               {navItems.map(it => (
                 <div key={it.id} className={"nav-item" + (vue === it.id ? " actif" : "")} onClick={() => setVue(it.id)}>
                   <span className="ico">{it.ico}</span>
-                  <span className="txt">{it.label}</span>
+                  <span className="txt">{t(it.label)}</span>
                 </div>
               ))}
             </nav>
+            <div className="lang-switch">
+              {[["fr", "FR"], ["en", "EN"], ["de", "DE"]].map(([code, lbl]) => (
+                <button key={code} type="button"
+                  className={"lang-btn" + (langue === code ? " actif" : "")}
+                  onClick={(e) => { e.stopPropagation(); setLangue(code); }}>{lbl}</button>
+              ))}
+            </div>
           </aside>
 
           <main className="contenu">
@@ -1138,29 +1185,37 @@
                 <div>
                   <div className="hero">
                     {heroImg && <img className="hero-arme" src={heroImg} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    {aImg("mk78") && <img className="hero-arme2" src={aImg("mk78")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    {aImg("kogot_7") && <img className="hero-arme3" src={aImg("kogot_7")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    {aImg("strider_300") && <img className="hero-arme4" src={aImg("strider_300")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    {aImg("swordfish_a1") && <img className="hero-arme5" src={aImg("swordfish_a1")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    {aImg("mxr_17") && <img className="hero-arme6" src={aImg("mxr_17")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    {aImg("hawker_hx") && <img className="hero-arme7" src={aImg("hawker_hx")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    {aImg("coda_9") && <img className="hero-arme8" src={aImg("coda_9")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    {aImg("xm325") && <img className="hero-arme9" src={aImg("xm325")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
                     <h1 className="hero-logo">WZ<span> GUIDE</span></h1>
-                    <p className="hero-slogan">Crée tes classes Warzone &amp; Black Ops 7 optimales</p>
-                    <p className="hero-sous">Gunsmith complet, stats réelles, calcul du TTK, générateur de classe et tier list — le tout au même endroit.</p>
+                    <p className="hero-slogan">{t("Crée tes classes Warzone & Black Ops 7 optimales")}</p>
+                    <p className="hero-sous">{t("Gunsmith complet, stats réelles, calcul du TTK, générateur de classe et tier list — le tout au même endroit.")}</p>
                     {typeof META_DONNEES !== "undefined" &&
-                      <div className="badge-maj">📊 {META_DONNEES.saison} · {META_DONNEES.jeu} · données {META_DONNEES.maj}</div>}
+                      <div className="badge-maj">📊 {META_DONNEES.saison} · {META_DONNEES.jeu} · {t("données")} {META_DONNEES.maj}</div>}
                     <div>
-                      <button className="hero-cta" onClick={() => setVue("createur")}>Créer une classe →</button>
+                      <button className="hero-cta" onClick={() => setVue("createur")}>{t("Créer une classe →")}</button>
                     </div>
                   </div>
-                  <h2 className="accueil-titre">Explorer</h2>
+                  <h2 className="accueil-titre">{t("Explorer")}</h2>
                   <div className="accueil-cartes">
                     {cartes.map(c => {
                       const it = navItems.find(n => n.id === c.id);
                       return (
                         <div className="carte-nav" key={c.id} onClick={() => setVue(c.id)}>
                           <div className="carte-ico">{it ? it.ico : null}</div>
-                          <h3 className="carte-titre">{c.titre}</h3>
-                          <p className="carte-desc">{c.desc}</p>
+                          <h3 className="carte-titre">{t(c.titre)}</h3>
+                          <p className="carte-desc">{t(c.desc)}</p>
                           {c.vignettes && c.vignettes.length > 0 &&
                             <div className="carte-vignettes">
                               {c.vignettes.map(id => <img key={id} src={aImg(id)} alt="" onError={(e) => { e.target.style.display = "none"; }} />)}
                             </div>}
-                          <div className="carte-fleche">Ouvrir →</div>
+                          <div className="carte-fleche">{t("Ouvrir →")}</div>
                         </div>
                       );
                     })}
@@ -1173,16 +1228,16 @@
               <div>
                 <div className="entete-vue">
                   <div>
-                    <h1>Éditeur de classe — {mode === "warzone" ? "Warzone" : "Black Ops"}
+                    <h1>{t("Éditeur de classe —")} {mode === "warzone" ? "Warzone" : "Black Ops"}
                       {typeof META_DONNEES !== "undefined" &&
                         <span className="badge-maj">
                           📊 {META_DONNEES.saison} · {META_DONNEES.jeu} · données {META_DONNEES.maj}{" "}
                           <a href={META_DONNEES.sourceUrl} target="_blank" rel="noopener">({META_DONNEES.source})</a>
                         </span>}
                     </h1>
-                    <p className="sous-titre">5 accessoires max par arme, un seul par emplacement. Étiquettes : <span style={{ color: "#4ade80" }}>vert = bonus</span>, <span style={{ color: "#f87171" }}>rouge = malus</span>.
+                    <p className="sous-titre">{t("5 accessoires max par arme, un seul par emplacement. Étiquettes :")} <span style={{ color: "#4ade80" }}>{t("vert = bonus")}</span>, <span style={{ color: "#f87171" }}>{t("rouge = malus")}</span>.
                       <label className="toggle-valeurs">
-                        <input type="checkbox" checked={afficherValeurs} onChange={(e) => setAfficherValeurs(e.target.checked)} /> Afficher les valeurs (%)
+                        <input type="checkbox" checked={afficherValeurs} onChange={(e) => setAfficherValeurs(e.target.checked)} /> {t("Afficher les valeurs (%)")}
                       </label>
                     </p>
                   </div>
@@ -1190,36 +1245,36 @@
                     <button className={mode === "warzone" ? "actif" : ""} onClick={() => changerMode("warzone")}>Warzone</button>
                     <button className={mode === "blackops" ? "actif" : ""} onClick={() => changerMode("blackops")}>Black Ops</button>
                   </div>
-                  <button className="btn btn-principal btn-enregistrer" onClick={enregistrerClasse}>Enregistrer la classe</button>
-                  <button className="btn" onClick={(e) => { e.stopPropagation(); partagerClasse(); }}>🔗 Partager</button>
+                  <button className="btn btn-principal btn-enregistrer" onClick={enregistrerClasse}>{t("Enregistrer la classe")}</button>
+                  <button className="btn" onClick={(e) => { e.stopPropagation(); partagerClasse(); }}>{t("🔗 Partager")}</button>
                   <span className="ia-note">{notePartage}</span>
                 </div>
 
                 {/* ARME PRINCIPALE */}
                 <div className="gunsmith">
                   <div className="gs-topbar">
-                    <span className="gs-title">GUNSMITH</span>
+                    <span className="gs-title">{t("GUNSMITH")}</span>
                     <span className="gs-weapon">
                       <span className="gs-wname">{armeP.nom}</span>
-                      <span className="gs-wcat">{armeP.categorie || ""}</span>
+                      <span className="gs-wcat">{armeP.categorie ? t(armeP.categorie) : ""}</span>
                     </span>
                   </div>
                   <div className="gs-body">
                     <div className="gs-image">
                       <div className="image-arme-zone"><WeaponImage arme={armeP} /></div>
                       <div className="gs-weapon-picker">
-                        <label>Opus :</label>
+                        <label>{t("Opus :")}</label>
                         <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_PRINCIPALES)} value={opusP} onChange={changeOpusP} />
-                        <label>Catégorie :</label>
+                        <label>{t("Catégorie :")}</label>
                         <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
-                        <label>Arme :</label>
+                        <label>{t("Arme :")}</label>
                         <Dropdown className="menu-cible-arme" options={ARMES_PRINCIPALES.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
-                        <label>Recherche rapide :</label>
+                        <label>{t("Recherche rapide :")}</label>
                         <SearchBox onSelect={changeArmeP} />
                       </div>
                     </div>
                     <div className="gs-stats">
-                      <h2>Statistiques</h2>
+                      <h2>{t("Statistiques")}</h2>
                       <div className="ttk-box"><TTKBox finales={finalesP} pvCible={pvCible} setPvCible={setPvCible} /></div>
                       <div><StatBars arme={armeP} finales={finalesP} /></div>
                       <SprayPattern finales={finalesP} armeId={armeP.id} capacite={finalesP.capacite_chargeur} fsr={fsrP} />
@@ -1227,16 +1282,16 @@
                   </div>
                   <div className="gs-attachments">
                     <div className="ia-bar">
-                      <span className="ia-titre">✨ Générateur de classe</span>
-                      <label>Objectif :</label>
+                      <span className="ia-titre">{t("✨ Générateur de classe")}</span>
+                      <label>{t("Objectif :")}</label>
                       <select className="ia-select" value={iaObjectif} onChange={(e) => setIaObjectif(e.target.value)}>
-                        <option value="polyvalent">Polyvalent</option>
-                        <option value="longue">Longue portée</option>
-                        <option value="courte">Courte portée</option>
-                        <option value="mobilite">Mobilité</option>
-                        <option value="recul">Recul minimal</option>
+                        <option value="polyvalent">{t("Polyvalent")}</option>
+                        <option value="longue">{t("Longue portée")}</option>
+                        <option value="courte">{t("Courte portée")}</option>
+                        <option value="mobilite">{t("Mobilité")}</option>
+                        <option value="recul">{t("Recul minimal")}</option>
                       </select>
-                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasse(); }}>Générer la classe</button>
+                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasse(); }}>{t("Générer la classe")}</button>
                       <span className="ia-note">{iaNote}</span>
                     </div>
                     <AttachmentSlots emplacements={armeP.emplacements} selection={selP} onChange={changeAccP} onReset={() => { setSelP(etatVide(armeP.emplacements)); setAlerteP(false); }} alerte={alerteP} afficherValeurs={afficherValeurs} />
@@ -1246,42 +1301,42 @@
                 {/* ARME SECONDAIRE */}
                 <div className="gunsmith">
                   <div className="gs-topbar">
-                    <span className="gs-title">GUNSMITH</span>
+                    <span className="gs-title">{t("GUNSMITH")}</span>
                     <span className="gs-weapon">
                       <span className="gs-wname">{armeS.nom}</span>
-                      <span className="gs-wcat">{armeS.categorie || ""}</span>
+                      <span className="gs-wcat">{armeS.categorie ? t(armeS.categorie) : ""}</span>
                     </span>
                   </div>
                   <div className="gs-body">
                     <div className="gs-image">
                       <div className="image-arme-zone"><WeaponImage arme={armeS} /></div>
                       <div className="gs-weapon-picker">
-                        <label>Opus :</label>
+                        <label>{t("Opus :")}</label>
                         <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_SECONDAIRES)} value={opusS} onChange={changeOpusS} />
-                        <label>Catégorie :</label>
+                        <label>{t("Catégorie :")}</label>
                         <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
-                        <label>Arme :</label>
+                        <label>{t("Arme :")}</label>
                         <Dropdown className="menu-cible-arme" options={ARMES_SECONDAIRES.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
                       </div>
                     </div>
                     <div className="gs-stats">
-                      <h2>Statistiques</h2>
+                      <h2>{t("Statistiques")}</h2>
                       <div><StatBars arme={armeS} finales={finalesS} /></div>
                       <SprayPattern finales={finalesS} armeId={armeS.id} capacite={finalesS.capacite_chargeur} fsr={fsrS} />
                     </div>
                   </div>
                   <div className="gs-attachments">
                     <div className="ia-bar">
-                      <span className="ia-titre">✨ Générateur de classe</span>
-                      <label>Objectif :</label>
+                      <span className="ia-titre">{t("✨ Générateur de classe")}</span>
+                      <label>{t("Objectif :")}</label>
                       <select className="ia-select" value={iaObjectifS} onChange={(e) => setIaObjectifS(e.target.value)}>
-                        <option value="polyvalent">Polyvalent</option>
-                        <option value="longue">Longue portée</option>
-                        <option value="courte">Courte portée</option>
-                        <option value="mobilite">Mobilité</option>
-                        <option value="recul">Recul minimal</option>
+                        <option value="polyvalent">{t("Polyvalent")}</option>
+                        <option value="longue">{t("Longue portée")}</option>
+                        <option value="courte">{t("Courte portée")}</option>
+                        <option value="mobilite">{t("Mobilité")}</option>
+                        <option value="recul">{t("Recul minimal")}</option>
                       </select>
-                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasseS(); }}>Générer la classe</button>
+                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasseS(); }}>{t("Générer la classe")}</button>
                       <span className="ia-note">{iaNoteS}</span>
                     </div>
                     <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} onReset={() => { setSelS(etatVide(armeS.emplacements)); setAlerteS(false); }} alerte={alerteS} afficherValeurs={afficherValeurs} />
@@ -1289,14 +1344,14 @@
                 </div>
 
                 {/* ATOUTS & ÉQUIPEMENT */}
-                <h2 className="section-titre">Atouts &amp; équipement</h2>
+                <h2 className="section-titre">{t("Atouts & équipement")}</h2>
                 <div className="layout">
                   <div className="colonne">
-                    <h2>Atouts</h2>
+                    <h2>{t("Atouts")}</h2>
                     <SlotsList slots={ATOUTS} selection={atouts} onChange={(id, v) => setAtouts({ ...atouts, [id]: v })} afficherValeurs={afficherValeurs} />
                   </div>
                   <div className="colonne">
-                    <h2>Équipement</h2>
+                    <h2>{t("Équipement")}</h2>
                     <SlotsList slots={EQUIPEMENTS} selection={equip} onChange={(id, v) => setEquip({ ...equip, [id]: v })} afficherValeurs={afficherValeurs} />
                   </div>
                 </div>
@@ -1305,10 +1360,10 @@
 
             {vue === "classes" && (
               <div>
-                <Banniere icone={navItems.find(n => n.id === "classes").ico} titre="Classes enregistrées"
-                  sous="Tes classes sauvegardées sur cet ordinateur. Clique « Charger » pour réappliquer une classe." />
+                <Banniere icone={navItems.find(n => n.id === "classes").ico} titre={t("Classes enregistrées")}
+                  sous={t("Tes classes sauvegardées sur cet ordinateur. Clique « Charger » pour réappliquer une classe.")} />
                 {classes.length === 0
-                  ? <p className="vide">Aucune classe enregistrée pour l'instant. Compose une classe dans le créateur, puis clique « Enregistrer la classe ».</p>
+                  ? <p className="vide">{t("Aucune classe enregistrée pour l'instant. Compose une classe dans le créateur, puis clique « Enregistrer la classe ».")}</p>
                   : classes.map((c, i) => {
                     const ap = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale);
                     const as = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire);
@@ -1319,8 +1374,8 @@
                           <div className="classe-armes">{ap ? ap.nom : "?"} + {as ? as.nom : "?"}</div>
                         </div>
                         <div className="classe-actions">
-                          <button className="btn" onClick={() => appliquerClasse(c)}>Charger</button>
-                          <button className="btn btn-sup" onClick={() => supprimerClasse(i)}>Supprimer</button>
+                          <button className="btn" onClick={() => appliquerClasse(c)}>{t("Charger")}</button>
+                          <button className="btn btn-sup" onClick={() => supprimerClasse(i)}>{t("Supprimer")}</button>
                         </div>
                       </div>
                     );
@@ -1330,17 +1385,17 @@
 
             {vue === "comparateur" && (
               <div>
-                <Banniere icone={navItems.find(n => n.id === "comparateur").ico} titre="Comparateur d'armes"
-                  sous="Compare les statistiques de base de deux armes — le vert indique la meilleure des deux." />
+                <Banniere icone={navItems.find(n => n.id === "comparateur").ico} titre={t("Comparateur d'armes")}
+                  sous={t("Compare les statistiques de base de deux armes — le vert indique la meilleure des deux.")} />
                 <div className="cmp-choix">
                   <div>
-                    <label>Arme A :</label>
+                    <label>{t("Arme A :")}</label>
                     <Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpA.id} onChange={(id) => setCmpA(TOUTES_ARMES.find(a => a.id === id))} />
                     {typeof IMAGES_ARMES !== "undefined" && IMAGES_ARMES[cmpA.id] &&
                       <img className="cmp-vignette" src={IMAGES_ARMES[cmpA.id]} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
                   </div>
                   <div>
-                    <label>Arme B :</label>
+                    <label>{t("Arme B :")}</label>
                     <Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpB.id} onChange={(id) => setCmpB(TOUTES_ARMES.find(a => a.id === id))} />
                     {typeof IMAGES_ARMES !== "undefined" && IMAGES_ARMES[cmpB.id] &&
                       <img className="cmp-vignette" src={IMAGES_ARMES[cmpB.id]} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
@@ -1348,7 +1403,7 @@
                 </div>
                 <div>
                   <div className="cmp-ligne tete">
-                    <span className="cmp-stat">Statistique</span>
+                    <span className="cmp-stat">{t("Statistique")}</span>
                     <span className="cmp-val">{cmpA.nom}</span>
                     <span className="cmp-val">{cmpB.nom}</span>
                   </div>
@@ -1362,7 +1417,7 @@
                     }
                     return (
                       <div className="cmp-ligne" key={stat}>
-                        <span className="cmp-stat">{INFOS_STATS[stat].label}</span>
+                        <span className="cmp-stat">{t(INFOS_STATS[stat].label)}</span>
                         <span className={"cmp-val" + (aGagne ? " gagne" : "")}>{a}</span>
                         <span className={"cmp-val" + (bGagne ? " gagne" : "")}>{b}</span>
                       </div>
@@ -1374,8 +1429,8 @@
 
             {vue === "meta" && (
               <div>
-                <Banniere icone={navItems.find(n => n.id === "meta").ico} titre="Méta — Tier list"
-                  sous="Classement indicatif des armes, basé sur la méta codmunity (modifiable dans donnees.js)." />
+                <Banniere icone={navItems.find(n => n.id === "meta").ico} titre={t("Méta — Tier list")}
+                  sous={t("Classement indicatif des armes, basé sur la méta codmunity (modifiable dans donnees.js).")} />
                 <div>
                   {(() => {
                     const ordreCats = [];
@@ -1386,7 +1441,7 @@
                       armesCat.forEach(a => { const t = TIERS[a.id] || "N"; (groupes[t] = groupes[t] || []).push(a); });
                       return (
                         <div className="meta-categorie" key={cat}>
-                          <h3 className="meta-cat-titre">{cat}</h3>
+                          <h3 className="meta-cat-titre">{t(cat)}</h3>
                           {TIERS_ORDRE.concat(["N"]).map(t => {
                             const armes = groupes[t];
                             if (!armes || !armes.length) return null;
