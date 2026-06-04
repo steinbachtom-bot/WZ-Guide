@@ -446,7 +446,11 @@
       .gs-attachments > div { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
       .layout { gap: 14px; }
       .colonne { min-width: 0; flex-basis: 100%; padding: 16px; }
-      .dd-liste { max-width: calc(100vw - 28px); }
+      /* Mobile : le menu déroulant épouse la largeur de son emplacement et ne déborde jamais de l'écran. */
+      .dd-liste,
+      .gs-attachments .slot:nth-last-child(-n+2) .dd-liste {
+        left: 0; right: auto; width: 100%; min-width: 100%; max-width: 100%;
+      }
       .entete-vue { gap: 12px; }
       .mode-toggle, .btn-enregistrer { width: 100%; }
       .mode-toggle button { flex: 1; }
