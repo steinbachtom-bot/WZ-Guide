@@ -4594,3 +4594,58 @@ const DEGATS_PALIERS = {
   siren: [{ m: 0, deg: 100 }],
   nx_ravager: [{ m: 0, deg: 150 }]
 };
+
+
+/* ------------------------------------------------------------
+   DÉGÂTS PAR PARTIE DU CORPS (courte portée) — source codmunity.
+   { head, neck, chest, stomach, arm, leg } par arme. Pour le mannequin.
+   ------------------------------------------------------------ */
+const DEGATS_PARTIES = {
+  krig_c: { head: 35, neck: 28, chest: 28, stomach: 28, arm: 28, leg: 28 },
+  c9: { head: 33, neck: 26, chest: 26, stomach: 26, arm: 26, leg: 26 },
+  xmg: { head: 34, neck: 29, chest: 29, stomach: 29, arm: 29, leg: 29 },
+  tsarkov_762: { head: 105, neck: 75, chest: 75, stomach: 75, arm: 75, leg: 75 },
+  lr_762: { head: 306, neck: 204, chest: 112, stomach: 102, arm: 104, leg: 100 },
+  m15_mod0: { head: 27, neck: 21, chest: 21, stomach: 21, arm: 21, leg: 21 },
+  ak_27: { head: 35, neck: 26, chest: 26, stomach: 26, arm: 26, leg: 26 },
+  mxr_17: { head: 38, neck: 35, chest: 35, stomach: 32, arm: 32, leg: 32 },
+  peacekeeper_mk1: { head: 28, neck: 23, chest: 23, stomach: 23, arm: 23, leg: 23 },
+  egrt_17: { head: 26, neck: 22, chest: 22, stomach: 22, arm: 22, leg: 22 },
+  voyak_kt3: { head: 34, neck: 29, chest: 29, stomach: 29, arm: 29, leg: 29 },
+  mk35_isr: { head: 27, neck: 24, chest: 24, stomach: 24, arm: 24, leg: 24 },
+  x9_maverick: { head: 42, neck: 34, chest: 34, stomach: 33, arm: 34, leg: 33 },
+  maddox_rfb: { head: 32, neck: 28, chest: 28, stomach: 28, arm: 28, leg: 28 },
+  ds20_mirage: { head: 35, neck: 27, chest: 27, stomach: 27, arm: 27, leg: 27 },
+  kogot_7: { head: 25, neck: 23, chest: 23, stomach: 23, arm: 23, leg: 23 },
+  mpc_25: { head: 34, neck: 30, chest: 30, stomach: 30, arm: 30, leg: 30 },
+  carbon_57: { head: 27, neck: 24, chest: 24, stomach: 24, arm: 24, leg: 24 },
+  sturmwolf_45: { head: 37, neck: 30, chest: 30, stomach: 30, arm: 30, leg: 30 },
+  ryden_45k: { head: 27, neck: 22, chest: 22, stomach: 22, arm: 22, leg: 22 },
+  rk_9: { head: 40, neck: 34, chest: 34, stomach: 32, arm: 32, leg: 32 },
+  dravec_45: { head: 33, neck: 26, chest: 26, stomach: 26, arm: 26, leg: 26 },
+  vst: { head: 23, neck: 20, chest: 20, stomach: 20, arm: 20, leg: 20 },
+  razor_9mm: { head: 26, neck: 21, chest: 21, stomach: 21, arm: 21, leg: 21 },
+  rev_46: { head: 21, neck: 17, chest: 17, stomach: 17, arm: 17, leg: 17 },
+  mk78: { head: 37, neck: 31, chest: 31, stomach: 31, arm: 31, leg: 31 },
+  xm325: { head: 29, neck: 23, chest: 23, stomach: 23, arm: 23, leg: 23 },
+  sokol_545: { head: 38, neck: 38, chest: 35, stomach: 32, arm: 32, leg: 32 },
+  strider_300: { head: 336, neck: 224, chest: 112, stomach: 91, arm: 112, leg: 91 },
+  hawker_hx: { head: 294, neck: 196, chest: 117, stomach: 107, arm: 117, leg: 98 },
+  xr3_ion: { head: 270, neck: 180, chest: 99, stomach: 90, arm: 91, leg: 81 },
+  shadow_sk: { head: 336, neck: 224, chest: 112, stomach: 105, arm: 112, leg: 97 },
+  vs_recon: { head: 336, neck: 224, chest: 112, stomach: 109, arm: 112, leg: 100 },
+  swordfish_a1: { head: 40, neck: 37, chest: 37, stomach: 31, arm: 31, leg: 31 },
+  m8a1: { head: 34, neck: 30, chest: 30, stomach: 30, arm: 30, leg: 30 },
+  m34_novaline: { head: 65, neck: 50, chest: 50, stomach: 50, arm: 50, leg: 50 },
+  warden_308: { head: 105, neck: 105, chest: 101, stomach: 75, arm: 75, leg: 75 },
+  m10_breacher: { head: 220, neck: 220, chest: 220, stomach: 220, arm: 220, leg: 220 },
+  echo_12: { head: 148, neck: 148, chest: 148, stomach: 148, arm: 148, leg: 148 },
+  akita: { head: 81, neck: 81, chest: 81, stomach: 81, arm: 81, leg: 81 },
+  grekhova: { head: 26, neck: 20, chest: 20, stomach: 20, arm: 20, leg: 20 },
+  jager_45: { head: 37, neck: 31, chest: 31, stomach: 31, arm: 31, leg: 31 },
+  velox_57: { head: 36, neck: 33, chest: 33, stomach: 33, arm: 33, leg: 33 },
+  coda_9: { head: 26, neck: 20, chest: 20, stomach: 20, arm: 20, leg: 20 },
+  pistolet_1911: { head: 52, neck: 50, chest: 50, stomach: 44, arm: 44, leg: 44 },
+  siren: { head: 100, neck: 100, chest: 100, stomach: 100, arm: 100, leg: 100 },
+  nx_ravager: { head: 150, neck: 150, chest: 150, stomach: 150, arm: 150, leg: 150 }
+};
