@@ -522,7 +522,7 @@
   <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=9"></script>
+  <script src="traductions.js?v=10"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -1185,7 +1185,7 @@
             {(cA || []).filter(p => p.ttk != null).map((p, i) => <circle key={"da" + i} cx={px(p.m)} cy={py(p.ttk)} r="3.5" fill="#4fd0e6" />)}
             {(cB || []).filter(p => p.ttk != null).map((p, i) => <circle key={"db" + i} cx={px(p.m)} cy={py(p.ttk)} r="3.5" fill="#f59e0b" />)}
           </svg>
-          <p className="spray-note" style={{ margin: "8px 0 0" }}>{t("TTK au corps selon la distance, d'après les paliers de dégâts réels (codmunity). Plus bas = plus rapide.")}</p>
+          <p className="spray-note" style={{ margin: "8px 0 0" }}>{t("TTK au corps selon la distance, d'après les paliers de dégâts réels. Plus bas = plus rapide.")}</p>
         </div>
       );
     }
