@@ -1108,8 +1108,13 @@
     // Graphique comparatif TTK selon la distance (deux armes superposées).
     function TTKCompareChart({ a, b, pvCible, setPvCible }) {
       const courbe = (arme) => {
-        const pal = (typeof DEGATS_PALIERS !== "undefined" && DEGATS_PALIERS[arme.id]) ? DEGATS_PALIERS[arme.id] : null;
-        if (!pal || !pal.length) return null;
+        let pal = (typeof DEGATS_PALIERS !== "undefined" && DEGATS_PALIERS[arme.id]) ? DEGATS_PALIERS[arme.id] : null;
+        if (!pal || !pal.length) {
+          // Repli : pas de paliers de distance -> courbe plate à partir des dégâts de base.
+          const d = arme.stats_base.degats;
+          if (!d) return null;
+          pal = [{ m: 0, deg: d }];
+        }
         const tbs = 60000 / (arme.stats_base.cadence_cpm || 600);
         return pal.map(p => {
           const stk = p.deg > 0 ? Math.max(1, Math.ceil(pvCible / p.deg)) : null;
@@ -1117,7 +1122,7 @@
         });
       };
       const cA = courbe(a), cB = courbe(b);
-      const W = 620, H = 300, ml = 52, mr = 16, mt = 14, mb = 40;
+      const W = 620, H = 300, ml = 52, mr = 16, mt = 26, mb = 40;
       if (!cA && !cB) {
         return (
           <div className="ttkc-box">
@@ -1127,7 +1132,7 @@
         );
       }
       const allPts = [...(cA || []), ...(cB || [])];
-      const lastM = Math.max(20, ...allPts.map(p => p.m));
+      const lastM = Math.max(30, ...allPts.map(p => p.m));
       const maxDist = Math.ceil((lastM + 6) / 10) * 10;
       const maxTtk = Math.max(100, ...allPts.map(p => p.ttk).filter(v => v != null));
       const plotW = W - ml - mr, plotH = H - mt - mb;
@@ -1174,7 +1179,7 @@
               <text key={"x" + i} x={px(m)} y={H - mb + 16} textAnchor="middle" className="ttkc-axis">{m}</text>
             ))}
             <text x={ml + plotW / 2} y={H - 4} textAnchor="middle" className="ttkc-axis">{t("Distance (m)")}</text>
-            <text x={12} y={mt + 2} className="ttkc-axis">TTK (ms)</text>
+            <text x={8} y={13} className="ttkc-axis">TTK (ms)</text>
             {cA && <polyline points={polyStr(cA)} fill="none" stroke="#4fd0e6" strokeWidth="2.5" strokeLinejoin="round" />}
             {cB && <polyline points={polyStr(cB)} fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinejoin="round" />}
             {(cA || []).filter(p => p.ttk != null).map((p, i) => <circle key={"da" + i} cx={px(p.m)} cy={py(p.ttk)} r="3.5" fill="#4fd0e6" />)}
