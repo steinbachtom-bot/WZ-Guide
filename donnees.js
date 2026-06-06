@@ -21,7 +21,7 @@ const CAP_ACCESSOIRES = 5;   // règle Black Ops 7 Warzone : 5 max par arme
 const META_DONNEES = {
   saison: "Saison 4",
   jeu: "Black Ops 7 / Warzone",
-  maj: "juin 2026",          // mois de la dernière mise à jour des stats
+  maj: "juin 2026 · Saison 4",  // dernière mise à jour des stats
   source: "codmunity.gg",
   sourceUrl: "https://codmunity.gg"
 };
@@ -85,26 +85,26 @@ const TIERS = {
   x9_maverick: "A", mk35_isr: "A", egrt_17: "A",
   ak_27: "B", maddox_rfb: "B", ds20_mirage: "B", krig_c: "B",
   // --- Mitraillettes ---
-  sturmwolf_45: "S", mpc_25: "S", carbon_57: "S", kogot_7: "S",
+  sturmwolf_45: "S", mpc_25: "S", carbon_57: "S", kogot_7: "B",
   vst: "A", ryden_45k: "A", c9: "A",
-  dravec_45: "B", rk_9: "B", razor_9mm: "B",
-  rev_46: "C",
+  dravec_45: "A", rk_9: "B", razor_9mm: "B",
+  rev_46: "A", cbrs_3: "A",
   // --- Fusils-mitrailleurs ---
-  mk78: "S",
-  xm325: "A", xmg: "A",
-  sokol_545: "B",
+  mk78: "C",
+  xm325: "S", xmg: "A",
+  sokol_545: "A",
   // --- Fusils tactiques ---
   m8a1: "S", m34_novaline: "S",
   warden_308: "A",
-  swordfish_a1: "B",
+  krs_762: "S", swordfish_a1: "B",
   tsarkov_762: "C",
   // --- Fusils de précision ---
   strider_300: "S",
   vs_recon: "A", hawker_hx: "A",
   xr3_ion: "B", shadow_sk: "B", lr_762: "B",
   // --- Fusils à pompe ---
-  sg_12: "A",
-  echo_12: "B", m10_breacher: "B",
+  sg_12: "B",
+  echo_12: "B", m10_breacher: "A", gdl_havoc: "B",
   akita: "C", asg_89: "C",
   // --- Pistolets ---
   grekhova: "A",
@@ -194,7 +194,9 @@ const IMAGES_ARMES = {
   // Flatline Mk.II : pas sur codmunity → render officiel Call of Duty
   flatline_mk2: "https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/guides/games/blackops7/weapons-matrix/navigation/COD-BO7-MELEE-FLATLINE-MK-II.webp",
   // Poings : aucun render officiel (mêlée par défaut) → icône poing intégrée
-  poings: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><g fill='%237d8c63'><rect x='15' y='26' width='35' height='26' rx='7'/><rect x='16' y='20' width='8' height='12' rx='4'/><rect x='25' y='17' width='8' height='15' rx='4'/><rect x='34' y='18' width='8' height='14' rx='4'/><rect x='43' y='22' width='8' height='11' rx='4'/><rect x='44' y='31' width='13' height='9' rx='4'/></g></svg>"
+  poings: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><g fill='%237d8c63'><rect x='15' y='26' width='35' height='26' rx='7'/><rect x='16' y='20' width='8' height='12' rx='4'/><rect x='25' y='17' width='8' height='15' rx='4'/><rect x='34' y='18' width='8' height='14' rx='4'/><rect x='43' y='22' width='8' height='11' rx='4'/><rect x='44' y='31' width='13' height='9' rx='4'/></g></svg>",
+  krs_762: "https://assets.codmunity.gg/optimized/KRS-7.62-Versatile-Black-Ops-7-Loadout-CODMunity-1730.webp",
+  cbrs_3: "https://assets.codmunity.gg/optimized/CBRS-3-Versatile-Black-Ops-7-Loadout-CODMunity-6824.webp"
 };
 
 /* ------------------------------------------------------------
@@ -1607,12 +1609,7 @@ const ARMES_PRINCIPALES = [
     categorie: "Mitraillette",
     jeu: "Black Ops 7",
     // SMG très haute cadence (968 RPM), recul élevé. Stats et accessoires RÉELS (Warzone, codmunity.gg).
-    stats_base: {
-      degats: 25, portee_m: 28, cadence_cpm: 968, velocite_ms: 540,
-      capacite_chargeur: 30, vitesse_visee_ms: 170, sprint_to_fire_ms: 110,
-      vitesse_rechargement_ms: 2288, gun_kick: 43.33, recul_horizontal: 18.8,
-      recul_vertical: 41.53, mobilite: 5.2
-    },
+    stats_base: { degats: 23, portee_m: 25, cadence_cpm: 952, velocite_ms: 540, capacite_chargeur: 30, vitesse_visee_ms: 200, sprint_to_fire_ms: 125, vitesse_rechargement_ms: 2860, gun_kick: 45.74, recul_horizontal: 22.11, recul_vertical: 43.72, mobilite: 5.2 },
     // Accessoires COMPLETS du Kogot-7 (liste exhaustive, source codmunity.gg Warzone).
     emplacements: [
       { id: "viseur", label: "Optique", options: [
@@ -1694,12 +1691,7 @@ const ARMES_PRINCIPALES = [
     categorie: "Mitraillette",
     jeu: "Black Ops 7",
     // SMG cadence moyenne, bonne maniabilité. Stats et accessoires RÉELS (Warzone, codmunity.gg).
-    stats_base: {
-      degats: 28, portee_m: 30, cadence_cpm: 706, velocite_ms: 520,
-      capacite_chargeur: 30, vitesse_visee_ms: 165, sprint_to_fire_ms: 120,
-      vitesse_rechargement_ms: 2026, gun_kick: 37.8, recul_horizontal: 14.8,
-      recul_vertical: 50.98, mobilite: 5.1
-    },
+    stats_base: { degats: 30, portee_m: 30, cadence_cpm: 750, velocite_ms: 520, capacite_chargeur: 30, vitesse_visee_ms: 180, sprint_to_fire_ms: 110, vitesse_rechargement_ms: 2533, gun_kick: 47.25, recul_horizontal: 18.51, recul_vertical: 63.73, mobilite: 5.1 },
     // Accessoires COMPLETS du MPC-25 (liste exhaustive, source codmunity.gg Warzone).
     emplacements: [
       { id: "viseur", label: "Optique", options: [
@@ -2132,12 +2124,7 @@ const ARMES_PRINCIPALES = [
     categorie: "Mitraillette",
     jeu: "Black Ops 7",
     // Accessoires COMPLETS du Dravec 45 (liste exhaustive, source codmunity.gg Warzone). Pas d'emplacement sous-canon.
-    stats_base: {
-      degats: 30, portee_m: 30, cadence_cpm: 652, velocite_ms: 480,
-      capacite_chargeur: 36, vitesse_visee_ms: 170, sprint_to_fire_ms: 125,
-      vitesse_rechargement_ms: 2080, gun_kick: 45.26, recul_horizontal: 24.29,
-      recul_vertical: 48.14, mobilite: 5.0
-    },
+    stats_base: { degats: 26, portee_m: 30, cadence_cpm: 652, velocite_ms: 610, capacite_chargeur: 36, vitesse_visee_ms: 235, sprint_to_fire_ms: 170, vitesse_rechargement_ms: 2600, gun_kick: 45.26, recul_horizontal: 24.29, recul_vertical: 48.14, mobilite: 4.8 },
     emplacements: [
       { id: "viseur", label: "Optique", options: [
         { id: "aucun", nom: "— Aucun —" },
@@ -2386,12 +2373,7 @@ const ARMES_PRINCIPALES = [
     categorie: "Mitraillette",
     jeu: "Black Ops 7",
     // Accessoires COMPLETS du REV-46 (liste exhaustive, source codmunity.gg Warzone). SMG cadence extrême (1154 RPM).
-    stats_base: {
-      degats: 21, portee_m: 24, cadence_cpm: 1154, velocite_ms: 620,
-      capacite_chargeur: 35, vitesse_visee_ms: 165, sprint_to_fire_ms: 105,
-      vitesse_rechargement_ms: 2233, gun_kick: 36.81, recul_horizontal: 5.77,
-      recul_vertical: 47.2, mobilite: 5.2
-    },
+    stats_base: { degats: 17, portee_m: 27, cadence_cpm: 1111, velocite_ms: 540, capacite_chargeur: 35, vitesse_visee_ms: 190, sprint_to_fire_ms: 120, vitesse_rechargement_ms: 2900, gun_kick: 37.67, recul_horizontal: 6.34, recul_vertical: 48.13, mobilite: 5.1 },
     emplacements: [
       { id: "viseur", label: "Optique", options: [
         { id: "aucun", nom: "— Aucun —" },
@@ -2467,12 +2449,7 @@ const ARMES_PRINCIPALES = [
     categorie: "Fusil-mitrailleur",
     jeu: "Black Ops 7",
     // Accessoires COMPLETS du MK.78 (liste exhaustive, source codmunity.gg Warzone). FM dominant de la méta.
-    stats_base: {
-      degats: 33, portee_m: 50, cadence_cpm: 652, velocite_ms: 890,
-      capacite_chargeur: 75, vitesse_visee_ms: 250, sprint_to_fire_ms: 230,
-      vitesse_rechargement_ms: 4372, gun_kick: 15.62, recul_horizontal: 10.7,
-      recul_vertical: 45.92, mobilite: 4.6
-    },
+    stats_base: { degats: 31, portee_m: 43, cadence_cpm: 480, velocite_ms: 800, capacite_chargeur: 75, vitesse_visee_ms: 440, sprint_to_fire_ms: 250, vitesse_rechargement_ms: 6340, gun_kick: 16.99, recul_horizontal: 13.93, recul_vertical: 49.5, mobilite: 4.4 },
     emplacements: [
       { id: "viseur", label: "Optique", options: [
         { id: "aucun", nom: "— Aucun —" },
@@ -3528,12 +3505,7 @@ const ARMES_PRINCIPALES = [
     categorie: "Fusil à pompe",
     jeu: "Black Ops 7",
     // Accessoires COMPLETS du M10 Breacher (liste exhaustive, source codmunity.gg Warzone). Pompe — codmunity ne publie quasi aucun chiffre d'effet pour cette arme.
-    stats_base: {
-      degats: 100, portee_m: 12, cadence_cpm: 43, velocite_ms: 320,
-      capacite_chargeur: 8, vitesse_visee_ms: 250, sprint_to_fire_ms: 155,
-      vitesse_rechargement_ms: 6128, gun_kick: 53.6, recul_horizontal: 42.04,
-      recul_vertical: 98.04, mobilite: 4.7
-    },
+    stats_base: { degats: 220, portee_m: 13, cadence_cpm: 75, velocite_ms: 320, capacite_chargeur: 8, vitesse_visee_ms: 300, sprint_to_fire_ms: 210, vitesse_rechargement_ms: 6810, gun_kick: 53.6, recul_horizontal: 42.04, recul_vertical: 98.04, mobilite: 4.7 },
     emplacements: [
       { id: "viseur", label: "Optique", options: [
         { id: "aucun", nom: "— Aucun —" },
@@ -3604,12 +3576,7 @@ const ARMES_PRINCIPALES = [
     categorie: "Fusil à pompe",
     jeu: "Black Ops 7",
     // Accessoires COMPLETS du SG-12 (liste exhaustive, source codmunity.gg Warzone). Pompe semi-auto — codmunity ne publie de chiffres que pour la capacité chargeur.
-    stats_base: {
-      degats: 95, portee_m: 14, cadence_cpm: 212, velocite_ms: 320,
-      capacite_chargeur: 9, vitesse_visee_ms: 220, sprint_to_fire_ms: 200,
-      vitesse_rechargement_ms: 2860, gun_kick: 32.47, recul_horizontal: 34.04,
-      recul_vertical: 91.59, mobilite: 4.7
-    },
+    stats_base: { degats: 88, portee_m: 13, cadence_cpm: 212, velocite_ms: 320, capacite_chargeur: 8, vitesse_visee_ms: 250, sprint_to_fire_ms: 200, vitesse_rechargement_ms: 2860, gun_kick: 32.47, recul_horizontal: 34.04, recul_vertical: 91.59, mobilite: 4.7 },
     emplacements: [
       { id: "viseur", label: "Optique", options: [
         { id: "aucun", nom: "— Aucun —" },
@@ -3848,6 +3815,34 @@ const ARMES_PRINCIPALES = [
         { id: "slug", nom: "12 Gauge Short Slug", description: "Projectile unique : portée et précision accrues (buff dégâts S3R)." }
       ]}
     ]
+  }
+,
+  {
+    id: "krs_762",
+    nom: "KRS-7.62",
+    categorie: "Fusil tactique",
+    jeu: "Black Ops 7",
+    // Nouveau — Saison 4. Stats codmunity.gg. Jeu d'accessoires représentatif (même catégorie).
+    stats_base: { degats: 84, portee_m: 52, cadence_cpm: 364, velocite_ms: 875, capacite_chargeur: 10, vitesse_visee_ms: 330, sprint_to_fire_ms: 250, vitesse_rechargement_ms: 3233, gun_kick: 17, recul_horizontal: 25.03, recul_vertical: 70.1, mobilite: 4.7 },
+    emplacements: [{"id":"viseur","label":"Optique","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"reflex","nom":"Reflex","description":"Point rouge ouvert."},{"id":"lunette_3x","nom":"Lunette 3x","description":"Grossissement moyen."}]},{"id":"bouche","label":"Bouche","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"vas_supp","nom":"Suppresseur VAS 5.56","description":"Tir silencieux."},{"id":"redwell_comp","nom":"Compensateur Redwell 5.56","description":"Réduit le recul vertical.","modificateurs":{"gun_kick":"-16%","recul_vertical":"-17%"}},{"id":"titan_r","nom":"Compensateur Titan-R 5.56","description":"Améliore le tir en glissade/saut."},{"id":"supp_mono","nom":"Suppresseur monolithique","description":"Plus de vélocité/portée, vise plus lentement.","modificateurs":{"velocite_ms":"+15%","portee_m":"+7.9%","vitesse_visee_ms":"+15%"}},{"id":"rl_brake","nom":"Frein RL-5.56","description":"Réduit le recul vertical et la 1re balle.","modificateurs":{"gun_kick":"-10%","recul_vertical":"-10%"},"effets_extra":{"Recul 1re balle":"−50%"}},{"id":"stentorian","nom":"Frein LTI Stentorian","description":"Bouche du Battle Pass S4."},{"id":"redwell","nom":"Suppresseur Redwell Shade-X","description":"Réduit tout le recul, moins de vélocité/portée.","modificateurs":{"gun_kick":"-11%","recul_horizontal":"-11%","recul_vertical":"-11%","velocite_ms":"-13%","portee_m":"-10.5%"}}]},{"id":"canon","label":"Canon","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"gar_xl","nom":"Canon vélocité 16.5\" Gar-xL","description":"Améliore la vélocité de balle."},{"id":"angler","nom":"Canon long 17\" Angler","description":"Plus de portée.","modificateurs":{"portee_m":"+26.3%"}},{"id":"spatha","nom":"Canon hybride 15.1\" Spatha","description":"Plus de vélocité et de portée.","modificateurs":{"velocite_ms":"+14%","portee_m":"+13.2%"}},{"id":"bowen_melville","nom":"Canon 15.9\" Bowen Melville","description":"Plus de dégâts effectifs mais recul fortement accru.","modificateurs":{"gun_kick":"+54%","recul_horizontal":"+20%","recul_vertical":"+55%"}},{"id":"volare","nom":"Canon court 13\" EAM Volare","description":"Manie plus vite.","modificateurs":{"vitesse_visee_ms":"-4%","sprint_to_fire_ms":"-7%"}}]},{"id":"sous_canon","label":"Sous-canon","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"fixus","nom":"Poignée Fixus","description":"Réduit le recul horizontal.","modificateurs":{"recul_horizontal":"-15%"}},{"id":"dominium","nom":"Poignée Dominium","description":"Réduit le recul horizontal.","modificateurs":{"recul_horizontal":"-18%"}},{"id":"aperture2","nom":"Poignée Aperture-2","description":"Stabilité de visée (pas d'effet de stat notable)."},{"id":"modus_r","nom":"Poignée Modus-R","description":"Réduit le recul horizontal et améliore la mobilité.","modificateurs":{"recul_horizontal":"-8%","mobilite":"+10%"},"effets_extra":{"Vitesse sprint":"+3%","Mobilité accroupi":"+8%"}},{"id":"dart","nom":"Poignée Dart","description":"Améliore la mobilité.","modificateurs":{"mobilite":"+10%"},"effets_extra":{"Mobilité accroupi":"+8%","Mobilité ADS":"+14%"}}]},{"id":"chargeur","label":"Chargeur","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"dorado","nom":"Chargeur Dorado étendu (48)","description":"+12 balles.","modificateurs":{"capacite_chargeur":"+12"}},{"id":"r0g","nom":"Chargeur rapide R0-G (36)","description":"Manie plus vite (Fast Mag)."},{"id":"mini_pearl","nom":"Chargeur rapide Mini-Pearl","description":"Manie/recharge plus vite, -4 balles.","modificateurs":{"vitesse_visee_ms":"-4%","sprint_to_fire_ms":"-4%","vitesse_rechargement_ms":"-30%","capacite_chargeur":"-4"}},{"id":"samson","nom":"Tambour VAS Samson (60)","description":"+24 balles, manie/recharge plus lentement.","modificateurs":{"capacite_chargeur":"+24","vitesse_visee_ms":"+7%","sprint_to_fire_ms":"+10%","vitesse_rechargement_ms":"+21%"}}]},{"id":"poignee_arr","label":"Poignée arrière","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"plenary","nom":"Poignée Plenary (tir-sprint)","description":"Tir après sprint plus rapide.","modificateurs":{"sprint_to_fire_ms":"-24%"}},{"id":"r1_splendor","nom":"Poignée R1-Splendor (Quickdraw)","description":"Visée plus rapide.","modificateurs":{"vitesse_visee_ms":"-20%"}},{"id":"webbed","nom":"Poignée Webbed Pistol","description":"Réduit le recul horizontal.","modificateurs":{"recul_horizontal":"-6%"}},{"id":"hawker_vicr","nom":"Poignée Hawker VIC-R","description":"Visée plus rapide.","modificateurs":{"vitesse_visee_ms":"-11%"}},{"id":"trevally","nom":"Poignée Trevally Shock (précision)","description":"Réduit le recul vertical et la 1re balle.","modificateurs":{"gun_kick":"-8%","recul_vertical":"-8%"},"effets_extra":{"Recul 1re balle":"−60%"}}]},{"id":"crosse","label":"Crosse","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"adept_skiff","nom":"Crosse Adept Skiff (mobilité)","description":"Améliore la mobilité.","modificateurs":{"mobilite":"+20%"},"effets_extra":{"Vitesse sprint":"+3%","Mobilité accroupi":"+29%"}},{"id":"narwhal","nom":"Crosse Narwhal Heavy","description":"Crosse lourde (stabilité)."},{"id":"bosun","nom":"Crosse Bosun Light (ADS mobilité)","description":"Plus mobile en visée.","effets_extra":{"Mobilité ADS":"+21%"}},{"id":"qstubb","nom":"Crosse Q-Stubb","description":"Plus mobile en visée.","effets_extra":{"Mobilité ADS":"+9%"}},{"id":"amber_j","nom":"Crosse Amber-J (contrôle)","description":"Réduit l'ensemble du recul.","modificateurs":{"gun_kick":"-13%","recul_horizontal":"-13%","recul_vertical":"-13%"}}]},{"id":"laser","label":"Laser","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"convergence","nom":"Laser Convergence Box","description":"Précision tir à la hanche (visible)."},{"id":"motion_3mw","nom":"Laser 3mW Motion Strike","description":"Plus de portée (visible).","modificateurs":{"portee_m":"+15.8%"}},{"id":"lockstep_5mw","nom":"Laser 5mW Lockstep","description":"Précision tir à la hanche (visible)."},{"id":"tactical_2mw","nom":"Laser tactique 2mW Adaptive","description":"Précision tir à la hanche (visible)."},{"id":"instinct_1mw","nom":"Laser 1mW Instinct","description":"Manie plus vite (visible).","modificateurs":{"vitesse_visee_ms":"-4%","sprint_to_fire_ms":"-7%"}}]},{"id":"mode_tir","label":"Mode de tir","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"fmj","nom":"5.56 NATO FMJ","description":"Pénétration des surfaces (pas d'effet de stat notable)."},{"id":"sync_recul","nom":"Unité de synchro recul","description":"Réduit l'ensemble du recul.","modificateurs":{"gun_kick":"-8%","recul_horizontal":"-8%","recul_vertical":"-8%"}},{"id":"overpressured","nom":"5.56 NATO Surpressurisé","description":"Plus de vélocité de balle.","modificateurs":{"velocite_ms":"+15%"}},{"id":"bolt_carrier","nom":"Tir rapide (Bolt Carrier Group)","description":"Cadence accrue, mais recul et vélocité dégradés.","modificateurs":{"cadence_cpm":"+11%","velocite_ms":"-20%","gun_kick":"+30%","recul_horizontal":"+30%","recul_vertical":"+30%","portee_m":"-20%"}},{"id":"penta_burst","nom":"MFS Penta Burst Mod (rafale 5)","description":"Rafale de 5, cadence et chargeur accrus, mais fort recul.","modificateurs":{"cadence_cpm":"+25%","capacite_chargeur":"+24","vitesse_visee_ms":"+5%","sprint_to_fire_ms":"+6%","vitesse_rechargement_ms":"+21%","gun_kick":"+35%","recul_horizontal":"+8%","recul_vertical":"+35%"}}]}]
+  },
+  {
+    id: "cbrs_3",
+    nom: "CBRS-3",
+    categorie: "Mitraillette",
+    jeu: "Black Ops 7",
+    // Nouveau — Saison 4. Stats codmunity.gg. Jeu d'accessoires représentatif (même catégorie).
+    stats_base: { degats: 29, portee_m: 34, cadence_cpm: 740, velocite_ms: 590, capacite_chargeur: 60, vitesse_visee_ms: 210, sprint_to_fire_ms: 140, vitesse_rechargement_ms: 3560, gun_kick: 42.01, recul_horizontal: 19.57, recul_vertical: 46.63, mobilite: 5.1 },
+    emplacements: [{"id":"viseur","label":"Optique","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"lti_mini","nom":"LTI Mini","description":"Mini point rouge."},{"id":"emt3_holo","nom":"EMT3 Holo Mk.2","description":"Viseur holographique."},{"id":"prisma_4x","nom":"PrismaTech Turbo 4x","description":"Lunette grossissement 4x."},{"id":"bowen_ir","nom":"Bowen X-25 IR","description":"Viseur thermique."}]},{"id":"bouche","label":"Bouche","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"stalker","nom":"Suppresseur K&S Stalker 57-X","description":"Discret (pas d'effet de stat notable)."},{"id":"ks_brake","nom":"Frein K&S-2B","description":"Réduit le recul vertical, 1re balle contrôlée.","modificateurs":{"gun_kick":"-9%","recul_vertical":"-10%"},"effets_extra":{"Recul 1re balle":"−60%"}},{"id":"ks_comp","nom":"Compensateur K&S","description":"Réduit le recul vertical.","modificateurs":{"gun_kick":"-17%","recul_vertical":"-18%"}},{"id":"supp_mono","nom":"Suppresseur monolithique","description":"Plus de vélocité/portée, vise plus lentement.","modificateurs":{"velocite_ms":"+20%","portee_m":"+7.1%","vitesse_visee_ms":"+29%"}},{"id":"ported","nom":"Compensateur Kühn Ported (mobilité)","description":"Améliore la mobilité.","modificateurs":{"mobilite":"+6%"},"effets_extra":{"Vitesse sprint":"+3%","Mobilité ADS":"+7%"}},{"id":"stentorian","nom":"Frein Stentorian LTI","description":"Frein de bouche (Passe de combat S4)."},{"id":"redwell","nom":"Suppresseur Redwell Shade-X","description":"Réduit tout le recul, moins de vélocité/portée.","modificateurs":{"gun_kick":"-11%","recul_horizontal":"-11%","recul_vertical":"-11%","velocite_ms":"-13%","portee_m":"-15%"}}]},{"id":"canon","label":"Canon","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"razorback","nom":"Canon contrôle maniable (13.1″ Razorback)","description":"Manie plus vite.","modificateurs":{"vitesse_visee_ms":"-8%"},"effets_extra":{"Mobilité ADS":"−6%"}},{"id":"vas_ashe","nom":"Canon long (14.5″ VAS Ashe)","description":"Vise un peu plus lentement (plus de portée).","modificateurs":{"vitesse_visee_ms":"+8%"}},{"id":"toxin","nom":"Canon moyenne portée (12″ Toxin)","description":"Plus de vélocité, manie un peu moins vite.","modificateurs":{"velocite_ms":"+12%","sprint_to_fire_ms":"+5%","mobilite":"-3%"},"effets_extra":{"Mobilité ADS":"−4%"}},{"id":"hydra","nom":"Canon hybride (10.4″ Hydra)","description":"Plus de vélocité, manie un peu plus vite.","modificateurs":{"velocite_ms":"+8%","vitesse_visee_ms":"-5%"}},{"id":"stratus","nom":"Canon contrôle (8.6″ MFS Stratus-X)","description":"Réduit fortement tout le recul.","modificateurs":{"gun_kick":"-35%","recul_horizontal":"-35%","recul_vertical":"-35%"}}]},{"id":"sous_canon","label":"Sous-canon","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"drift_lock","nom":"Poignée contrôle de recul (VAS Drift Lock)","description":"Réduit fortement le recul horizontal.","modificateurs":{"gun_kick":"-1%","recul_horizontal":"-20%"}},{"id":"respire","nom":"Poignée focus (Respire Handstop)","description":"Stabilise en visée focalisée."},{"id":"zero_shift","nom":"Poignée Zero Shift Handstop","description":"Réduit fortement le recul horizontal.","modificateurs":{"gun_kick":"-1%","recul_horizontal":"-20%"}},{"id":"quickstep","nom":"Poignée mobilité (Quickstep)","description":"Améliore la mobilité.","modificateurs":{"mobilite":"+7%"},"effets_extra":{"Mobilité accroupi":"+8%","Mobilité ADS":"+11%"}},{"id":"flowguard","nom":"Poignée recul mobile (Flowguard)","description":"Réduit le recul horizontal et améliore la mobilité.","modificateurs":{"recul_horizontal":"-10%","mobilite":"+7%"},"effets_extra":{"Vitesse sprint":"+3%","Mobilité accroupi":"+8%"}},{"id":"vas_conv","nom":"Poignée déviation (VAS Convergence)","description":"Réduit fortement le recul.","modificateurs":{"gun_kick":"-14%","recul_horizontal":"-16%","recul_vertical":"-13%"}}]},{"id":"chargeur","label":"Chargeur","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"coachwhip","nom":"Chargeur rapide (Coachwhip)","description":"Recharge plus vite.","modificateurs":{"vitesse_rechargement_ms":"-16%"}},{"id":"sustain25","nom":"Chargeur étendu I (Sustain-25)","description":"+10 balles.","modificateurs":{"capacite_chargeur":"+10"}},{"id":"racer_t","nom":"Chargeur rapide II (Racer-T)","description":"Manie/recharge plus vite, −5 balles.","modificateurs":{"vitesse_visee_ms":"-5%","sprint_to_fire_ms":"-9%","vitesse_rechargement_ms":"-29%","capacite_chargeur":"-5"}},{"id":"overload","nom":"Chargeur étendu II (MPC Overload Drum)","description":"+20 balles, manie/recharge plus lentement et moins mobile.","modificateurs":{"capacite_chargeur":"+20","vitesse_visee_ms":"+11%","sprint_to_fire_ms":"+18%","vitesse_rechargement_ms":"+18%","mobilite":"-5%"},"effets_extra":{"Vitesse sprint":"−8%","Mobilité ADS":"−6%"}}]},{"id":"poignee_arr","label":"Poignée arrière","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"quickshift","nom":"Poignée Quickdraw (Quickshift)","description":"Visée bien plus rapide.","modificateurs":{"vitesse_visee_ms":"-32%"}},{"id":"torque","nom":"Poignée tir-sprint (Torque Prime)","description":"Tir après sprint bien plus rapide.","modificateurs":{"sprint_to_fire_ms":"-38%"}},{"id":"vassal","nom":"Poignée stabilisation (Vassal)","description":"Réduit le recul horizontal, vise un peu plus lentement.","modificateurs":{"recul_horizontal":"-13%","vitesse_visee_ms":"+8%"}},{"id":"photonic","nom":"Poignée Quickdraw mobile (Photonic Adaptive)","description":"Visée plus rapide.","modificateurs":{"vitesse_visee_ms":"-16%"}},{"id":"magnate","nom":"Poignée précision (Magnate)","description":"Réduit le recul vertical, 1re balle contrôlée.","modificateurs":{"gun_kick":"-7%","recul_vertical":"-8%"},"effets_extra":{"Recul 1re balle":"−60%"}}]},{"id":"crosse","label":"Crosse","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"medusa","nom":"Crosse contrôle (Medusa)","description":"Réduit tout le recul, vise plus lentement.","modificateurs":{"gun_kick":"-18%","recul_horizontal":"-18%","recul_vertical":"-18%","vitesse_visee_ms":"+16%"},"effets_extra":{"Mobilité ADS":"−10%"}},{"id":"k1_pedal","nom":"Crosse mobilité ADS (K-1 Pedal)","description":"Plus mobile en visée, vise plus vite.","modificateurs":{"vitesse_visee_ms":"-15%"},"effets_extra":{"Mobilité ADS":"+23%"}},{"id":"vas_scale","nom":"Crosse tactique légère (VAS Tactical Scale)","description":"Manie plus vite.","modificateurs":{"vitesse_visee_ms":"-10%","sprint_to_fire_ms":"-12%"}},{"id":"viper","nom":"Crosse mobilité (Viper Wire)","description":"Améliore la mobilité.","modificateurs":{"mobilite":"+16%"},"effets_extra":{"Vitesse sprint":"+3%","Mobilité accroupi":"+27%"}},{"id":"arid","nom":"Crosse anti-flinch (Arid Full)","description":"Réduit le recul et le flinch, vise un peu plus lentement.","modificateurs":{"gun_kick":"-10%","recul_horizontal":"-10%","recul_vertical":"-10%","vitesse_visee_ms":"+11%"},"effets_extra":{"Flinch":"réduit"}}]},{"id":"laser","label":"Laser","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"redwell_tac","nom":"Laser tactique (Redwell)","description":"Améliore le tir à la hanche (visible)."},{"id":"scatterline","nom":"Laser visée stable (EAM ScatterLine)","description":"Réduit la dispersion à la hanche (visible)."},{"id":"swiftpoint","nom":"Laser maniabilité (LTI SwiftPoint)","description":"Manie plus vite (visible).","modificateurs":{"vitesse_visee_ms":"-8%","sprint_to_fire_ms":"-18%"}},{"id":"strelok","nom":"Laser Strelok (VAS Precision Shift)","description":"Laser de visée (visible)."},{"id":"agile","nom":"Laser stable (EMT3 Agile)","description":"Plus de portée du tir à la hanche.","modificateurs":{"portee_m":"+20%"}},{"id":"contrabloom","nom":"Laser sans dispersion (ContraBloom)","description":"Plus mobile mais moins de portée.","modificateurs":{"mobilite":"+6%","portee_m":"-15%"},"effets_extra":{"Vitesse sprint":"+3%","Mobilité accroupi":"+4%"}}]},{"id":"mode_tir","label":"Mode de tir","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"overpressured","nom":"Munitions haute vélocité (5.56x30mm)","description":"Plus de vélocité de balle.","modificateurs":{"velocite_ms":"+20%"}},{"id":"sync_recul","nom":"Unité de synchro recul (Recoil Sync)","description":"Réduit l'ensemble du recul.","modificateurs":{"gun_kick":"-12%","recul_horizontal":"-8%","recul_vertical":"-12%"}},{"id":"fmj","nom":"Munitions FMJ (5.56x30mm)","description":"Plus de vélocité et de portée.","modificateurs":{"velocite_ms":"+8%","portee_m":"+8%"}},{"id":"bolt_carrier","nom":"Tir rapide (Bolt Carrier Group)","description":"Cadence accrue, mais recul et vélocité dégradés.","modificateurs":{"cadence_cpm":"+5%","velocite_ms":"-10%","gun_kick":"+15%","recul_horizontal":"+15%","recul_vertical":"+15%","portee_m":"-21.4%"}}]}]
+  },
+  {
+    id: "gdl_havoc",
+    nom: "GDL Havoc",
+    categorie: "Fusil à pompe",
+    jeu: "Black Ops 7",
+    // Nouveau — Saison 4. Stats codmunity.gg. Jeu d'accessoires représentatif (même catégorie).
+    stats_base: { degats: 100, portee_m: 15, cadence_cpm: 82, velocite_ms: 790, capacite_chargeur: 4, vitesse_visee_ms: 260, sprint_to_fire_ms: 230, vitesse_rechargement_ms: 4080, gun_kick: 20, recul_horizontal: 7.65, recul_vertical: 18.48, mobilite: 4.8 },
+    emplacements: [{"id":"viseur","label":"Optique","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"lti_mini","nom":"LTI Mini","description":"Mini point rouge."},{"id":"vas_microflex","nom":"VAS MicroFlex","description":"Mini point rouge."},{"id":"prisma_holo","nom":"PrismaTech Digital Holo","description":"Viseur holographique."},{"id":"accuspot_3x","nom":"Greaves AccuSpot 3x","description":"Lunette grossissement 3x."},{"id":"solaris","nom":"Solaris Holo-IR","description":"Holographique thermique."},{"id":"lti_target","nom":"LTI Target Finder v.2","description":"Détecteur de cible."}]},{"id":"bouche","label":"Bouche","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"agency_supp","nom":"Suppresseur Redwell Agency","description":"Tir silencieux."},{"id":"precision_choke","nom":"Étrangleur Breacher Precision","description":"Resserre la gerbe en visée (portée utile accrue)."},{"id":"supp_mono","nom":"Suppresseur monolithique","description":"Tir silencieux (pas de chiffre d'effet publié)."},{"id":"cqb_choke","nom":"Étrangleur M10 CQB","description":"Resserre la gerbe au tir à la hanche."},{"id":"onyx_brake","nom":"Frein Breacher Onyx","description":"Réduit le recul de la 1re balle.","effets_extra":{"Recul 1re balle":"−50%"}},{"id":"stentorian","nom":"Frein LTI Stentorian","description":"Bouche du Battle Pass S4."},{"id":"redwell","nom":"Suppresseur Redwell Shade-X","description":"Réduit tout le recul, un peu moins de vélocité/portée.","modificateurs":{"gun_kick":"-11%","recul_horizontal":"-11%","recul_vertical":"-11%","velocite_ms":"-13%","portee_m":"-15%"}}]},{"id":"canon","label":"Canon","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"overload","nom":"Canon lourd 17\" Overload","description":"Canon polyvalent (meilleure gerbe en visée)."},{"id":"light","nom":"Canon léger 15.5\"","description":"Manie plus vite."},{"id":"redwell5k","nom":"Canon long 17.4\" Redwell-5K","description":"Plus de portée."},{"id":"bull","nom":"Canon long 19.8\" Bull","description":"Portée et gerbe plus serrée (longue portée)."},{"id":"zephyr","nom":"Canon court 14\" Zephyr-R","description":"Tir après sprint plus rapide (maniabilité)."}]},{"id":"sous_canon","label":"Sous-canon","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"force_stab","nom":"Poignée Force Stabilizer","description":"Améliore le contrôle du recul."},{"id":"redwell_dash","nom":"Poignée Redwell Dash","description":"Améliore la mobilité."},{"id":"steady90","nom":"Poignée EAM Steady-90","description":"Réduit le recul (mobile)."},{"id":"zero_shift","nom":"Poignée Zero Shift","description":"Améliore la stabilité de visée."},{"id":"vas_convergence","nom":"Poignée VAS Convergence","description":"Réduit la déviation des plombs."}]},{"id":"crosse","label":"Crosse","options":[{"id":"aucun","nom":"— Crosse standard —"},{"id":"no_stock","nom":"Sans crosse","description":"Manie nettement plus vite (tir à la hanche)."},{"id":"r54_padded","nom":"Crosse R-54 Padded","description":"Plus mobile en visée."},{"id":"collapsible","nom":"Crosse repliable","description":"Bon compromis maniabilité."},{"id":"sf7x","nom":"Crosse SF-7X","description":"Améliore le tir en glissade."},{"id":"m10_light","nom":"Poignée M10 Light","description":"Visée plus rapide."},{"id":"lw_skeleton","nom":"Crosse LW Skeleton","description":"Sprint prolongé (maniabilité)."},{"id":"mfs_xk","nom":"Crosse MFS XK-Lite","description":"Tir après sprint plus rapide.","modificateurs":{"sprint_to_fire_ms":"-25"}},{"id":"argus_lever","nom":"Levier M10 Breacher Argus","description":"Conversion à levier (récompense défi)."}]},{"id":"laser","label":"Laser","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"lockstep_5mw","nom":"Laser 5mW Lockstep","description":"Précision tir à la hanche (visible)."},{"id":"tactical_2mw","nom":"Laser tactique 2mW Adaptive","description":"Précision tir à la hanche (visible)."},{"id":"motion_3mw","nom":"Laser 3mW Motion Strike","description":"Précision tir à la hanche (visible)."},{"id":"convergence","nom":"Laser Convergence Box","description":"Précision tir à la hanche (visible)."},{"id":"instinct_1mw","nom":"Laser 1mW Instinct","description":"Manie plus vite (visible)."}]},{"id":"mode_tir","label":"Mode de tir","options":[{"id":"aucun","nom":"— Aucun —"},{"id":"buffer","nom":"Ressorts amortisseurs","description":"Réduit le recul (pas de chiffre d'effet publié)."},{"id":"dragons_breath","nom":"12 Gauge Dragon's Breath","description":"Munitions incendiaires."},{"id":"slug","nom":"12 Gauge Slug","description":"Projectile unique : portée accrue, plus de précision."},{"id":"pump_rod","nom":"Tige de pompe (Pump Guide Rod)","description":"Réarmement (cadence) plus rapide."}]}]
   }
 ];
 
@@ -4592,7 +4587,9 @@ const DEGATS_PALIERS = {
   coda_9: [{ m: 0, deg: 20 }, { m: 9, deg: 17 }, { m: 14, deg: 13 }, { m: 20, deg: 11 }],
   pistolet_1911: [{ m: 0, deg: 50 }, { m: 10, deg: 47 }, { m: 15, deg: 45 }, { m: 24, deg: 34 }],
   siren: [{ m: 0, deg: 100 }],
-  nx_ravager: [{ m: 0, deg: 150 }]
+  nx_ravager: [{ m: 0, deg: 150 }],
+  krs_762: [{ m: 0, deg: 84 }, { m: 36, deg: 54 }, { m: 52, deg: 50 }],
+  cbrs_3: [{ m: 0, deg: 29 }, { m: 15, deg: 23 }, { m: 25, deg: 19 }, { m: 34, deg: 16 }]
 };
 
 
@@ -4647,5 +4644,7 @@ const DEGATS_PARTIES = {
   coda_9: { head: 26, neck: 20, chest: 20, stomach: 20, arm: 20, leg: 20 },
   pistolet_1911: { head: 52, neck: 50, chest: 50, stomach: 44, arm: 44, leg: 44 },
   siren: { head: 100, neck: 100, chest: 100, stomach: 100, arm: 100, leg: 100 },
-  nx_ravager: { head: 150, neck: 150, chest: 150, stomach: 150, arm: 150, leg: 150 }
+  nx_ravager: { head: 150, neck: 150, chest: 150, stomach: 150, arm: 150, leg: 150 },
+  krs_762: { head: 91, neck: 84, chest: 84, stomach: 65, arm: 65, leg: 65 },
+  cbrs_3: { head: 34, neck: 29, chest: 29, stomach: 29, arm: 29, leg: 29 }
 };
