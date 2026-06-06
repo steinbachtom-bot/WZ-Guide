@@ -527,9 +527,9 @@
   <div id="root"></div>
 
   <!-- DONNÉES (même fichier que la version vanilla) -->
-  <script src="donnees.js?v=8"></script>
+  <script src="donnees.js?v=9"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=12"></script>
+  <script src="traductions.js?v=13"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -1499,7 +1499,7 @@
                 : [];
               const heroImg = aImg("krig_c") || aImg("m15_mod0") || aImg("voyak_kt3") || (sTier[0] && aImg(sTier[0]));
               const cartes = [
-                { id: "news", titre: "Actualités", desc: "Toute l'actu de l'app et du jeu Warzone / Black Ops 7." },
+                { id: "news", titre: "Actualités", desc: "Toute l'actu du jeu Warzone / Black Ops 7 : MàJ, saisons, armes et maps." },
                 { id: "createur", titre: "Créateur de classe", desc: "Compose ton arme, tes accessoires, atouts et équipement, avec stats et TTK en direct." },
                 { id: "meta", titre: "Méta / Tier list", desc: "Le classement des meilleures armes du moment, regroupé par catégorie.", vignettes: sTier.slice(0, 3) },
                 { id: "comparateur", titre: "Comparateur", desc: "Mets deux armes côte à côte et compare-les statistique par statistique.", vignettes: sTier.slice(0, 2) },
@@ -1692,13 +1692,13 @@
             {vue === "news" && (
               <div>
                 <Banniere icone={navItems.find(n => n.id === "news").ico} titre={t("Actualités")}
-                  sous={t("Les dernières mises à jour de l'app et du jeu.")} />
+                  sous={t("L'actu du jeu : mises à jour, saisons, armes, maps et équilibrages.")} />
                 {(typeof NEWS !== "undefined" ? NEWS : []).map((n, i) => {
                   const c = n[langue] || n.fr;
                   return (
                     <div className="news-card" key={i}>
                       <div className="news-head">
-                        <span className="news-tag">{t(n.tag)}</span>
+                        <span className="news-tag">{n.tag}</span>
                         <span className="news-date">{n.date}</span>
                       </div>
                       <h3 className="news-titre">{c.titre}</h3>
