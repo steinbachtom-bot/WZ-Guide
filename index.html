@@ -161,7 +161,7 @@
     .gs-weapon { text-align: right; }
 
     .gs-body { display: flex; gap: 20px; padding: 22px; flex-wrap: wrap; align-items: flex-start; }
-    .gs-left { flex: 1 1 440px; min-width: 320px; display: flex; flex-direction: column; gap: 16px; }
+    .gs-left { flex: 1 1 440px; min-width: 320px; display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; align-self: flex-start; }
     .gs-image {
       display: flex; flex-direction: column;
       align-items: center; justify-content: flex-start;
@@ -473,6 +473,7 @@
       h1 { font-size: 19px; }
       .gs-body { flex-direction: column; gap: 14px; padding: 14px; }
       .gs-left, .gs-image, .gs-stats { min-width: 0; flex-basis: auto; width: 100%; }
+      .gs-left { position: static; top: auto; }
       .gs-topbar { padding: 12px 14px; }
       .gs-weapon-picker { width: 100%; }
       .menu-cible-arme, .menu-cible-cat { width: 100%; }
