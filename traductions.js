@@ -20,6 +20,8 @@ window.TRAD = {
     "Comparateur": "Comparison",
     "Méta / Tier list": "Meta / Tier List",
     "Replier / déplier le menu": "Collapse / expand menu",
+    "Publicité": "Advertisement",
+    "Espace publicitaire": "Ad space",
 
     /* ---------- Accueil (hero + cartes) ---------- */
     "Crée tes classes Warzone & Black Ops 7 optimales": "Build your optimal Warzone & Black Ops 7 classes",
@@ -357,6 +359,8 @@ window.TRAD = {
     "Comparateur": "Vergleich",
     "Méta / Tier list": "Meta / Tier-Liste",
     "Replier / déplier le menu": "Menü ein-/ausklappen",
+    "Publicité": "Werbung",
+    "Espace publicitaire": "Werbefläche",
 
     /* ---------- Accueil ---------- */
     "Crée tes classes Warzone & Black Ops 7 optimales": "Erstelle deine optimalen Warzone- & Black-Ops-7-Klassen",

@@ -205,6 +205,15 @@
     .sidebar.replie .nav-item .txt { display: none; }
     .sidebar.replie .nav-item { justify-content: center; padding: 11px 0; }
 
+    .pub-slot { margin-top: 14px; padding-top: 12px; border-top: 1px solid #1d3a45; }
+    .pub-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: #5a6b73; text-align: center; margin-bottom: 6px; }
+    .pub-zone {
+      min-height: 250px; display: flex; align-items: center; justify-content: center; text-align: center;
+      background: #0e1a20; border: 1px dashed #2c4452; border-radius: 10px;
+      color: #46555d; font-size: 12px; padding: 10px;
+    }
+    .sidebar.replie .pub-slot { display: none; }
+
     .lang-switch { display: flex; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #1d3a45; }
     .lang-btn {
       flex: 1; padding: 6px 0; background: #112b34; color: #9fb2bb; border: 1px solid #1d3a45;
@@ -474,6 +483,7 @@
       .gs-body { flex-direction: column; gap: 14px; padding: 14px; }
       .gs-left, .gs-image, .gs-stats { min-width: 0; flex-basis: auto; width: 100%; }
       .gs-left { position: static; top: auto; }
+      .pub-zone { min-height: 90px; }
       .gs-topbar { padding: 12px 14px; }
       .gs-weapon-picker { width: 100%; }
       .menu-cible-arme, .menu-cible-cat { width: 100%; }
@@ -503,7 +513,7 @@
   <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=7"></script>
+  <script src="traductions.js?v=8"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -1364,6 +1374,12 @@
                 </div>
               ))}
             </nav>
+            {/* Emplacement publicitaire — colle ici le code de ton annonceur (ex. Google AdSense)
+                en remplaçant le contenu de .pub-zone. */}
+            <div className="pub-slot" aria-label="Publicité">
+              <div className="pub-label">{t("Publicité")}</div>
+              <div className="pub-zone" id="pub-accueil">{t("Espace publicitaire")}</div>
+            </div>
             <div className="lang-switch">
               {[["fr", "FR"], ["en", "EN"], ["de", "DE"]].map(([code, lbl]) => (
                 <button key={code} type="button"
