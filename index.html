@@ -161,12 +161,12 @@
     .gs-weapon { text-align: right; }
 
     .gs-body { display: flex; gap: 20px; padding: 22px; flex-wrap: wrap; align-items: flex-start; }
+    .gs-left { flex: 1 1 440px; min-width: 320px; display: flex; flex-direction: column; gap: 16px; }
     .gs-image {
-      flex: 0 1 380px; min-width: 300px; display: flex; flex-direction: column;
-      align-items: center; justify-content: flex-start; min-height: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
       background: radial-gradient(circle at 50% 38%, rgba(79,208,230,.12), transparent 70%);
       border-radius: 12px; padding: 18px 16px;
-      position: sticky; top: 16px; align-self: flex-start;
     }
     .gs-image svg, .gs-image img { width: 100%; max-width: 460px; height: auto; }
     .gs-image img { object-fit: contain; max-height: 240px; }
@@ -176,8 +176,8 @@
     .gs-stats { flex: 1 1 360px; min-width: 260px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 18px; }
     .gs-stats h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #9fd4e4; margin: 0 0 14px; }
 
-    .gs-attachments { padding: 0 22px 22px; }
-    .gs-attachments > div { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+    .gs-attachments { padding: 0; }
+    .gs-attachments > div { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
     .gs-attachments .compteur { grid-column: 1 / -1; margin: 0; color: #9fd4e4; }
     .gs-attachments .slot { margin: 0; }
     .gs-attachments .slot-label { text-transform: uppercase; letter-spacing: .5px; font-size: 11px; color: #6fb2c6; }
@@ -472,12 +472,11 @@
       .contenu { padding-left: 0; padding-top: 16px; }
       h1 { font-size: 19px; }
       .gs-body { flex-direction: column; gap: 14px; padding: 14px; }
-      .gs-image, .gs-stats { min-width: 0; flex-basis: auto; width: 100%; }
-      .gs-image { position: static; top: auto; }
+      .gs-left, .gs-image, .gs-stats { min-width: 0; flex-basis: auto; width: 100%; }
       .gs-topbar { padding: 12px 14px; }
       .gs-weapon-picker { width: 100%; }
       .menu-cible-arme, .menu-cible-cat { width: 100%; }
-      .gs-attachments { padding: 0 14px 16px; }
+      .gs-attachments { padding: 0; }
       .gs-attachments > div { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
       .layout { gap: 14px; }
       .colonne { min-width: 0; flex-basis: 100%; padding: 16px; }
@@ -1465,43 +1464,45 @@
                     </span>
                   </div>
                   <div className="gs-body">
-                    <div className="gs-image">
-                      <div className="image-arme-zone"><WeaponImage arme={armeP} /></div>
-                      <div className="gs-weapon-picker">
-                        <label>{t("Opus :")}</label>
-                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_PRINCIPALES)} value={opusP} onChange={changeOpusP} />
-                        <label>{t("Catégorie :")}</label>
-                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
-                        <label>{t("Arme :")}</label>
-                        <Dropdown className="menu-cible-arme" options={ARMES_PRINCIPALES.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
-                        <label>{t("Recherche rapide :")}</label>
-                        <SearchBox onSelect={changeArmeP} />
+                    <div className="gs-left">
+                      <div className="gs-image">
+                        <div className="image-arme-zone"><WeaponImage arme={armeP} /></div>
+                        <div className="gs-weapon-picker">
+                          <label>{t("Opus :")}</label>
+                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_PRINCIPALES)} value={opusP} onChange={changeOpusP} />
+                          <label>{t("Catégorie :")}</label>
+                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
+                          <label>{t("Arme :")}</label>
+                          <Dropdown className="menu-cible-arme" options={ARMES_PRINCIPALES.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
+                          <label>{t("Recherche rapide :")}</label>
+                          <SearchBox onSelect={changeArmeP} />
+                        </div>
+                      </div>
+                      <div className="gs-attachments">
+                        <div className="ia-bar">
+                          <span className="ia-titre">{t("✨ Générateur de classe")}</span>
+                          <label>{t("Objectif :")}</label>
+                          <select className="ia-select" value={iaObjectif} onChange={(e) => setIaObjectif(e.target.value)}>
+                            <option value="polyvalent">{t("Polyvalent")}</option>
+                            <option value="longue">{t("Longue portée")}</option>
+                            <option value="courte">{t("Courte portée")}</option>
+                            <option value="mobilite">{t("Mobilité")}</option>
+                            <option value="recul">{t("Recul minimal")}</option>
+                          </select>
+                          <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasse(); }}>{t("Générer la classe")}</button>
+                          <span className="ia-note">{iaNote}</span>
+                        </div>
+                        <AttachmentSlots emplacements={armeP.emplacements} selection={selP} onChange={changeAccP} onReset={() => { setSelP(etatVide(armeP.emplacements)); setAlerteP(false); }} alerte={alerteP} afficherValeurs={afficherValeurs} />
                       </div>
                     </div>
                     <div className="gs-stats">
                       <h2>{t("Statistiques")}</h2>
+                      <div><StatBars arme={armeP} finales={finalesP} /></div>
                       <div className="ttk-box"><TTKBox finales={finalesP} pvCible={pvCible} setPvCible={setPvCible} /></div>
                       <TTKDistanceTable arme={armeP} finales={finalesP} pvCible={pvCible} />
                       <Mannequin arme={armeP} pvCible={pvCible} />
-                      <div><StatBars arme={armeP} finales={finalesP} /></div>
                       <SprayPattern finales={finalesP} armeId={armeP.id} capacite={finalesP.capacite_chargeur} fsr={fsrP} />
                     </div>
-                  </div>
-                  <div className="gs-attachments">
-                    <div className="ia-bar">
-                      <span className="ia-titre">{t("✨ Générateur de classe")}</span>
-                      <label>{t("Objectif :")}</label>
-                      <select className="ia-select" value={iaObjectif} onChange={(e) => setIaObjectif(e.target.value)}>
-                        <option value="polyvalent">{t("Polyvalent")}</option>
-                        <option value="longue">{t("Longue portée")}</option>
-                        <option value="courte">{t("Courte portée")}</option>
-                        <option value="mobilite">{t("Mobilité")}</option>
-                        <option value="recul">{t("Recul minimal")}</option>
-                      </select>
-                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasse(); }}>{t("Générer la classe")}</button>
-                      <span className="ia-note">{iaNote}</span>
-                    </div>
-                    <AttachmentSlots emplacements={armeP.emplacements} selection={selP} onChange={changeAccP} onReset={() => { setSelP(etatVide(armeP.emplacements)); setAlerteP(false); }} alerte={alerteP} afficherValeurs={afficherValeurs} />
                   </div>
                 </div>
 
@@ -1515,40 +1516,42 @@
                     </span>
                   </div>
                   <div className="gs-body">
-                    <div className="gs-image">
-                      <div className="image-arme-zone"><WeaponImage arme={armeS} /></div>
-                      <div className="gs-weapon-picker">
-                        <label>{t("Opus :")}</label>
-                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_SECONDAIRES)} value={opusS} onChange={changeOpusS} />
-                        <label>{t("Catégorie :")}</label>
-                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
-                        <label>{t("Arme :")}</label>
-                        <Dropdown className="menu-cible-arme" options={ARMES_SECONDAIRES.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
+                    <div className="gs-left">
+                      <div className="gs-image">
+                        <div className="image-arme-zone"><WeaponImage arme={armeS} /></div>
+                        <div className="gs-weapon-picker">
+                          <label>{t("Opus :")}</label>
+                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_SECONDAIRES)} value={opusS} onChange={changeOpusS} />
+                          <label>{t("Catégorie :")}</label>
+                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
+                          <label>{t("Arme :")}</label>
+                          <Dropdown className="menu-cible-arme" options={ARMES_SECONDAIRES.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
+                        </div>
+                      </div>
+                      <div className="gs-attachments">
+                        <div className="ia-bar">
+                          <span className="ia-titre">{t("✨ Générateur de classe")}</span>
+                          <label>{t("Objectif :")}</label>
+                          <select className="ia-select" value={iaObjectifS} onChange={(e) => setIaObjectifS(e.target.value)}>
+                            <option value="polyvalent">{t("Polyvalent")}</option>
+                            <option value="longue">{t("Longue portée")}</option>
+                            <option value="courte">{t("Courte portée")}</option>
+                            <option value="mobilite">{t("Mobilité")}</option>
+                            <option value="recul">{t("Recul minimal")}</option>
+                          </select>
+                          <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasseS(); }}>{t("Générer la classe")}</button>
+                          <span className="ia-note">{iaNoteS}</span>
+                        </div>
+                        <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} onReset={() => { setSelS(etatVide(armeS.emplacements)); setAlerteS(false); }} alerte={alerteS} afficherValeurs={afficherValeurs} />
                       </div>
                     </div>
                     <div className="gs-stats">
                       <h2>{t("Statistiques")}</h2>
+                      <div><StatBars arme={armeS} finales={finalesS} /></div>
                       <TTKDistanceTable arme={armeS} finales={finalesS} pvCible={pvCible} />
                       <Mannequin arme={armeS} pvCible={pvCible} />
-                      <div><StatBars arme={armeS} finales={finalesS} /></div>
                       <SprayPattern finales={finalesS} armeId={armeS.id} capacite={finalesS.capacite_chargeur} fsr={fsrS} />
                     </div>
-                  </div>
-                  <div className="gs-attachments">
-                    <div className="ia-bar">
-                      <span className="ia-titre">{t("✨ Générateur de classe")}</span>
-                      <label>{t("Objectif :")}</label>
-                      <select className="ia-select" value={iaObjectifS} onChange={(e) => setIaObjectifS(e.target.value)}>
-                        <option value="polyvalent">{t("Polyvalent")}</option>
-                        <option value="longue">{t("Longue portée")}</option>
-                        <option value="courte">{t("Courte portée")}</option>
-                        <option value="mobilite">{t("Mobilité")}</option>
-                        <option value="recul">{t("Recul minimal")}</option>
-                      </select>
-                      <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasseS(); }}>{t("Générer la classe")}</button>
-                      <span className="ia-note">{iaNoteS}</span>
-                    </div>
-                    <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} onReset={() => { setSelS(etatVide(armeS.emplacements)); setAlerteS(false); }} alerte={alerteS} afficherValeurs={afficherValeurs} />
                   </div>
                 </div>
 
