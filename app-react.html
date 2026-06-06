@@ -316,6 +316,15 @@
     .mannequin-leg-row .z { color: #c7ccd1; flex: 1; font-size: 13px; }
     .mannequin-leg-row .d { font-weight: 800; color: #fff; font-size: 14px; font-variant-numeric: tabular-nums; }
     .mannequin-leg-row .s { color: #9aa0a6; font-size: 11px; white-space: nowrap; }
+    .ttkc-box { background: #161a20; border: 1px solid #2c3a45; border-radius: 12px; padding: 14px 16px; margin: 18px 0; }
+    .ttkc-tete { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+    .ttkc-pv { font-size: 13px; color: #9aa0a6; display: flex; align-items: center; gap: 6px; }
+    .ttkc-pv select { background: #0f1216; color: #e8eaed; border: 1px solid #2c3a45; border-radius: 8px; padding: 4px 8px; font-size: 13px; }
+    .ttkc-legende { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 8px; font-size: 13px; color: #c7ccd1; }
+    .ttkc-leg { display: flex; align-items: center; gap: 7px; }
+    .ttkc-dot { width: 16px; height: 4px; border-radius: 2px; flex-shrink: 0; }
+    .ttkc-svg { width: 100%; height: auto; display: block; background: rgba(0,0,0,.2); border-radius: 8px; }
+    .ttkc-axis { fill: #6b7280; font-size: 11px; font-family: inherit; }
     .toggle-valeurs { margin-left: 12px; color: #c7ccd1; font-size: 13px; cursor: pointer; white-space: nowrap; }
     .badge-maj { display: inline-block; vertical-align: middle; margin-left: 8px; padding: 3px 10px; border-radius: 999px;
       background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.35); color: #4ade80;
@@ -513,7 +522,7 @@
   <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=8"></script>
+  <script src="traductions.js?v=9"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -1096,6 +1105,86 @@
       );
     }
 
+    // Graphique comparatif TTK selon la distance (deux armes superposées).
+    function TTKCompareChart({ a, b, pvCible, setPvCible }) {
+      const courbe = (arme) => {
+        const pal = (typeof DEGATS_PALIERS !== "undefined" && DEGATS_PALIERS[arme.id]) ? DEGATS_PALIERS[arme.id] : null;
+        if (!pal || !pal.length) return null;
+        const tbs = 60000 / (arme.stats_base.cadence_cpm || 600);
+        return pal.map(p => {
+          const stk = p.deg > 0 ? Math.max(1, Math.ceil(pvCible / p.deg)) : null;
+          return { m: p.m, ttk: stk != null ? Math.round((stk - 1) * tbs) : null };
+        });
+      };
+      const cA = courbe(a), cB = courbe(b);
+      const W = 620, H = 300, ml = 52, mr = 16, mt = 14, mb = 40;
+      if (!cA && !cB) {
+        return (
+          <div className="ttkc-box">
+            <h3 className="ttkd-titre">{t("TTK selon la distance")}</h3>
+            <p className="spray-note" style={{ margin: 0 }}>{t("Données de distance indisponibles pour cette arme.")}</p>
+          </div>
+        );
+      }
+      const allPts = [...(cA || []), ...(cB || [])];
+      const lastM = Math.max(20, ...allPts.map(p => p.m));
+      const maxDist = Math.ceil((lastM + 6) / 10) * 10;
+      const maxTtk = Math.max(100, ...allPts.map(p => p.ttk).filter(v => v != null));
+      const plotW = W - ml - mr, plotH = H - mt - mb;
+      const px = (m) => ml + (m / maxDist) * plotW;
+      const py = (ttk) => (H - mb) - (ttk / maxTtk) * plotH;   // 0 en bas, plus rapide = plus bas
+      const stepPts = (c) => {
+        if (!c) return [];
+        const out = [];
+        c.forEach((p, i) => {
+          if (p.ttk == null) return;
+          const next = c[i + 1];
+          out.push([px(p.m), py(p.ttk)], [px(next ? next.m : maxDist), py(p.ttk)]);
+        });
+        return out;
+      };
+      const polyStr = (c) => stepPts(c).map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+      const stepX = Math.max(10, Math.round(maxDist / 6 / 10) * 10);
+      const xticks = []; for (let m = 0; m <= maxDist; m += stepX) xticks.push(m);
+      const yticks = []; for (let i = 0; i <= 4; i++) yticks.push(Math.round(maxTtk * i / 4));
+      return (
+        <div className="ttkc-box">
+          <div className="ttkc-tete">
+            <h3 className="ttkd-titre">{t("TTK selon la distance")}</h3>
+            <label className="ttkc-pv">{t("Cible :")}
+              <select value={pvCible} onChange={(e) => setPvCible(parseInt(e.target.value, 10))}>
+                <option value={250}>{t("Warzone (250 PV)")}</option>
+                <option value={150}>{t("Multijoueur (150 PV)")}</option>
+                <option value={100}>{t("Sans armure (100 PV)")}</option>
+              </select>
+            </label>
+          </div>
+          <div className="ttkc-legende">
+            <span className="ttkc-leg"><span className="ttkc-dot" style={{ background: "#4fd0e6" }}></span>{a.nom}{!cA ? " — " + t("indispo.") : ""}</span>
+            <span className="ttkc-leg"><span className="ttkc-dot" style={{ background: "#f59e0b" }}></span>{b.nom}{!cB ? " — " + t("indispo.") : ""}</span>
+          </div>
+          <svg className="ttkc-svg" viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg">
+            {yticks.map((v, i) => (
+              <g key={"y" + i}>
+                <line x1={ml} y1={py(v)} x2={W - mr} y2={py(v)} stroke="#1f2a30" strokeWidth="1" />
+                <text x={ml - 6} y={py(v) + 3} textAnchor="end" className="ttkc-axis">{v}</text>
+              </g>
+            ))}
+            {xticks.map((m, i) => (
+              <text key={"x" + i} x={px(m)} y={H - mb + 16} textAnchor="middle" className="ttkc-axis">{m}</text>
+            ))}
+            <text x={ml + plotW / 2} y={H - 4} textAnchor="middle" className="ttkc-axis">{t("Distance (m)")}</text>
+            <text x={12} y={mt + 2} className="ttkc-axis">TTK (ms)</text>
+            {cA && <polyline points={polyStr(cA)} fill="none" stroke="#4fd0e6" strokeWidth="2.5" strokeLinejoin="round" />}
+            {cB && <polyline points={polyStr(cB)} fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinejoin="round" />}
+            {(cA || []).filter(p => p.ttk != null).map((p, i) => <circle key={"da" + i} cx={px(p.m)} cy={py(p.ttk)} r="3.5" fill="#4fd0e6" />)}
+            {(cB || []).filter(p => p.ttk != null).map((p, i) => <circle key={"db" + i} cx={px(p.m)} cy={py(p.ttk)} r="3.5" fill="#f59e0b" />)}
+          </svg>
+          <p className="spray-note" style={{ margin: "8px 0 0" }}>{t("TTK au corps selon la distance, d'après les paliers de dégâts réels (codmunity). Plus bas = plus rapide.")}</p>
+        </div>
+      );
+    }
+
     // Emplacements d'accessoires (un menu par emplacement + compteur + règle des 5).
     function AttachmentSlots({ emplacements, selection, onChange, onReset, alerte, afficherValeurs }) {
       const n = compterAccessoires(selection);
@@ -1630,6 +1719,7 @@
                       <img className="cmp-vignette" src={IMAGES_ARMES[cmpB.id]} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
                   </div>
                 </div>
+                <TTKCompareChart a={cmpA} b={cmpB} pvCible={pvCible} setPvCible={setPvCible} />
                 <div>
                   <div className="cmp-ligne tete">
                     <span className="cmp-stat">{t("Statistique")}</span>
