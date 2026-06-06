@@ -267,6 +267,8 @@
     .news-date { font-size: 12px; color: #9aa0a6; }
     .news-titre { font-size: 16px; font-weight: 700; color: #fff; margin: 0 0 6px; }
     .news-texte { font-size: 14px; color: #c8ccd2; margin: 0; line-height: 1.55; }
+    .news-bal { font-size: 13px; color: #cfe9b0; margin: 8px 0 0; padding: 8px 10px; line-height: 1.5; background: rgba(155,231,255,.06); border-left: 3px solid #9be7ff; border-radius: 6px; }
+    .news-bal-ico { color: #9be7ff; font-weight: 700; }
 
     .cmp-choix { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 20px; }
     .cmp-choix label { font-size: 12px; color: #6fb2c6; margin-right: 8px; }
@@ -527,9 +529,9 @@
   <div id="root"></div>
 
   <!-- DONNÉES (même fichier que la version vanilla) -->
-  <script src="donnees.js?v=9"></script>
+  <script src="donnees.js?v=10"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=13"></script>
+  <script src="traductions.js?v=14"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -1703,6 +1705,7 @@
                       </div>
                       <h3 className="news-titre">{c.titre}</h3>
                       <p className="news-texte">{c.texte}</p>
+                      {c.bal && <p className="news-bal"><span className="news-bal-ico">⚖</span> {c.bal}</p>}
                     </div>
                   );
                 })}
