@@ -439,8 +439,8 @@
     @keyframes flotter3 { 0%, 100% { transform: translateY(0) rotate(-9deg); } 50% { transform: translateY(-10px) rotate(-9deg); } }
 
     /* Vignettes d'armes sur les cartes */
-    .carte-vignettes { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
-    .carte-vignettes img { height: 32px; width: auto; max-width: 84px; object-fit: contain; opacity: .9; filter: drop-shadow(0 2px 4px rgba(0,0,0,.4)); }
+    .carte-vignettes { display: flex; gap: 8px; margin-top: 14px; align-items: center; max-width: 100%; overflow: hidden; }
+    .carte-vignettes img { height: 32px; width: auto; max-width: 76px; min-width: 0; flex-shrink: 1; object-fit: contain; opacity: .9; filter: drop-shadow(0 2px 4px rgba(0,0,0,.4)); }
 
     /* Animation d'apparition (hero + cartes) */
     @keyframes apparition { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
