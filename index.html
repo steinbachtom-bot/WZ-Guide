@@ -521,9 +521,9 @@
   <div id="root"></div>
 
   <!-- DONNÉES (même fichier que la version vanilla) -->
-  <script src="donnees.js?v=6"></script>
+  <script src="donnees.js?v=7"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=10"></script>
+  <script src="traductions.js?v=11"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
@@ -1513,7 +1513,7 @@
                     <p className="hero-slogan">{t("Crée tes classes Warzone & Black Ops 7 optimales")}</p>
                     <p className="hero-sous">{t("Gunsmith complet, stats réelles, calcul du TTK, générateur de classe et tier list — le tout au même endroit.")}</p>
                     {typeof META_DONNEES !== "undefined" &&
-                      <div className="badge-maj">📊 {META_DONNEES.saison} · {META_DONNEES.jeu} · {t("données")} {META_DONNEES.maj}</div>}
+                      <div className="badge-maj">📊 {t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}</div>}
                     <div>
                       <button className="hero-cta" onClick={() => setVue("createur")}>{t("Créer une classe →")}</button>
                     </div>
@@ -1547,8 +1547,7 @@
                     <h1>{t("Éditeur de classe —")} {mode === "warzone" ? "Warzone" : "Black Ops"}
                       {typeof META_DONNEES !== "undefined" &&
                         <span className="badge-maj">
-                          📊 {META_DONNEES.saison} · {META_DONNEES.jeu} · données {META_DONNEES.maj}{" "}
-                          <a href={META_DONNEES.sourceUrl} target="_blank" rel="noopener">({META_DONNEES.source})</a>
+                          📊 {t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}
                         </span>}
                     </h1>
                     <p className="sous-titre">{t("5 accessoires max par arme, un seul par emplacement. Étiquettes :")} <span style={{ color: "#4ade80" }}>{t("vert = bonus")}</span>, <span style={{ color: "#f87171" }}>{t("rouge = malus")}</span>.
