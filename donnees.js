@@ -24,6 +24,37 @@ const META_DONNEES = {
   maj: "juin 2026"  // dernière mise à jour des stats
 };
 
+/* ------------------------------------------------------------
+   ACTUALITÉS — éditable ici. Chaque entrée est trilingue (fr/en/de).
+   tag : "Saison 4" | "Mise à jour" | "Nouveauté"
+   ------------------------------------------------------------ */
+const NEWS = [
+  {
+    date: "2026-06-07", tag: "Saison 4",
+    fr: { titre: "Mise à jour Saison 4", texte: "Nouvelles armes KRS-7.62, CBRS-3 et GDL Havoc ajoutées. Stats, accessoires et tier list mis à jour pour coller à la méta actuelle." },
+    en: { titre: "Season 4 Update", texte: "New weapons KRS-7.62, CBRS-3 and GDL Havoc added. Stats, attachments and tier list updated to match the current meta." },
+    de: { titre: "Staffel-4-Update", texte: "Neue Waffen KRS-7.62, CBRS-3 und GDL Havoc hinzugefügt. Werte, Aufsätze und Tier-Liste an die aktuelle Meta angepasst." }
+  },
+  {
+    date: "2026-06-07", tag: "Mise à jour",
+    fr: { titre: "Accessoires BO7 complets et exacts", texte: "Tous les accessoires de Black Ops 7 sont là, par emplacement et par type d'arme, avec leurs effets exacts issus des données du jeu : optiques, bouches, canons, sous-canons, crosses, lasers, mods de tir et plus encore." },
+    en: { titre: "Complete & accurate BO7 attachments", texte: "Every Black Ops 7 attachment is now included, per slot and weapon type, with exact in-game effects: optics, muzzles, barrels, underbarrels, stocks, lasers, fire mods and more." },
+    de: { titre: "Vollständige & exakte BO7-Aufsätze", texte: "Alle Aufsätze von Black Ops 7 sind enthalten, pro Slot und Waffentyp, mit exakten Spielwerten: Visiere, Mündungen, Läufe, Unterläufe, Schäfte, Laser, Feuermodi und mehr." }
+  },
+  {
+    date: "2026-06-01", tag: "Nouveauté",
+    fr: { titre: "Black Ops 6 intégré", texte: "Tout l'arsenal Black Ops 6 a été ajouté : vraies stats, profils de dégâts par distance, images et accessoires pour chaque arme." },
+    en: { titre: "Black Ops 6 added", texte: "The full Black Ops 6 arsenal is in: real stats, damage-by-distance profiles, images and attachments for every weapon." },
+    de: { titre: "Black Ops 6 hinzugefügt", texte: "Das komplette Black-Ops-6-Arsenal ist da: echte Werte, Schadensprofile nach Distanz, Bilder und Aufsätze für jede Waffe." }
+  },
+  {
+    date: "2026-05-25", tag: "Nouveauté",
+    fr: { titre: "Nouveaux outils : TTK, mannequin & comparateur", texte: "Tableau du TTK selon la distance, mannequin de dégâts par partie du corps, comparateur d'armes et générateur de classe — et l'app passe en FR / EN / DE." },
+    en: { titre: "New tools: TTK, body chart & comparator", texte: "Time-to-kill by distance, body-part damage chart, weapon comparator and class generator — and the app now speaks FR / EN / DE." },
+    de: { titre: "Neue Tools: TTK, Trefferzonen & Vergleich", texte: "Time-to-Kill nach Distanz, Schadensanzeige nach Körperzone, Waffenvergleich und Klassen-Generator — und die App spricht jetzt FR / EN / DE." }
+  }
+];
+
 // Définition et affichage des statistiques.
 const INFOS_STATS = {
   degats:                  { label: "Dégâts",                 court: "Dégâts",               plusGrandEstMieux: true,  max: 80 },
