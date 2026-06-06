@@ -245,16 +245,16 @@ const IMAGES_ARMES = {
   krs_762: "https://assets.codmunity.gg/optimized/KRS-7.62-Versatile-Black-Ops-7-Loadout-CODMunity-1730.webp",
   cbrs_3: "https://assets.codmunity.gg/optimized/CBRS-3-Versatile-Black-Ops-7-Loadout-CODMunity-6824.webp",
   "xm4": "https://assets.codmunity.gg/optimized/XM4-Dark-Spine.webp",
-  "ak_74": "https://assets.codmunity.gg/optimized/AK-74-Versatile-Black-Ops-6-ShareLoadout-CODMunity-8407.webp",
+  "ak_74": "https://assets.codmunity.gg/optimized/ak-74-Dark-Spine.webp",
   "ames_85": "https://assets.codmunity.gg/optimized/AMES-85-Dark-Spine.webp",
   "gpr_91": "https://assets.codmunity.gg/optimized/GPR-91-Dark-Spine.webp",
   "model_l": "https://assets.codmunity.gg/optimized/MODEL-L-Dark-Spine.webp",
   "goblin_mk_2": "https://assets.codmunity.gg/optimized/GOBLIN-MK-2-Dark-Spine.webp",
-  "as_val": "https://assets.codmunity.gg/optimized/AS-VAL-Versatile-Black-Ops-6-ShareLoadout-CODMunity-5634.webp",
+  "as_val": "https://assets.codmunity.gg/optimized/AS-VAL-Dark-Spine.webp",
   "cypher_091": "https://assets.codmunity.gg/optimized/Cypher-091.webp",
   "kilo_141": "https://assets.codmunity.gg/optimized/Kilo-141.webp",
   "cr_56_amax": "https://assets.codmunity.gg/optimized/CR-56-Amax.webp",
-  "ksv": "https://assets.codmunity.gg/optimized/KSV-Versatile-Black-Ops-6-ShareLoadout-CODMunity-1136.webp",
+  "ksv": "https://assets.codmunity.gg/optimized/KSV-Dark-Spine.webp",
   "tanto_22": "https://assets.codmunity.gg/optimized/Tanto-.22-Dark-Spine.webp",
   "pp_919": "https://assets.codmunity.gg/optimized/PP-919-Dark-Spine.webp",
   "jackal_pdw": "https://assets.codmunity.gg/optimized/JACKAL-PDW-Dark-Spine.webp",
@@ -268,7 +268,7 @@ const IMAGES_ARMES = {
   "pu_21": "https://assets.codmunity.gg/optimized/PU-21-Dark-Spine.webp",
   "gpmg_7": "https://assets.codmunity.gg/optimized/GPMG-7-Dark-Spine.webp",
   "feng_82": "https://assets.codmunity.gg/optimized/Feng-82.webp",
-  "aek_973": "https://assets.codmunity.gg/optimized/AEK-973-Versatile-Black-Ops-6-ShareLoadout-CODMunity-4454.webp",
+  "aek_973": "https://assets.codmunity.gg/optimized/AEK-973-Dark-Spine.webp",
   "dm_10": "https://assets.codmunity.gg/optimized/DM-10-Dark-Spine.webp",
   "tr2": "https://assets.codmunity.gg/optimized/TR2.webp",
   "lw3a1_frostline": "https://assets.codmunity.gg/optimized/LW3A1-Frostline-Dark-Spine.webp",
@@ -283,7 +283,21 @@ const IMAGES_ARMES = {
   "olympia": "https://assets.codmunity.gg/optimized/Olympia1.webp",
   "merrick_556": "https://assets.codmunity.gg/optimized/Merrick-5.56.webp",
   "dresden_9mm": "https://assets.codmunity.gg/optimized/Dresden-9mm.webp",
-  "x52_resonator": "https://assets.codmunity.gg/optimized/X52Resonator_wpn_bo6.webp"
+  "x52_resonator": "https://assets.codmunity.gg/optimized/X52Resonator_wpn_bo6.webp",
+  "ffar_1": "https://assets.codmunity.gg/optimized/FFAR.webp",
+  "abr_a1": "https://assets.codmunity.gg/optimized/ABR.webp",
+  "pml_5_56": "https://assets.codmunity.gg/optimized/PML.webp",
+  "swat_5_56": "https://assets.codmunity.gg/optimized/SWAFT-5.56-Dark-Spine.webp",
+  "essex_model_07": "https://assets.codmunity.gg/optimized/Essex-model.webp",
+  "cigma_2b": "https://assets.codmunity.gg/optimized/CIGMA-2B-Dark-Spine.webp",
+  "9mm_pm": "https://assets.codmunity.gg/optimized/9mm-Dark-Spine.webp",
+  "gravemark_357_revolver": "https://assets.codmunity.gg/optimized/357-Gravemark.webp",
+  "he_1": "https://assets.codmunity.gg/optimized/HE-1-Dark-Spine.webp",
+  "couteau_bo6": "https://assets.codmunity.gg/optimized/Knife-Dark-Spine.webp",
+  "batte_baseball": "https://assets.codmunity.gg/optimized/Baseball-Bat-Dark-Spine.webp",
+  "perceuse": "https://assets.codmunity.gg/optimized/Power-Drill.webp",
+  "nunchaku": "https://assets.codmunity.gg/optimized/Nunchaku.webp",
+  "couperet": "https://assets.codmunity.gg/optimized/Cleaver.webp"
 };
 
 /* ------------------------------------------------------------
@@ -4811,8 +4825,86 @@ const ARMES_SECONDAIRES = [
       recul_vertical: 0, mobilite: 6.0
     },
     emplacements: []
-  }
-,
+  },
+  {
+    id: "he_1",
+    nom: "HE-1",
+    categorie: "Lanceur",
+    jeu: "Black Ops 6",
+    // Black Ops 6 — lanceur de roquettes à tir direct (anti-véhicule/anti-personnel). Stats simplifiées.
+    stats_base: {
+      degats: 180, portee_m: 100, cadence_cpm: 20, velocite_ms: 90,
+      capacite_chargeur: 1, vitesse_visee_ms: 430, sprint_to_fire_ms: 300,
+      vitesse_rechargement_ms: 3800, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 4.3
+    },
+    emplacements: []
+  },
+  {
+    id: "couteau_bo6",
+    nom: "Couteau",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 6",
+    stats_base: {
+      degats: 150, portee_m: 2, cadence_cpm: 60, velocite_ms: 0,
+      capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 7.0
+    },
+    emplacements: []
+  },
+  {
+    id: "batte_baseball",
+    nom: "Batte de baseball",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 6",
+    stats_base: {
+      degats: 150, portee_m: 3, cadence_cpm: 50, velocite_ms: 0,
+      capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 6.3
+    },
+    emplacements: []
+  },
+  {
+    id: "perceuse",
+    nom: "Perceuse",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 6",
+    stats_base: {
+      degats: 150, portee_m: 2.5, cadence_cpm: 55, velocite_ms: 0,
+      capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 6.2
+    },
+    emplacements: []
+  },
+  {
+    id: "nunchaku",
+    nom: "Nunchaku",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 6",
+    stats_base: {
+      degats: 145, portee_m: 2.5, cadence_cpm: 65, velocite_ms: 0,
+      capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 6.8
+    },
+    emplacements: []
+  },
+  {
+    id: "couperet",
+    nom: "Couperet",
+    categorie: "Arme de mêlée",
+    jeu: "Black Ops 6",
+    stats_base: {
+      degats: 150, portee_m: 2.5, cadence_cpm: 55, velocite_ms: 0,
+      capacite_chargeur: 0, vitesse_visee_ms: 0, sprint_to_fire_ms: 0,
+      vitesse_rechargement_ms: 0, gun_kick: 0, recul_horizontal: 0,
+      recul_vertical: 0, mobilite: 6.4
+    },
+    emplacements: []
+  },
   {
     id: "9mm_pm",
     nom: "9MM PM",
