@@ -1373,14 +1373,14 @@
         const { sel, retenus } = genererSelection(armeP, iaObjectif);
         setSelP(sel); setAlerteP(false);
         setIaNote(retenus.length
-          ? `${t("Classe")} « ${t(LABELS_OBJECTIFS[iaObjectif])} » ${t("générée pour")} ${armeP.nom} (${retenus.length} ${t(retenus.length > 1 ? "accessoires" : "accessoire")}).`
+          ? `« ${t(LABELS_OBJECTIFS[iaObjectif])} » · ${armeP.nom} · ${retenus.length} ${t(retenus.length > 1 ? "accessoires" : "accessoire")}`
           : t("Aucun accessoire utile trouvé pour cet objectif sur cette arme."));
       }
       function genererClasseS() {
         const { sel, retenus } = genererSelection(armeS, iaObjectifS);
         setSelS(sel); setAlerteS(false);
         setIaNoteS(retenus.length
-          ? `${t("Classe")} « ${t(LABELS_OBJECTIFS[iaObjectifS])} » ${t("générée pour")} ${armeS.nom} (${retenus.length} ${t(retenus.length > 1 ? "accessoires" : "accessoire")}).`
+          ? `« ${t(LABELS_OBJECTIFS[iaObjectifS])} » · ${armeS.nom} · ${retenus.length} ${t(retenus.length > 1 ? "accessoires" : "accessoire")}`
           : t("Aucun accessoire utile trouvé pour cet objectif sur cette arme."));
       }
 
