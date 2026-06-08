@@ -220,6 +220,14 @@
     .topbar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
     .topbar .lang-switch { margin: 0; padding: 0; border: 0; gap: 5px; }
     .topbar .lang-btn { flex: 0 0 auto; padding: 7px 11px; }
+    .game-switch { display: flex; border: 1px solid #2c3038; overflow: hidden;
+      clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+    .game-btn { padding: 7px 12px; background: transparent; color: #b0b7c0; border: 0; cursor: pointer;
+      font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 700; letter-spacing: .5px;
+      border-right: 1px solid #2c3038; transition: color .15s, background .15s; }
+    .game-btn:last-child { border-right: 0; }
+    .game-btn:hover { color: #fff; background: rgba(255,255,255,.05); }
+    .game-btn.actif { background: #ff7a18; color: #0a0c0f; }
     .pub-bottom { margin-top: 30px; }
     .pub-bottom .pub-zone { min-height: 110px; }
     .sidebar {
@@ -1300,7 +1308,7 @@
     }
 
     // Recherche rapide d'arme principale.
-    function SearchBox({ onSelect }) {
+    function SearchBox({ onSelect, filtre }) {
       const [q, setQ] = useState("");
       const ref = useRef(null);
       useEffect(() => {
@@ -1309,7 +1317,7 @@
         return () => document.removeEventListener("click", onDoc);
       }, []);
       const ql = q.trim().toLowerCase();
-      const res = ql ? ARMES_PRINCIPALES.filter(a => a.nom.toLowerCase().includes(ql)).slice(0, 8) : [];
+      const res = ql ? ARMES_PRINCIPALES.filter(a => a.nom.toLowerCase().includes(ql) && (!filtre || filtre === "WZ" || a.jeu === filtre)).slice(0, 8) : [];
       return (
         <div className="recherche-wrap" ref={ref}>
           <input type="text" className="recherche-input" placeholder={t("Tape un nom d'arme…")} autoComplete="off"
@@ -1344,6 +1352,7 @@
     function App() {
       const [mode, setMode] = useState("warzone");
       const [vue, setVue] = useState("accueil");
+      const [jeuFiltre, setJeuFiltre] = useState("WZ");
       const [sidebarReplie, setSidebarReplie] = useState(false);
       const [langue, setLangueState] = useState(LANGUE);
       function setLangue(l) {
@@ -1381,6 +1390,19 @@
 
       const opusP = armeP.jeu, catP = armeP.categorie;
       const opusS = armeS.jeu, catS = armeS.categorie;
+
+      /* --- Filtre de jeu global (WZ = tout / BO7 / BO6) --- */
+      const okJeu = (a) => jeuFiltre === "WZ" || a.jeu === jeuFiltre;
+      const ARMES_P_F = ARMES_PRINCIPALES.filter(okJeu);
+      const ARMES_S_F = ARMES_SECONDAIRES.filter(okJeu);
+      const TOUTES_F = TOUTES_ARMES.filter(okJeu);
+      useEffect(() => {
+        if (jeuFiltre === "WZ") return;
+        if (armeP.jeu !== jeuFiltre) { const a = ARMES_PRINCIPALES.find(x => x.jeu === jeuFiltre); if (a) choisirArmeP(a); }
+        if (armeS.jeu !== jeuFiltre) { const b = ARMES_SECONDAIRES.find(x => x.jeu === jeuFiltre); if (b) choisirArmeS(b); }
+        if (!okJeu(cmpA)) { const a = TOUTES_F[0]; if (a) setCmpA(a); }
+        if (!okJeu(cmpB)) { const b = TOUTES_F.find(x => x.id !== cmpA.id) || TOUTES_F[0]; if (b) setCmpB(b); }
+      }, [jeuFiltre]);
 
       const finalesP = calculerStatsFinales(armeP, selP, armeP.emplacements, ATOUTS, atouts);
       const finalesS = calculerStatsFinales(armeS, selS, armeS.emplacements, null, null);
@@ -1528,12 +1550,18 @@
             <nav className="topnav">
               {navItems.map((it, i) => (
                 <div key={it.id} className={"nav-pill" + (vue === it.id ? " actif" : "")} onClick={() => setVue(it.id)}>
-                  <span className="num">{("0" + (i + 1)).slice(-2)}</span>
                   <span className="txt">{t(it.label)}</span>
                 </div>
               ))}
             </nav>
             <div className="topbar-right">
+              <div className="game-switch" title="Filtre de jeu">
+                {[["WZ", "WZ"], ["Black Ops 7", "BO7"], ["Black Ops 6", "BO6"]].map(([id, lbl]) => (
+                  <button key={id} type="button"
+                    className={"game-btn" + (jeuFiltre === id ? " actif" : "")}
+                    onClick={(e) => { e.stopPropagation(); setJeuFiltre(id); }}>{lbl}</button>
+                ))}
+              </div>
               <div className="lang-switch">
                 {[["fr", "FR"], ["en", "EN"], ["de", "DE"]].map(([code, lbl]) => (
                   <button key={code} type="button"
@@ -1641,13 +1669,13 @@
                         <div className="image-arme-zone"><WeaponImage arme={armeP} /></div>
                         <div className="gs-weapon-picker">
                           <label>{t("Opus :")}</label>
-                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_PRINCIPALES)} value={opusP} onChange={changeOpusP} />
+                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_P_F)} value={opusP} onChange={changeOpusP} />
                           <label>{t("Catégorie :")}</label>
-                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_PRINCIPALES, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
+                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_P_F, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
                           <label>{t("Arme :")}</label>
-                          <Dropdown className="menu-cible-arme" options={ARMES_PRINCIPALES.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
+                          <Dropdown className="menu-cible-arme" options={ARMES_P_F.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
                           <label>{t("Recherche rapide :")}</label>
-                          <SearchBox onSelect={changeArmeP} />
+                          <SearchBox onSelect={changeArmeP} filtre={jeuFiltre} />
                         </div>
                       </div>
                       <div className="gs-attachments">
@@ -1693,11 +1721,11 @@
                         <div className="image-arme-zone"><WeaponImage arme={armeS} /></div>
                         <div className="gs-weapon-picker">
                           <label>{t("Opus :")}</label>
-                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_SECONDAIRES)} value={opusS} onChange={changeOpusS} />
+                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_S_F)} value={opusS} onChange={changeOpusS} />
                           <label>{t("Catégorie :")}</label>
-                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_SECONDAIRES, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
+                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_S_F, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
                           <label>{t("Arme :")}</label>
-                          <Dropdown className="menu-cible-arme" options={ARMES_SECONDAIRES.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
+                          <Dropdown className="menu-cible-arme" options={ARMES_S_F.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
                         </div>
                       </div>
                       <div className="gs-attachments">
@@ -1795,13 +1823,13 @@
                 <div className="cmp-choix">
                   <div>
                     <label>{t("Arme A :")}</label>
-                    <Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpA.id} onChange={(id) => setCmpA(TOUTES_ARMES.find(a => a.id === id))} />
+                    <Dropdown className="menu-cible-arme" options={TOUTES_F.map(a => ({ id: a.id, nom: a.nom }))} value={cmpA.id} onChange={(id) => setCmpA(TOUTES_F.find(a => a.id === id))} />
                     {typeof IMAGES_ARMES !== "undefined" && IMAGES_ARMES[cmpA.id] &&
                       <img className="cmp-vignette" src={IMAGES_ARMES[cmpA.id]} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
                   </div>
                   <div>
                     <label>{t("Arme B :")}</label>
-                    <Dropdown className="menu-cible-arme" options={TOUTES_ARMES.map(a => ({ id: a.id, nom: a.nom }))} value={cmpB.id} onChange={(id) => setCmpB(TOUTES_ARMES.find(a => a.id === id))} />
+                    <Dropdown className="menu-cible-arme" options={TOUTES_F.map(a => ({ id: a.id, nom: a.nom }))} value={cmpB.id} onChange={(id) => setCmpB(TOUTES_F.find(a => a.id === id))} />
                     {typeof IMAGES_ARMES !== "undefined" && IMAGES_ARMES[cmpB.id] &&
                       <img className="cmp-vignette" src={IMAGES_ARMES[cmpB.id]} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
                   </div>
@@ -1840,9 +1868,9 @@
                 <div>
                   {(() => {
                     const ordreCats = [];
-                    TOUTES_ARMES.forEach(a => { if (!ordreCats.includes(a.categorie)) ordreCats.push(a.categorie); });
+                    TOUTES_F.forEach(a => { if (!ordreCats.includes(a.categorie)) ordreCats.push(a.categorie); });
                     return ordreCats.map(cat => {
-                      const armesCat = TOUTES_ARMES.filter(a => a.categorie === cat);
+                      const armesCat = TOUTES_F.filter(a => a.categorie === cat);
                       const groupes = {};
                       armesCat.forEach(a => { const t = TIERS[a.id] || "N"; (groupes[t] = groupes[t] || []).push(a); });
                       return (
