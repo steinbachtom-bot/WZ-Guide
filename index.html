@@ -186,7 +186,42 @@
     .gs-attachments .slot { margin: 0; }
     .gs-attachments .slot-label { text-transform: uppercase; letter-spacing: .5px; font-size: 11px; color: #d29a6a; }
 
-    .app { display: flex; align-items: flex-start; gap: 0; }
+    .app { display: block; }
+
+    /* ===== Barre de navigation horizontale (HUD) ===== */
+    .topbar {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 60;
+      margin: -24px -24px 24px; padding: 11px 24px;
+      background: linear-gradient(180deg, rgba(16,19,24,.97), rgba(10,12,15,.95));
+      border-bottom: 1px solid #2c3038;
+      box-shadow: 0 6px 22px rgba(0,0,0,.42);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    }
+    .topbar-brand {
+      font-family: "Rajdhani", system-ui, sans-serif; font-weight: 700;
+      font-size: 21px; letter-spacing: 2px; color: #fff; white-space: nowrap;
+      display: flex; align-items: center; gap: 9px;
+    }
+    .topbar-brand .dot { width: 9px; height: 9px; border-radius: 2px; background: #ff7a18; box-shadow: 0 0 10px rgba(255,122,24,.85); }
+    .topbar-brand span { color: #ff8a3c; }
+    .topnav { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+    .nav-pill {
+      display: flex; align-items: center; gap: 8px; padding: 8px 13px; cursor: pointer;
+      background: rgba(255,255,255,.018); border: 1px solid #2c3038; color: #b0b7c0;
+      white-space: nowrap; transition: color .15s, background .15s, border-color .15s;
+      clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+    }
+    .nav-pill:hover { color: #fff; border-color: #3a4049; background: rgba(255,255,255,.04); }
+    .nav-pill.actif { color: #0a0c0f; background: #ff7a18; border-color: #ff7a18; }
+    .nav-pill .num { font-family: "JetBrains Mono", monospace; font-size: 10px; opacity: .55; }
+    .nav-pill.actif .num { opacity: .85; }
+    .nav-pill .txt { font-family: "Rajdhani", system-ui, sans-serif; font-weight: 600; font-size: 13px; letter-spacing: .6px; text-transform: uppercase; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+    .topbar .lang-switch { margin: 0; padding: 0; border: 0; gap: 5px; }
+    .topbar .lang-btn { flex: 0 0 auto; padding: 7px 11px; }
+    .pub-bottom { margin-top: 30px; }
+    .pub-bottom .pub-zone { min-height: 110px; }
     .sidebar {
       width: 230px; flex-shrink: 0; position: sticky; top: 24px;
       background: rgba(0,0,0,.28); border: 1px solid #2c3038; border-radius: 14px;
@@ -228,7 +263,7 @@
     .lang-btn.actif { background: #2c3038; color: #fff; border-color: #2c6275; }
     .sidebar.replie .lang-switch { flex-direction: column; }
 
-    .contenu { flex: 1; min-width: 0; padding-left: 24px; }
+    .contenu { min-width: 0; padding-left: 0; }
 
     .entete-vue {
       display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;
@@ -501,6 +536,10 @@
       .sidebar .nav-item { flex: 1 1 auto; justify-content: center; margin: 0; }
       .sidebar .nav-item .txt { display: inline; }
       .contenu { padding-left: 0; padding-top: 16px; }
+      .topbar { margin: -12px -12px 18px; padding: 10px 12px; gap: 10px; }
+      .topbar-brand { font-size: 18px; }
+      .topnav { flex: 1 1 100%; order: 3; }
+      .nav-pill { flex: 1 1 auto; justify-content: center; }
       h1 { font-size: 19px; }
       .gs-body { flex-direction: column; gap: 14px; padding: 14px; }
       .gs-left, .gs-image, .gs-stats { min-width: 0; flex-basis: auto; width: 100%; }
@@ -1484,31 +1523,26 @@
 
       return (
         <div className="app">
-          <aside className={"sidebar" + (sidebarReplie ? " replie" : "")}>
-            <button className="sidebar-toggle" title={t("Replier / déplier le menu")}
-              onClick={(e) => { e.stopPropagation(); setSidebarReplie(r => !r); }}>☰</button>
-            <nav>
-              {navItems.map(it => (
-                <div key={it.id} className={"nav-item" + (vue === it.id ? " actif" : "")} onClick={() => setVue(it.id)}>
-                  <span className="ico">{it.ico}</span>
+          <header className="topbar">
+            <div className="topbar-brand"><span className="dot"></span>WZ<span>GUIDE</span></div>
+            <nav className="topnav">
+              {navItems.map((it, i) => (
+                <div key={it.id} className={"nav-pill" + (vue === it.id ? " actif" : "")} onClick={() => setVue(it.id)}>
+                  <span className="num">{("0" + (i + 1)).slice(-2)}</span>
                   <span className="txt">{t(it.label)}</span>
                 </div>
               ))}
             </nav>
-            {/* Emplacement publicitaire — colle ici le code de ton annonceur (ex. Google AdSense)
-                en remplaçant le contenu de .pub-zone. */}
-            <div className="pub-slot" aria-label="Publicité">
-              <div className="pub-label">{t("Publicité")}</div>
-              <div className="pub-zone" id="pub-accueil">{t("Espace publicitaire")}</div>
+            <div className="topbar-right">
+              <div className="lang-switch">
+                {[["fr", "FR"], ["en", "EN"], ["de", "DE"]].map(([code, lbl]) => (
+                  <button key={code} type="button"
+                    className={"lang-btn" + (langue === code ? " actif" : "")}
+                    onClick={(e) => { e.stopPropagation(); setLangue(code); }}>{lbl}</button>
+                ))}
+              </div>
             </div>
-            <div className="lang-switch">
-              {[["fr", "FR"], ["en", "EN"], ["de", "DE"]].map(([code, lbl]) => (
-                <button key={code} type="button"
-                  className={"lang-btn" + (langue === code ? " actif" : "")}
-                  onClick={(e) => { e.stopPropagation(); setLangue(code); }}>{lbl}</button>
-              ))}
-            </div>
-          </aside>
+          </header>
 
           <main className="contenu">
             {vue === "accueil" && (() => {
@@ -1844,6 +1878,11 @@
                 </div>
               </div>
             )}
+            {/* Emplacement publicitaire (bannière bas de page) */}
+            <div className="pub-slot pub-bottom" aria-label="Publicité">
+              <div className="pub-label">{t("Publicité")}</div>
+              <div className="pub-zone" id="pub-accueil">{t("Espace publicitaire")}</div>
+            </div>
           </main>
         </div>
       );
