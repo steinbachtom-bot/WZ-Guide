@@ -178,8 +178,18 @@
     }
     .gs-image svg, .gs-image img { width: 100%; max-width: 460px; height: auto; }
     .gs-image img { object-fit: contain; max-height: 240px; }
-    .gs-weapon-picker { margin-top: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
-    .gs-weapon-picker label { font-size: 12px; color: #d29a6a; }
+    .gs-weapon-picker { margin-top: 0; display: flex; flex-direction: column; gap: 9px; align-items: stretch; }
+    .gs-weapon-picker .wp { position: relative; background: linear-gradient(160deg, #20242b, #14171c); border: 1px solid #46362a; border-radius: 10px; transition: border-color .15s; }
+    .gs-weapon-picker .wp:hover { border-color: #5a4631; }
+    .gs-weapon-picker .wp::before { content: ""; position: absolute; left: 0; top: 9px; bottom: 9px; width: 3px; border-radius: 0 3px 3px 0; background: #ff7a18; box-shadow: 0 0 8px rgba(255,122,24,.6); }
+    .gs-weapon-picker .wp > label { display: block; margin: 0; padding: 11px 15px 4px; font-family: "Rajdhani", system-ui, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; color: #c8cdd4; }
+    .gs-weapon-picker .wp .menu-cible-cat, .gs-weapon-picker .wp .menu-cible-arme { display: block; width: 100%; }
+    .gs-weapon-picker .wp .dd-bouton { background: transparent; border: none; border-radius: 0; padding: 0 15px 11px; }
+    .gs-weapon-picker .wp .dd-bouton .dd-nom { font-size: 13px; color: #ffb070; font-weight: 600; }
+    .gs-weapon-picker .wp .dd-bouton .fleche-bas { align-self: center; font-size: 0; }
+    .gs-weapon-picker .wp .dd-bouton .fleche-bas::after { content: "\203A"; font-size: 20px; line-height: 1; color: #8a939d; }
+    .gs-weapon-picker .wp:hover .dd-bouton .fleche-bas::after { color: #ff8a3c; }
+    .gs-weapon-picker .wp-search .recherche-input { background: transparent; border: none; border-radius: 0; padding: 2px 15px 11px; }
 
     .gs-stats { flex: 1.4 1 440px; min-width: 320px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 18px; position: sticky; top: 16px; align-self: flex-start; max-height: calc(100vh - 32px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: #ff7a18 rgba(255,122,24,.10); }
     .gs-stats::-webkit-scrollbar { width: 10px; }
@@ -1742,14 +1752,14 @@
                   <div className="gs-body">
                     <div className="gs-left">
                       <div className="gs-weapon-picker">
-                        <label>{t("Opus :")}</label>
-                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_P_F)} value={opusP} onChange={changeOpusP} />
-                        <label>{t("Catégorie :")}</label>
-                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_P_F, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
-                        <label>{t("Arme :")}</label>
-                        <Dropdown className="menu-cible-arme" options={ARMES_P_F.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
-                        <label>{t("Recherche rapide :")}</label>
-                        <SearchBox onSelect={changeArmeP} filtre={jeuFiltre} />
+                        <div className="wp"><label>{t("Opus :")}</label>
+                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_P_F)} value={opusP} onChange={changeOpusP} /></div>
+                        <div className="wp"><label>{t("Catégorie :")}</label>
+                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_P_F, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} /></div>
+                        <div className="wp"><label>{t("Arme :")}</label>
+                          <Dropdown className="menu-cible-arme" options={ARMES_P_F.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} /></div>
+                        <div className="wp wp-search"><label>{t("Recherche rapide :")}</label>
+                          <SearchBox onSelect={changeArmeP} filtre={jeuFiltre} /></div>
                       </div>
                       <div className="gs-attachments">
                         <div className="gs-coltitre">{t("Emplacements")}</div>
@@ -1793,12 +1803,12 @@
                   <div className="gs-body">
                     <div className="gs-left">
                       <div className="gs-weapon-picker">
-                        <label>{t("Opus :")}</label>
-                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_S_F)} value={opusS} onChange={changeOpusS} />
-                        <label>{t("Catégorie :")}</label>
-                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_S_F, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
-                        <label>{t("Arme :")}</label>
-                        <Dropdown className="menu-cible-arme" options={ARMES_S_F.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
+                        <div className="wp"><label>{t("Opus :")}</label>
+                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_S_F)} value={opusS} onChange={changeOpusS} /></div>
+                        <div className="wp"><label>{t("Catégorie :")}</label>
+                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_S_F, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} /></div>
+                        <div className="wp"><label>{t("Arme :")}</label>
+                          <Dropdown className="menu-cible-arme" options={ARMES_S_F.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} /></div>
                       </div>
                       <div className="gs-attachments">
                         <div className="gs-coltitre">{t("Emplacements")}</div>
