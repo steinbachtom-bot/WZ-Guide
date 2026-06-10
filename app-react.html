@@ -167,7 +167,7 @@
     .gs-weapon { text-align: right; }
 
     .gs-body { display: flex; gap: 20px; padding: 22px; flex-wrap: wrap; align-items: flex-start; }
-    .gs-left { flex: 1 1 340px; min-width: 300px; display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; align-self: flex-start; }
+    .gs-left { flex: 1 1 340px; min-width: 300px; display: flex; flex-direction: column; gap: 16px; }
     .gs-image {
       display: flex; flex-direction: column;
       align-items: center; justify-content: flex-start;
@@ -179,7 +179,11 @@
     .gs-weapon-picker { margin-top: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
     .gs-weapon-picker label { font-size: 12px; color: #d29a6a; }
 
-    .gs-stats { flex: 1.4 1 440px; min-width: 320px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 18px; }
+    .gs-stats { flex: 1.4 1 440px; min-width: 320px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 18px; position: sticky; top: 16px; align-self: flex-start; max-height: calc(100vh - 32px); overflow-y: auto; }
+    .gs-stats::-webkit-scrollbar { width: 8px; }
+    .gs-stats::-webkit-scrollbar-track { background: transparent; }
+    .gs-stats::-webkit-scrollbar-thumb { background: #2c3038; border-radius: 4px; }
+    .gs-stats::-webkit-scrollbar-thumb:hover { background: #3a4049; }
     .gs-render { display: flex; align-items: center; justify-content: center; min-height: 190px; margin-bottom: 18px; padding: 16px;
       background: radial-gradient(420px 200px at 50% 0%, rgba(255,138,60,.16), transparent 70%), linear-gradient(160deg, #161a20, #0a0c0f);
       border: 1px solid #2c3038; border-radius: 12px; }
@@ -577,6 +581,7 @@
       .gs-body { flex-direction: column; gap: 14px; padding: 14px; }
       .gs-left, .gs-image, .gs-stats { min-width: 0; flex-basis: auto; width: 100%; }
       .gs-left { position: static; top: auto; }
+      .gs-stats { position: static; max-height: none; overflow: visible; }
       .pub-zone { min-height: 90px; }
       .gs-topbar { padding: 12px 14px; }
       .gs-weapon-picker { width: 100%; }
