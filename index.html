@@ -167,7 +167,7 @@
     .gs-weapon { text-align: right; }
 
     .gs-body { display: flex; gap: 20px; padding: 22px; flex-wrap: wrap; align-items: flex-start; }
-    .gs-left { flex: 1 1 440px; min-width: 320px; display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; align-self: flex-start; }
+    .gs-left { flex: 1 1 340px; min-width: 300px; display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; align-self: flex-start; }
     .gs-image {
       display: flex; flex-direction: column;
       align-items: center; justify-content: flex-start;
@@ -179,14 +179,21 @@
     .gs-weapon-picker { margin-top: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
     .gs-weapon-picker label { font-size: 12px; color: #d29a6a; }
 
-    .gs-stats { flex: 1 1 360px; min-width: 260px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 18px; }
+    .gs-stats { flex: 1.4 1 440px; min-width: 320px; background: rgba(0,0,0,.22); border-radius: 12px; padding: 18px; }
+    .gs-render { display: flex; align-items: center; justify-content: center; min-height: 190px; margin-bottom: 18px; padding: 16px;
+      background: radial-gradient(420px 200px at 50% 0%, rgba(255,138,60,.16), transparent 70%), linear-gradient(160deg, #161a20, #0a0c0f);
+      border: 1px solid #2c3038; border-radius: 12px; }
+    .gs-render img, .gs-render svg { width: 100%; max-width: 460px; height: auto; max-height: 250px; object-fit: contain; filter: drop-shadow(0 6px 16px rgba(0,0,0,.5)); }
+    .gs-coltitre { font-family: "Rajdhani", system-ui, sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #d29a6a; margin: 4px 0 12px; }
+    .gs-slotcount { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; font-weight: 700; color: #ff8a3c; border: 1px solid #ff8a3c; border-radius: 999px; padding: 5px 13px; letter-spacing: .5px; text-transform: uppercase; white-space: nowrap; }
     .gs-stats h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #ffb070; margin: 0 0 14px; }
 
     .gs-attachments { padding: 0; }
-    .gs-attachments > div { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-    .gs-attachments .compteur { grid-column: 1 / -1; margin: 0; color: #ffb070; }
-    .gs-attachments .slot { margin: 0; }
-    .gs-attachments .slot-label { text-transform: uppercase; letter-spacing: .5px; font-size: 11px; color: #d29a6a; }
+    .gs-attachments > div { display: flex; flex-direction: column; gap: 9px; }
+    .gs-attachments .compteur { margin: 0 0 2px; color: #ffb070; }
+    .gs-attachments .slot { margin: 0; background: rgba(0,0,0,.28); border: 1px solid #2c3038; border-radius: 10px; padding: 11px 13px; transition: border-color .15s; }
+    .gs-attachments .slot:hover { border-color: #3a4049; }
+    .gs-attachments .slot-label { display: block; margin-bottom: 7px; text-transform: uppercase; letter-spacing: .5px; font-size: 11px; color: #d29a6a; }
 
     .app { display: block; }
 
@@ -575,7 +582,7 @@
       .gs-weapon-picker { width: 100%; }
       .menu-cible-arme, .menu-cible-cat { width: 100%; }
       .gs-attachments { padding: 0; }
-      .gs-attachments > div { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .gs-attachments > div { display: flex; flex-direction: column; }
       .layout { gap: 14px; }
       .colonne { min-width: 0; flex-basis: 100%; padding: 16px; }
       /* Mobile : le menu déroulant épouse la largeur de son emplacement et ne déborde jamais de l'écran. */
@@ -1679,28 +1686,27 @@
                 {/* ARME PRINCIPALE */}
                 <div className="gunsmith">
                   <div className="gs-topbar">
-                    <span className="gs-title">{t("GUNSMITH")}</span>
                     <span className="gs-weapon">
                       <span className="gs-wname">{armeP.nom}</span>
                       <span className="gs-wcat">{armeP.categorie ? t(armeP.categorie) : ""}</span>
                     </span>
+                    <span className="gs-slotcount">{compterAccessoires(selP)}/{CAP_ACCESSOIRES} {t("emplacements")}</span>
                   </div>
                   <div className="gs-body">
                     <div className="gs-left">
-                      <div className="gs-image">
-                        <div className="image-arme-zone"><WeaponImage arme={armeP} /></div>
-                        <div className="gs-weapon-picker">
-                          <label>{t("Opus :")}</label>
-                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_P_F)} value={opusP} onChange={changeOpusP} />
-                          <label>{t("Catégorie :")}</label>
-                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_P_F, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
-                          <label>{t("Arme :")}</label>
-                          <Dropdown className="menu-cible-arme" options={ARMES_P_F.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
-                          <label>{t("Recherche rapide :")}</label>
-                          <SearchBox onSelect={changeArmeP} filtre={jeuFiltre} />
-                        </div>
+                      <div className="gs-weapon-picker">
+                        <label>{t("Opus :")}</label>
+                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_P_F)} value={opusP} onChange={changeOpusP} />
+                        <label>{t("Catégorie :")}</label>
+                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_P_F, CATEGORIES_PRINCIPALES, opusP)} value={catP} onChange={changeCatP} />
+                        <label>{t("Arme :")}</label>
+                        <Dropdown className="menu-cible-arme" options={ARMES_P_F.filter(a => a.categorie === catP && a.jeu === opusP).map(a => ({ id: a.id, nom: a.nom }))} value={armeP.id} onChange={changeArmeP} />
+                        <label>{t("Recherche rapide :")}</label>
+                        <SearchBox onSelect={changeArmeP} filtre={jeuFiltre} />
                       </div>
                       <div className="gs-attachments">
+                        <div className="gs-coltitre">{t("Emplacements")}</div>
+                        <AttachmentSlots emplacements={armeP.emplacements} selection={selP} onChange={changeAccP} onReset={() => { setSelP(etatVide(armeP.emplacements)); setAlerteP(false); }} alerte={alerteP} afficherValeurs={afficherValeurs} />
                         <div className="ia-bar">
                           <span className="ia-titre">{t("✨ Générateur de classe")}</span>
                           <label>{t("Objectif :")}</label>
@@ -1714,11 +1720,11 @@
                           <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasse(); }}>{t("Générer la classe")}</button>
                           <span className="ia-note">{iaNote}</span>
                         </div>
-                        <AttachmentSlots emplacements={armeP.emplacements} selection={selP} onChange={changeAccP} onReset={() => { setSelP(etatVide(armeP.emplacements)); setAlerteP(false); }} alerte={alerteP} afficherValeurs={afficherValeurs} />
                       </div>
                     </div>
                     <div className="gs-stats">
-                      <h2>{t("Statistiques")}</h2>
+                      <div className="gs-render"><WeaponImage arme={armeP} /></div>
+                      <h2>{t("Stats live")}</h2>
                       <div><StatBars arme={armeP} finales={finalesP} /></div>
                       <div className="ttk-box"><TTKBox finales={finalesP} pvCible={pvCible} setPvCible={setPvCible} /></div>
                       <TTKDistanceTable arme={armeP} finales={finalesP} pvCible={pvCible} />
@@ -1731,26 +1737,25 @@
                 {/* ARME SECONDAIRE */}
                 <div className="gunsmith">
                   <div className="gs-topbar">
-                    <span className="gs-title">{t("GUNSMITH")}</span>
                     <span className="gs-weapon">
                       <span className="gs-wname">{armeS.nom}</span>
                       <span className="gs-wcat">{armeS.categorie ? t(armeS.categorie) : ""}</span>
                     </span>
+                    <span className="gs-slotcount">{compterAccessoires(selS)}/{CAP_ACCESSOIRES} {t("emplacements")}</span>
                   </div>
                   <div className="gs-body">
                     <div className="gs-left">
-                      <div className="gs-image">
-                        <div className="image-arme-zone"><WeaponImage arme={armeS} /></div>
-                        <div className="gs-weapon-picker">
-                          <label>{t("Opus :")}</label>
-                          <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_S_F)} value={opusS} onChange={changeOpusS} />
-                          <label>{t("Catégorie :")}</label>
-                          <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_S_F, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
-                          <label>{t("Arme :")}</label>
-                          <Dropdown className="menu-cible-arme" options={ARMES_S_F.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
-                        </div>
+                      <div className="gs-weapon-picker">
+                        <label>{t("Opus :")}</label>
+                        <Dropdown className="menu-cible-cat" options={optionsJeux(ARMES_S_F)} value={opusS} onChange={changeOpusS} />
+                        <label>{t("Catégorie :")}</label>
+                        <Dropdown className="menu-cible-cat" options={optionsCategories(ARMES_S_F, CATEGORIES_SECONDAIRES, opusS)} value={catS} onChange={changeCatS} />
+                        <label>{t("Arme :")}</label>
+                        <Dropdown className="menu-cible-arme" options={ARMES_S_F.filter(a => a.categorie === catS && a.jeu === opusS).map(a => ({ id: a.id, nom: a.nom }))} value={armeS.id} onChange={changeArmeS} />
                       </div>
                       <div className="gs-attachments">
+                        <div className="gs-coltitre">{t("Emplacements")}</div>
+                        <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} onReset={() => { setSelS(etatVide(armeS.emplacements)); setAlerteS(false); }} alerte={alerteS} afficherValeurs={afficherValeurs} />
                         <div className="ia-bar">
                           <span className="ia-titre">{t("✨ Générateur de classe")}</span>
                           <label>{t("Objectif :")}</label>
@@ -1764,11 +1769,11 @@
                           <button className="btn btn-principal" onClick={(e) => { e.stopPropagation(); genererClasseS(); }}>{t("Générer la classe")}</button>
                           <span className="ia-note">{iaNoteS}</span>
                         </div>
-                        <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} onReset={() => { setSelS(etatVide(armeS.emplacements)); setAlerteS(false); }} alerte={alerteS} afficherValeurs={afficherValeurs} />
                       </div>
                     </div>
                     <div className="gs-stats">
-                      <h2>{t("Statistiques")}</h2>
+                      <div className="gs-render"><WeaponImage arme={armeS} /></div>
+                      <h2>{t("Stats live")}</h2>
                       <div><StatBars arme={armeS} finales={finalesS} /></div>
                       <TTKDistanceTable arme={armeS} finales={finalesS} pvCible={pvCible} />
                       <Mannequin arme={armeS} pvCible={pvCible} />
