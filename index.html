@@ -195,9 +195,23 @@
     .gs-attachments { padding: 0; }
     .gs-attachments > div { display: flex; flex-direction: column; gap: 9px; }
     .gs-attachments .compteur { margin: 0 0 2px; color: #ffb070; }
-    .gs-attachments .slot { margin: 0; background: rgba(0,0,0,.28); border: 1px solid #2c3038; border-radius: 10px; padding: 11px 13px; transition: border-color .15s; }
+    .gs-attachments .slot { position: relative; margin: 0; padding: 0; background: linear-gradient(160deg, #1a1e24, #101319); border: 1px solid #2c3038; border-radius: 10px; transition: border-color .15s, background .15s; }
     .gs-attachments .slot:hover { border-color: #3a4049; }
-    .gs-attachments .slot-label { display: block; margin-bottom: 7px; text-transform: uppercase; letter-spacing: .5px; font-size: 11px; color: #d29a6a; }
+    /* Emplacement REMPLI : bordure pleine + accent orange à gauche */
+    .gs-attachments .slot:has(.dd-bouton.rempli) { border-color: #46362a; background: linear-gradient(160deg, #20242b, #14171c); }
+    .gs-attachments .slot:has(.dd-bouton.rempli)::before { content: ""; position: absolute; left: 0; top: 9px; bottom: 9px; width: 3px; border-radius: 0 3px 3px 0; background: #ff7a18; box-shadow: 0 0 8px rgba(255,122,24,.6); }
+    /* Emplacement VIDE : pointillés + atténué */
+    .gs-attachments .slot:has(.dd-bouton:not(.rempli)) { border-style: dashed; border-color: #2c3038; background: rgba(0,0,0,.16); }
+    .gs-attachments .slot-label { display: block; margin: 0; padding: 11px 15px 0; font-family: "Rajdhani", system-ui, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; color: #c8cdd4; }
+    .gs-attachments .slot:has(.dd-bouton:not(.rempli)) .slot-label { color: #8a939d; }
+    .gs-attachments .slot:has(.dd-bouton:not(.rempli)) .slot-label::before { content: "+ "; color: #ff8a3c; font-weight: 700; }
+    /* Le bouton du menu se fond dans la carte */
+    .gs-attachments .slot .dd-bouton { background: transparent; border: none; border-radius: 0; padding: 3px 15px 11px; }
+    .gs-attachments .slot .dd-bouton .dd-nom { font-size: 13px; color: #9aa0a6; }
+    .gs-attachments .slot .dd-bouton.rempli .dd-nom { color: #ffb070; font-weight: 600; }
+    .gs-attachments .slot .dd-bouton .fleche-bas { align-self: center; font-size: 0; }
+    .gs-attachments .slot .dd-bouton .fleche-bas::after { content: "\203A"; font-size: 20px; line-height: 1; color: #8a939d; }
+    .gs-attachments .slot:hover .dd-bouton .fleche-bas::after { color: #ff8a3c; }
 
     .app { display: block; }
 
