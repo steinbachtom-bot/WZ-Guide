@@ -131,19 +131,21 @@
     .menu-cible-cat { display: inline-block; width: 220px; vertical-align: middle; }
     .dd-opt-off { opacity: .4; cursor: not-allowed; }
 
-    .stat { margin-bottom: 14px; }
-    .stat-entete { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
-    .stat-nom { color: #c8cdd4; }
-    .stat-valeurs { font-variant-numeric: tabular-nums; }
-    .base { color: #b0b7c0; }
-    .fleche { color: #8a939d; margin: 0 4px; }
-    .final { font-weight: 700; }
+    .stat { margin-bottom: 13px; }
+    .stat-entete { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    .stat-nom { color: #c8cdd4; text-transform: uppercase; letter-spacing: .5px; font-size: 11px; }
+    .stat-valeurs { display: inline-flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+    .stat-val { font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 700; font-size: 13px; color: #fff; }
+    .stat-delta { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; line-height: 1.4; }
+    .stat-delta.mieux { color: #6ef0a0; background: rgba(74,222,128,.14); }
+    .stat-delta.pire  { color: #ff8d8d; background: rgba(248,113,113,.14); }
     .mieux { color: #4ade80; }
     .pire  { color: #f87171; }
     .egal  { color: #e8eaed; }
 
-    .barre-fond { background: #2c3038; border-radius: 6px; height: 8px; overflow: hidden; }
-    .barre-remplissage { height: 100%; border-radius: 6px; transition: width .2s; }
+    .barre-fond { position: relative; background: #23272e; border: 1px solid #2c3038; border-radius: 5px; height: 9px; overflow: hidden; }
+    .barre-remplissage { height: 100%; border-radius: 4px; transition: width .25s ease; box-shadow: 0 0 8px rgba(255,138,60,.25); }
+    .barre-base { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,.6); transform: translateX(-1px); }
 
     .section-titre { font-size: 16px; margin: 32px 0 12px; color: #e8eaed; }
 
@@ -906,20 +908,23 @@
               const aug = fin > base;
               cls = (infos.plusGrandEstMieux ? aug : !aug) ? "mieux" : "pire";
             }
-            const largeur = Math.min(100, (fin / infos.max) * 100);
-            const couleur = cls === "pire" ? "#f87171" : cls === "mieux" ? "#4ade80" : "#8a939d";
+            const largeur = Math.min(100, Math.max(0, (fin / infos.max) * 100));
+            const baseW = Math.min(100, Math.max(0, (base / infos.max) * 100));
+            const couleur = cls === "pire" ? "#f87171" : cls === "mieux" ? "#4ade80" : "#ff8a3c";
+            const delta = Math.round((fin - base) * 100) / 100;
+            const signe = delta > 0 ? "+" : "";
             return (
               <div className="stat" key={stat}>
                 <div className="stat-entete">
                   <span className="stat-nom">{t(infos.label)}</span>
                   <span className="stat-valeurs">
-                    <span className="base">{base}</span>
-                    <span className="fleche">→</span>
-                    <span className={"final " + cls}>{fin}</span>
+                    <span className="stat-val">{fin}</span>
+                    {delta !== 0 && <span className={"stat-delta " + cls}>{signe}{delta}</span>}
                   </span>
                 </div>
                 <div className="barre-fond">
                   <div className="barre-remplissage" style={{ width: largeur + "%", background: couleur }}></div>
+                  {delta !== 0 && <span className="barre-base" style={{ left: baseW + "%" }}></span>}
                 </div>
               </div>
             );
