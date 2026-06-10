@@ -106,6 +106,8 @@
     .dd-bouton:hover { border-color: #ff9046; }
     .dd-bouton.rempli { border-color: #ff9046; }
     .dd-bouton .fleche-bas { margin-left: auto; color: #8a939d; }
+    .dd-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex: 0 0 20px; color: #ff8a3c; }
+    .dd-ic svg { width: 18px; height: 18px; }
     .dd-liste {
       position: absolute; left: 0; top: calc(100% + 4px); z-index: 30;
       min-width: 100%; width: max-content; max-width: 300px;
@@ -906,6 +908,7 @@
           <div className={"dd" + (ouvert ? " ouvert" : "")}>
             <button type="button" className={"dd-bouton" + (rempli ? " rempli" : "")}
               onClick={(e) => { e.stopPropagation(); setOuvert(o => { const next = !o; if (next) window.dispatchEvent(new CustomEvent("dd:open", { detail: idRef.current })); return next; }); }}>
+              {choisi && choisi.icone ? <span className="dd-ic" dangerouslySetInnerHTML={{ __html: choisi.icone }} /> : null}
               <span className="dd-nom">{choisi ? choisi.nom : ""}</span>
               <span className="chips-ligne" dangerouslySetInnerHTML={{ __html: choisi && choisi.chips ? choisi.chips : "" }} />
               <span className="fleche-bas">▾</span>
@@ -915,6 +918,7 @@
                 <div key={o.id}
                   className={"dd-opt" + (o.id === value ? " actif" : "") + (o.desactive ? " dd-opt-off" : "")}
                   onClick={() => { if (o.desactive) return; setOuvert(false); onChange(o.id); }}>
+                  {o.icone ? <span className="dd-ic" dangerouslySetInnerHTML={{ __html: o.icone }} /> : null}
                   <span className="dd-opt-texte">
                     <span className="dd-nom">{o.nom}</span>
                     {o.sousTexte ? <span className="dd-sous">{o.sousTexte}</span> : null}
@@ -1311,6 +1315,30 @@
     }
 
     // Emplacements d'accessoires (un menu par emplacement + compteur + règle des 5).
+    // Icône SVG par type d'emplacement (sous-types pour les optiques).
+    function svgAcc(slotId, nom) {
+      const ic = (b) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + b + '</svg>';
+      const dot = '<circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/>';
+      if (slotId === "viseur" || slotId === "optique") {
+        const n = (nom || "").toLowerCase();
+        if (/(thermal|holo|ir\b)/.test(n)) return ic('<circle cx="12" cy="12" r="7"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>' + dot);
+        if (/(2x|3x|4x|5x|6x|7x|zoom|scope|lunette|sniper|prisma|range|variable)/.test(n)) return ic('<circle cx="12" cy="12" r="8"/><path d="M12 2v20M2 12h20"/>');
+        return ic('<circle cx="12" cy="12" r="8"/>' + dot);
+      }
+      switch (slotId) {
+        case "bouche": return ic('<rect x="3" y="9" width="12" height="6" rx="1.5"/><path d="M15 10.5h5M15 13.5h5"/>');
+        case "canon": return ic('<rect x="3" y="10" width="15" height="4" rx="1"/><circle cx="19.5" cy="12" r="1.6"/>');
+        case "sous_canon": return ic('<path d="M4 7h16"/><path d="M12 7v5a2.5 2.5 0 0 0 5 0"/>');
+        case "chargeur": return ic('<rect x="8" y="6" width="8" height="13" rx="1"/><path d="M8 9.5h8M8 13h8"/>');
+        case "crosse": case "crosse_joue": return ic('<path d="M4 9h9l7 3-7 3H4z"/>');
+        case "poignee_arriere": case "poignee_arr": return ic('<path d="M9 4h5v7a4 4 0 0 1-7 2.5"/>');
+        case "laser": return ic('<circle cx="6" cy="12" r="2.3" fill="currentColor" stroke="none"/><path d="M9 12h11M9.5 9.2l9 1.7M9.5 14.8l9-1.7"/>');
+        case "comb": return ic('<rect x="5" y="9.5" width="14" height="5" rx="2.5"/>');
+        case "mode_tir": return ic('<path d="M13 3 6 13h5l-2 8 9-12h-6z" fill="currentColor" stroke="none"/>');
+        default: return ic('<rect x="5" y="8" width="14" height="8" rx="2"/>');
+      }
+    }
+
     function AttachmentSlots({ emplacements, selection, onChange, onReset, alerte, afficherValeurs }) {
       const n = compterAccessoires(selection);
       return (
@@ -1319,7 +1347,7 @@
             {`${t("Accessoires équipés :")} ${n} / ${CAP_ACCESSOIRES}` + (alerte ? "  " + t("— maximum atteint !") : "")}
           </div>
           {emplacements.map(emp => {
-            const options = emp.options.map(o => ({ id: o.id, nom: t(o.nom), chips: chipsAffectes(o, afficherValeurs) }));
+            const options = emp.options.map(o => ({ id: o.id, nom: t(o.nom), chips: chipsAffectes(o, afficherValeurs), icone: o.id === "aucun" ? null : svgAcc(emp.id, o.nom) }));
             return (
               <div className="slot" key={emp.id}>
                 <label className="slot-label">{t(emp.label)}</label>
