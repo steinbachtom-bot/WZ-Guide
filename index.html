@@ -450,6 +450,10 @@
       box-shadow: 0 6px 22px rgba(255,122,24,.45); transition: background .15s, transform .15s;
     }
     .hero-cta:hover { background: #ff9046; transform: translateY(-2px); }
+    .hero-kicker { position: relative; display: inline-flex; align-items: center; gap: 12px; margin: 0 auto 16px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #ff8a3c; }
+    .hero-kicker::before, .hero-kicker::after { content: ""; width: 30px; height: 1px; }
+    .hero-kicker::before { background: linear-gradient(90deg, transparent, #ff8a3c); }
+    .hero-kicker::after { background: linear-gradient(90deg, #ff8a3c, transparent); }
 
     /* Lueur pulsante animée derrière le titre */
     .hero::before {
@@ -521,19 +525,31 @@
     .banniere-titre { font-size: 22px; margin: 0; color: #fff; }
     .banniere-sous { margin: 4px 0 0; color: #b0b7c0; font-size: 14px; }
 
-    .accueil-titre { font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: #ffb070; margin: 0 0 14px; }
+    .accueil-titre { display: flex; align-items: center; gap: 10px; font-size: 15px; text-transform: uppercase; letter-spacing: 1.5px; color: #ffb070; margin: 0 0 16px; }
+    .accueil-titre::before { content: ""; width: 4px; height: 17px; background: #ff7a18; box-shadow: 0 0 8px rgba(255,122,24,.7); }
     .accueil-cartes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
     .carte-nav {
+      position: relative; overflow: hidden;
       background: linear-gradient(160deg, #1a1e24, #101319); border: 1px solid #2c3038;
       border-radius: 14px; padding: 24px; cursor: pointer; text-align: left;
       transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
     }
+    .carte-nav::before {
+      content: ""; position: absolute; top: 11px; right: 11px; width: 15px; height: 15px;
+      border-top: 2px solid #2c3038; border-right: 2px solid #2c3038; border-top-right-radius: 3px;
+      transition: border-color .15s ease;
+    }
     .carte-nav:hover { transform: translateY(-4px); border-color: #ff8a3c; box-shadow: 0 10px 30px rgba(0,0,0,.45); }
-    .carte-ico { width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: rgba(255,138,60,.12); color: #ff8a3c; margin-bottom: 14px; }
+    .carte-nav:hover::before { border-color: #ff8a3c; }
+    .carte-ico {
+      width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
+      background: rgba(255,138,60,.12); color: #ff8a3c; margin-bottom: 14px; border: 1px solid rgba(255,138,60,.25);
+      clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+    }
     .carte-ico svg { width: 24px; height: 24px; }
     .carte-titre { font-size: 17px; font-weight: 700; color: #fff; margin: 0 0 6px; }
     .carte-desc { font-size: 13px; color: #b0b7c0; margin: 0; line-height: 1.5; }
-    .carte-fleche { color: #ff8a3c; font-weight: 700; margin-top: 12px; font-size: 13px; }
+    .carte-fleche { font-family: "JetBrains Mono", ui-monospace, monospace; color: #ff8a3c; font-weight: 700; margin-top: 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
 
     .menu-cible-arme, .menu-cible-cat { max-width: 100%; }
 
@@ -1603,6 +1619,7 @@
                     {aImg("hawker_hx") && <img className="hero-arme7" src={aImg("hawker_hx")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
                     {aImg("coda_9") && <img className="hero-arme8" src={aImg("coda_9")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
                     {aImg("xm325") && <img className="hero-arme9" src={aImg("xm325")} alt="" onError={(e) => { e.target.style.display = "none"; }} />}
+                    <div className="hero-kicker">WZ · BO7 · BO6</div>
                     <h1 className="hero-logo">WZ<span> GUIDE</span></h1>
                     <p className="hero-slogan">{t("Crée tes classes Warzone & Black Ops 7 optimales")}</p>
                     <p className="hero-sous">{t("Gunsmith complet, stats réelles, calcul du TTK, générateur de classe et tier list — le tout au même endroit.")}</p>
