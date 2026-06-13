@@ -780,6 +780,7 @@
         <li><strong>Comparateur d'armes</strong> et <strong>tier list (méta)</strong> par catégorie.</li>
         <li>Multilingue <strong>FR / EN / DE</strong>, classes sauvegardées et partageables.</li>
       </ul>
+      <p style="color:#c8ccd2"><a href="/armes/" style="color:#ff8a3c">Voir les guides de toutes les armes →</a> &nbsp;·&nbsp; <a href="/weapons/" style="color:#ff8a3c">All weapon guides (EN) →</a></p>
       <p style="color:#8a939d;font-size:13px">Chargement de l'application…</p>
       <noscript>
         <p style="color:#f87171;font-weight:600">
@@ -2351,6 +2352,7 @@
 
             <footer className="footer">
               <div className="footer-liens">
+                <a href={langue === "en" ? "/weapons/" : "/armes/"}>{t("Guides des armes")}</a>
                 <a onClick={() => { setVue("confidentialite"); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {} }}>{t("Confidentialité")}</a>
                 <a onClick={gererCookies}>{t("Gérer les cookies")}</a>
               </div>

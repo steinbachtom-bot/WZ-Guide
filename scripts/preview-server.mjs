@@ -24,7 +24,9 @@ const TYPES = {
 createServer(async (req, res) => {
   try {
     let path = decodeURIComponent(new URL(req.url, "http://x").pathname);
-    if (path === "/") path = "/index.html";
+    // URLs en dossier (ou racine) → index.html, comme GitHub Pages.
+    if (path.endsWith("/")) path += "index.html";
+    else if (!extname(path)) path += "/index.html";
     const file = normalize(join(ROOT, path));
     if (!file.startsWith(ROOT)) { res.writeHead(403).end("Forbidden"); return; }
     const data = await readFile(file);

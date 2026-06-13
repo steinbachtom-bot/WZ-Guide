@@ -18,7 +18,8 @@ const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const DIST = join(ROOT, "dist");
 
 // Fichiers à copier tels quels à côté du HTML compilé.
-const ASSETS = ["donnees.js", "traductions.js", "ads.txt", "robots.txt", "sitemap.xml", "CNAME"];
+// (sitemap.xml est généré par scripts/seo-pages.mjs, pas copié ici.)
+const ASSETS = ["donnees.js", "traductions.js", "ads.txt", "robots.txt", "CNAME"];
 
 async function main() {
   let html = await readFile(join(ROOT, "index.html"), "utf8");
