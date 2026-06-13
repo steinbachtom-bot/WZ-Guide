@@ -26,6 +26,26 @@
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0f1217">
   <link rel="canonical" href="https://exemple.com/">
+  <!-- Versions linguistiques (SEO multilingue). Remplace exemple.com par ton domaine. -->
+  <link rel="alternate" hreflang="fr" href="https://exemple.com/?lang=fr">
+  <link rel="alternate" hreflang="en" href="https://exemple.com/?lang=en">
+  <link rel="alternate" hreflang="de" href="https://exemple.com/?lang=de">
+  <link rel="alternate" hreflang="x-default" href="https://exemple.com/">
+
+  <!-- Données structurées (Google : résultats enrichis) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "WZ Guide",
+    "url": "https://exemple.com/",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Web",
+    "inLanguage": ["fr", "en", "de"],
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "description": "Éditeur de classes Warzone & Black Ops 7 : Gunsmith, stats réelles, calcul du TTK, générateur de classe et tier list."
+  }
+  </script>
 
   <!-- Open Graph (Facebook, Discord, WhatsApp…) -->
   <meta property="og:type" content="website">
@@ -791,6 +811,10 @@
     const LANGUES_OK = ["fr", "en", "de"];
     function detecterLangue() {
       try {
+        // Priorité : ?lang= dans l'URL (pour le SEO multilingue / hreflang)…
+        const url = new URLSearchParams(location.search).get("lang");
+        if (url && LANGUES_OK.includes(url)) return url;
+        // …puis le choix mémorisé, puis la langue du navigateur.
         const sauv = localStorage.getItem("wz_langue");
         if (sauv && LANGUES_OK.includes(sauv)) return sauv;
         const nav = (navigator.language || navigator.userLanguage || "fr").slice(0, 2).toLowerCase();
@@ -1708,10 +1732,41 @@
         LANGUE = l;
         try { localStorage.setItem("wz_langue", l); } catch (e) {}
         try { document.documentElement.lang = l; } catch (e) {}
+        // Refléter la langue dans l'URL (?lang=) sans recharger la page.
+        try { const u = new URL(location.href); u.searchParams.set("lang", l); history.replaceState(null, "", u); } catch (e) {}
         setLangueState(l);
       }
       const [afficherValeurs, setAfficherValeurs] = useState(false);
       const [pvCible, setPvCible] = useState(250);
+
+      /* --- SEO : titre + meta description dynamiques selon la vue et la langue --- */
+      useEffect(() => {
+        const SUF = " — WZ Guide";
+        const titres = {
+          accueil:        { fr: "Éditeur de classes Warzone & Black Ops 7", en: "Warzone & Black Ops 7 Loadout Builder", de: "Warzone & Black Ops 7 Klassen-Editor" },
+          createur:       { fr: "Créateur de classe (Gunsmith)", en: "Loadout Builder (Gunsmith)", de: "Klassen-Editor (Waffenschmied)" },
+          meta:           { fr: "Méta & Tier list des armes", en: "Weapon Meta & Tier List", de: "Waffen-Meta & Tier-Liste" },
+          comparateur:    { fr: "Comparateur d'armes", en: "Weapon Comparison", de: "Waffenvergleich" },
+          classes:        { fr: "Classes enregistrées", en: "Saved Loadouts", de: "Gespeicherte Klassen" },
+          news:           { fr: "Actualités Warzone & Black Ops 7", en: "Warzone & Black Ops 7 News", de: "Warzone & Black Ops 7 News" },
+          confidentialite:{ fr: "Politique de confidentialité", en: "Privacy Policy", de: "Datenschutzerklärung" }
+        };
+        const desc = {
+          fr: "Crée tes classes optimales Warzone & Black Ops 7 : Gunsmith, stats réelles, TTK, générateur de classe et tier list. Gratuit, FR/EN/DE.",
+          en: "Build your optimal Warzone & Black Ops 7 loadouts: gunsmith, real stats, TTK, class generator and tier list. Free, FR/EN/DE.",
+          de: "Erstelle optimale Warzone- & Black-Ops-7-Klassen: Waffenschmied, echte Werte, TTK, Klassengenerator und Tier-Liste. Kostenlos, FR/EN/DE."
+        };
+        const bloc = titres[vue] || titres.accueil;
+        const titre = (bloc[langue] || bloc.fr) + SUF;
+        try {
+          document.title = titre;
+          document.documentElement.lang = langue;   // cohérence SEO : <html lang> = langue active
+          const m = document.querySelector('meta[name="description"]');
+          if (m) m.setAttribute("content", desc[langue] || desc.fr);
+          const ogt = document.querySelector('meta[property="og:title"]');
+          if (ogt) ogt.setAttribute("content", titre);
+        } catch (e) {}
+      }, [vue, langue]);
 
       /* --- Consentement RGPD (bandeau cookies) --- */
       // On délègue au CMP Google seulement s'il est activé ET qu'AdSense est configuré.

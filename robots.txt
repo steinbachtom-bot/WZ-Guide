@@ -1,0 +1,6 @@
+# robots.txt — autorise l'indexation par tous les moteurs.
+# ⚠️ Remplace exemple.com par ton domaine réel.
+User-agent: *
+Allow: /
+
+Sitemap: https://exemple.com/sitemap.xml
