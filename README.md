@@ -30,9 +30,8 @@ plus rapide, ~3 Mo de Babel en moins). **Mets en ligne le contenu de `dist/`** (
 tes images + `og-image.png`). Le dossier `dist/` est régénéré à chaque build, il n'est pas
 versionné.
 
-> ⚠️ Avant la mise en ligne, remplace `https://exemple.com` par l'URL réelle du site dans
-> les balises `canonical` / `og:url` / `twitter` de `index.html`, et ajoute une image
-> `og-image.png` (1200×630) pour un bel aperçu de partage.
+> Domaine de production : **wzguide.com**. Avant la mise en ligne, ajoute une image
+> `og-image.png` (1200×630) à la racine pour un bel aperçu de partage.
 
 ## Activer la publicité (AdSense)
 Le site est déjà câblé pour Google AdSense, dans le respect du RGPD (bandeau de
