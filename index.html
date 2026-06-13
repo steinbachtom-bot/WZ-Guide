@@ -14,7 +14,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WZ Guide — Éditeur de classe Warzone (BO7)</title>
+  <title>WZ Guide — Éditeur de classe Warzone & Black Ops 7 (Gunsmith, TTK, méta)</title>
+
+  <!-- ============ SEO ============
+       ⚠️ À PERSONNALISER : remplace https://exemple.com par l'URL réelle de ton site
+       (dans canonical, og:url et twitter:url ci-dessous), et ajoute une image
+       og-image.png (1200×630) à la racine pour un bel aperçu de partage. -->
+  <meta name="description" content="Crée tes classes optimales Warzone & Black Ops 7 : Gunsmith complet, stats réelles, calcul du TTK, dégâts par distance et par zone, spray pattern, générateur de classe et tier list (méta). Gratuit, FR/EN/DE.">
+  <meta name="keywords" content="Warzone, Black Ops 7, BO7, Black Ops 6, classe, loadout, gunsmith, accessoires, TTK, méta, tier list, meilleures armes, Call of Duty">
+  <meta name="author" content="WZ Guide">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f1217">
+  <link rel="canonical" href="https://exemple.com/">
+
+  <!-- Open Graph (Facebook, Discord, WhatsApp…) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WZ Guide">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="WZ Guide — Éditeur de classe Warzone & Black Ops 7">
+  <meta property="og:description" content="Gunsmith complet, stats réelles, calcul du TTK, générateur de classe et tier list — le tout au même endroit. Gratuit.">
+  <meta property="og:url" content="https://exemple.com/">
+  <meta property="og:image" content="https://exemple.com/og-image.png">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WZ Guide — Éditeur de classe Warzone & Black Ops 7">
+  <meta name="twitter:description" content="Gunsmith complet, stats réelles, TTK, générateur de classe et tier list. Gratuit, FR/EN/DE.">
+  <meta name="twitter:image" content="https://exemple.com/og-image.png">
+
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1c24'/%3E%3Cg fill='none' stroke='%234fd0e6' stroke-width='2.5'%3E%3Ccircle cx='16' cy='16' r='9'/%3E%3Cline x1='16' y1='2' x2='16' y2='7'/%3E%3Cline x1='16' y1='25' x2='16' y2='30'/%3E%3Cline x1='2' y1='16' x2='7' y2='16'/%3E%3Cline x1='25' y1='16' x2='30' y2='16'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%234fd0e6'/%3E%3C/svg%3E">
 
   <!-- HUD fonts -->
@@ -649,7 +676,36 @@
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <!-- Contenu statique de repli : visible par les moteurs de recherche et les
+       visiteurs sans JavaScript. React le remplace entièrement au chargement. -->
+  <div id="root">
+    <div style="max-width:780px;margin:0 auto;padding:40px 20px;font-family:system-ui,Arial,sans-serif;color:#e8eaed">
+      <h1 style="font-size:34px;letter-spacing:2px">WZ <span style="color:#ff8a3c">GUIDE</span></h1>
+      <p style="font-size:18px;color:#ffd6b0">Crée tes classes Warzone &amp; Black Ops 7 optimales</p>
+      <p style="color:#b0b7c0;line-height:1.6">
+        WZ Guide est un éditeur de classe (Gunsmith) gratuit pour <strong>Call of Duty : Warzone</strong> et
+        <strong>Black Ops 7</strong>. Compose ton arme et tes accessoires, atouts et équipement, et visualise
+        en direct l'effet de chaque variable sur les statistiques.
+      </p>
+      <h2 style="font-size:20px;color:#ffb070">Fonctionnalités</h2>
+      <ul style="color:#c8ccd2;line-height:1.8">
+        <li><strong>Gunsmith complet</strong> — 5 accessoires max par arme, effets réels (bonus/malus).</li>
+        <li><strong>Stats en direct</strong> — dégâts, portée, cadence, recul, mobilité, vélocité…</li>
+        <li><strong>Calcul du TTK</strong> — temps pour éliminer, selon la distance et la zone touchée.</li>
+        <li><strong>Spray pattern simulé</strong> — tracé de recul estimé qui réagit aux accessoires.</li>
+        <li><strong>Générateur de classe</strong> — optimise automatiquement selon ton objectif de jeu.</li>
+        <li><strong>Comparateur d'armes</strong> et <strong>tier list (méta)</strong> par catégorie.</li>
+        <li>Multilingue <strong>FR / EN / DE</strong>, classes sauvegardées et partageables.</li>
+      </ul>
+      <p style="color:#8a939d;font-size:13px">Chargement de l'application…</p>
+      <noscript>
+        <p style="color:#f87171;font-weight:600">
+          Cette application nécessite JavaScript pour fonctionner. Active JavaScript dans ton navigateur
+          pour utiliser l'éditeur de classe interactif.
+        </p>
+      </noscript>
+    </div>
+  </div>
 
   <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js?v=11"></script>
