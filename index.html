@@ -1025,6 +1025,16 @@
            dans les balises <AdSlot slot="..."> si tu crées des blocs dédiés. */
     const ADSENSE_CLIENT = ""; // ex : "ca-pub-1234567890123456"
 
+    /* ===== CMP CERTIFIÉ (Google Funding Choices) =====
+       Mets à true pour déléguer le consentement au CMP certifié IAB de Google
+       (recommandé pour les pubs personnalisées à grande échelle en Europe).
+       Pré-requis : ADSENSE_CLIENT renseigné ET message RGPD activé dans ton
+       compte AdSense → « Confidentialité et messages » → « RGPD ». Le message
+       s'injecte alors automatiquement via la balise AdSense.
+       Tant que ADSENSE_CLIENT est vide, c'est le bandeau maison qui s'affiche
+       (repli), donc tu n'es jamais sans consentement. */
+    const CMP_GOOGLE = false;
+
     const CLE_STOCKAGE = "wz_classes";
     function chargerStockage() { try { return JSON.parse(localStorage.getItem(CLE_STOCKAGE) || "[]"); } catch (e) { return []; } }
     function sauverStockage(arr) { try { localStorage.setItem(CLE_STOCKAGE, JSON.stringify(arr)); } catch (e) {} }
@@ -1704,6 +1714,9 @@
       const [pvCible, setPvCible] = useState(250);
 
       /* --- Consentement RGPD (bandeau cookies) --- */
+      // On délègue au CMP Google seulement s'il est activé ET qu'AdSense est configuré.
+      // Sinon, le bandeau maison sert de repli (jamais de page sans consentement).
+      const utiliserCMPGoogle = CMP_GOOGLE && !!ADSENSE_CLIENT;
       const [consentVu, setConsentVu] = useState(() => {
         try { return !!localStorage.getItem("wz_consent"); } catch (e) { return false; }
       });
@@ -1712,6 +1725,15 @@
         try { localStorage.removeItem("wz_consent"); } catch (e) {}
         appliquerConsentement(false);
         setConsentVu(false);
+      }
+      // « Gérer les cookies » : rouvre le CMP Google si actif, sinon le bandeau maison.
+      function gererCookies() {
+        if (utiliserCMPGoogle && window.googlefc && window.googlefc.showRevocationMessage) {
+          window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
+          window.googlefc.callbackQueue.push(() => window.googlefc.showRevocationMessage());
+        } else {
+          revoirConsentement();
+        }
       }
 
       const [armeP, setArmeP] = useState(ARMES_PRINCIPALES[0]);
@@ -2266,7 +2288,7 @@
               </div>
             )}
             {vue === "confidentialite" && (
-              <PrivacyPolicy langue={langue} onRevoir={revoirConsentement} />
+              <PrivacyPolicy langue={langue} onRevoir={gererCookies} />
             )}
 
             {/* Bannière publicitaire de bas de page */}
@@ -2275,12 +2297,12 @@
             <footer className="footer">
               <div className="footer-liens">
                 <a onClick={() => { setVue("confidentialite"); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {} }}>{t("Confidentialité")}</a>
-                <a onClick={revoirConsentement}>{t("Gérer les cookies")}</a>
+                <a onClick={gererCookies}>{t("Gérer les cookies")}</a>
               </div>
               <div>© 2026 WZ Guide · {t("Site indépendant, non affilié à Activision / Call of Duty.")}</div>
             </footer>
           </main>
-          {!consentVu && <ConsentBanner langue={langue} onChoix={definirConsentement} onPlus={() => setVue("confidentialite")} />}
+          {!utiliserCMPGoogle && !consentVu && <ConsentBanner langue={langue} onChoix={definirConsentement} onPlus={() => setVue("confidentialite")} />}
         </div>
       );
     }

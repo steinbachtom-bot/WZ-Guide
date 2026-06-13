@@ -49,9 +49,20 @@ Les emplacements (`<AdSlot>`) se chargent en **lazy-load** (au défilement) pour
 la vitesse. Le bandeau de consentement est trilingue (FR/EN/DE) ; « Gérer les cookies »
 (pied de page) permet de revenir sur son choix.
 
-> ⚠️ Pour des **publicités personnalisées à grande échelle en Europe**, Google recommande
-> un CMP certifié IAB (Funding Choices, Axeptio, Didomi…). Le bandeau intégré gère le
-> consentement de base + le signal Consent Mode ; fais relire ta page Confidentialité.
+### Option : CMP certifié (Google Funding Choices)
+Pour des **publicités personnalisées à grande échelle en Europe**, Google recommande un
+CMP certifié IAB. Le code est prêt à basculer dessus :
+1. Renseigne `ADSENSE_CLIENT` (voir ci-dessus).
+2. Dans ton compte AdSense : **Confidentialité et messages → RGPD → créer un message**,
+   puis publie-le. Le message s'injecte automatiquement via la balise AdSense.
+3. Dans `index.html`, mets `const CMP_GOOGLE = true;`.
+
+À partir de là, le bandeau maison s'efface au profit du CMP Google (pas de double
+consentement), et le bouton « Gérer les cookies » rouvre le message Google. Tant que
+`ADSENSE_CLIENT` est vide, c'est toujours le bandeau maison qui s'affiche (repli sûr).
+
+> Le bandeau maison intégré gère le consentement de base + le signal Consent Mode v2 et
+> suffit pour démarrer. Dans tous les cas, fais relire ta page Confidentialité.
 
 ## Fichiers
 - `index.html` — l'application (interface + logique, éditée en JSX).
