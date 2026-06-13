@@ -1985,18 +1985,22 @@
                     <span className="cmp-val">{cmpB.nom}</span>
                   </div>
                   {Object.keys(INFOS_STATS).map(stat => {
-                    const a = cmpA.stats_base[stat] ?? 0;
-                    const b = cmpB.stats_base[stat] ?? 0;
+                    const a = cmpA.stats_base[stat];
+                    const b = cmpB.stats_base[stat];
+                    const aManque = a == null, bManque = b == null;
                     let aGagne = false, bGagne = false;
-                    if (a !== b) {
+                    // On ne désigne un gagnant que si LES DEUX armes possèdent la stat
+                    // (sinon une stat absente, traitée comme 0, gagnait à tort sur
+                    //  les stats « plus petit = mieux » : recul, visée, rechargement).
+                    if (!aManque && !bManque && a !== b) {
                       const aMieux = INFOS_STATS[stat].plusGrandEstMieux ? (a > b) : (a < b);
                       aGagne = aMieux; bGagne = !aMieux;
                     }
                     return (
                       <div className="cmp-ligne" key={stat}>
                         <span className="cmp-stat">{t(INFOS_STATS[stat].label)}</span>
-                        <span className={"cmp-val" + (aGagne ? " gagne" : "")}>{a}</span>
-                        <span className={"cmp-val" + (bGagne ? " gagne" : "")}>{b}</span>
+                        <span className={"cmp-val" + (aGagne ? " gagne" : "")}>{aManque ? "—" : a}</span>
+                        <span className={"cmp-val" + (bGagne ? " gagne" : "")}>{bManque ? "—" : b}</span>
                       </div>
                     );
                   })}
@@ -2015,7 +2019,9 @@
                     return ordreCats.map(cat => {
                       const armesCat = TOUTES_F.filter(a => a.categorie === cat);
                       const groupes = {};
-                      armesCat.forEach(a => { const t = TIERS[a.id] || "N"; (groupes[t] = groupes[t] || []).push(a); });
+                      // NB : variable nommée « tier » (et non « t ») pour ne pas masquer
+                      // la fonction de traduction t() utilisée juste en dessous.
+                      armesCat.forEach(a => { const tier = TIERS[a.id] || "N"; (groupes[tier] = groupes[tier] || []).push(a); });
                       return (
                         <div className="meta-categorie" key={cat}>
                           <h3 className="meta-cat-titre">{t(cat)}</h3>
