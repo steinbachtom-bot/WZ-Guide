@@ -42,6 +42,30 @@
   <meta name="twitter:description" content="Gunsmith complet, stats réelles, TTK, générateur de classe et tier list. Gratuit, FR/EN/DE.">
   <meta name="twitter:image" content="https://exemple.com/og-image.png">
 
+  <!-- ============ CONSENTEMENT (RGPD) + PUBLICITÉ ============
+       Google Consent Mode v2 : par défaut TOUT est refusé tant que l'utilisateur
+       n'a pas répondu au bandeau de consentement (obligatoire en Europe).
+       Ce bloc DOIT s'exécuter avant tout script publicitaire. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 500
+    });
+    // Si un choix a déjà été mémorisé lors d'une visite précédente, on le ré-applique.
+    try {
+      var _c = JSON.parse(localStorage.getItem('wz_consent') || 'null');
+      if (_c && _c.ad) gtag('consent', 'update', {
+        ad_storage: 'granted', ad_user_data: 'granted',
+        ad_personalization: 'granted', analytics_storage: 'granted'
+      });
+    } catch (e) {}
+  </script>
+
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1c24'/%3E%3Cg fill='none' stroke='%234fd0e6' stroke-width='2.5'%3E%3Ccircle cx='16' cy='16' r='9'/%3E%3Cline x1='16' y1='2' x2='16' y2='7'/%3E%3Cline x1='16' y1='25' x2='16' y2='30'/%3E%3Cline x1='2' y1='16' x2='7' y2='16'/%3E%3Cline x1='25' y1='16' x2='30' y2='16'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%234fd0e6'/%3E%3C/svg%3E">
 
   <!-- HUD fonts -->
@@ -673,6 +697,45 @@
     .btn-principal, .hero-cta {
       clip-path: polygon(9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%, 0 9px);
     }
+
+    /* ===== Emplacements publicitaires (prêts pour AdSense) ===== */
+    .adslot { margin: 24px auto; max-width: 970px; }
+    .adslot .pub-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: #7c858d; text-align: center; margin-bottom: 6px; }
+    .adslot-box { display: flex; align-items: center; justify-content: center; text-align: center;
+      background: #0e1a20; border: 1px dashed #2c4452; border-radius: 10px; color: #46555d; font-size: 12px; padding: 10px; overflow: hidden; }
+    .adslot ins.adsbygoogle { display: block; }
+    .adslot-inline .adslot-box { min-height: 110px; }
+    .adslot-banner .adslot-box { min-height: 100px; }
+    .adslot-rect { max-width: 360px; }
+    .adslot-rect .adslot-box { min-height: 250px; }
+    .adslot-sticky { position: sticky; bottom: 0; z-index: 50; margin: 24px auto 0;
+      background: linear-gradient(180deg, rgba(10,12,15,0), rgba(10,12,15,.96) 28%); padding: 10px 0 6px; }
+
+    /* ===== Bandeau de consentement (RGPD) ===== */
+    .consent { position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 1000;
+      max-width: 760px; margin: 0 auto; padding: 18px 20px;
+      background: linear-gradient(160deg, #161a20, #0e1116); border: 1px solid #ff8a3c;
+      border-radius: 14px; box-shadow: 0 16px 50px rgba(0,0,0,.6); animation: apparition .35s ease both; }
+    .consent-titre { font-family: "Rajdhani", system-ui, sans-serif; font-weight: 700; font-size: 17px; color: #fff; margin: 0 0 6px; }
+    .consent-texte { font-size: 13px; color: #c8ccd2; line-height: 1.55; margin: 0 0 14px; }
+    .consent-texte a { color: #ff8a3c; text-decoration: underline; cursor: pointer; }
+    .consent-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .consent-btn { flex: 1 1 auto; min-width: 130px; padding: 11px 16px; border-radius: 9px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid #2c3038; transition: background .15s, border-color .15s, color .15s; }
+    .consent-refuse { background: transparent; color: #c8ccd2; }
+    .consent-refuse:hover { border-color: #f87171; color: #fff; }
+    .consent-accept { background: #ff7a18; border-color: #ff7a18; color: #fff; }
+    .consent-accept:hover { background: #ff9046; }
+    @media (max-width: 520px) { .consent-btn { flex-basis: 100%; } }
+
+    /* ===== Pied de page + pages légales ===== */
+    .footer { margin-top: 26px; padding: 22px 16px; border-top: 1px solid #20242b; text-align: center; color: #8a939d; font-size: 12px; }
+    .footer-liens { margin-bottom: 8px; }
+    .footer-liens a { color: #b0b7c0; cursor: pointer; text-decoration: none; margin: 0 9px; }
+    .footer-liens a:hover { color: #ff8a3c; text-decoration: underline; }
+    .legal { max-width: 820px; margin: 0 auto; line-height: 1.65; color: #c8ccd2; font-size: 14px; }
+    .legal h2 { font-family: "Rajdhani", system-ui, sans-serif; font-size: 17px; color: #ffb070; margin: 22px 0 8px; }
+    .legal p { margin: 0 0 6px; }
+    .legal a { color: #ff8a3c; }
   </style>
 </head>
 <body>
@@ -951,6 +1014,17 @@
     function decoderClasse(code) {
       try { return JSON.parse(decodeURIComponent(escape(atob(code)))); } catch (e) { return null; }
     }
+    /* ===== PUBLICITÉ (Google AdSense) =====
+       Quand ton compte AdSense sera validé, colle ici ton identifiant éditeur
+       (format "ca-pub-XXXXXXXXXXXXXXXX"). Tant que c'est vide :
+         → les emplacements affichent un simple cadre « Espace publicitaire »,
+           aucun script externe n'est chargé (site rapide).
+       Une fois rempli :
+         → les pubs se chargent automatiquement (lazy-load), dans le respect
+           du consentement RGPD. Pense aussi à renseigner les data-ad-slot
+           dans les balises <AdSlot slot="..."> si tu crées des blocs dédiés. */
+    const ADSENSE_CLIENT = ""; // ex : "ca-pub-1234567890123456"
+
     const CLE_STOCKAGE = "wz_classes";
     function chargerStockage() { try { return JSON.parse(localStorage.getItem(CLE_STOCKAGE) || "[]"); } catch (e) { return []; } }
     function sauverStockage(arr) { try { localStorage.setItem(CLE_STOCKAGE, JSON.stringify(arr)); } catch (e) {} }
@@ -1492,6 +1566,127 @@
       );
     }
 
+    /* ===== PUBLICITÉ : emplacement AdSense avec chargement différé (lazy-load) ===== */
+    // Le script AdSense n'est chargé qu'une seule fois, à la demande.
+    let adsenseDemande = false;
+    function chargerAdSense() {
+      if (adsenseDemande || !ADSENSE_CLIENT) return;
+      adsenseDemande = true;
+      const s = document.createElement("script");
+      s.async = true; s.crossOrigin = "anonymous";
+      s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + ADSENSE_CLIENT;
+      document.head.appendChild(s);
+    }
+    // format : "banner" | "rect" | "inline" ; slot = data-ad-slot AdSense (optionnel).
+    function AdSlot({ format, slot, className }) {
+      const fmt = format || "inline";
+      const ref = useRef(null);
+      const [visible, setVisible] = useState(false);
+      // Lazy-load : on n'active l'emplacement que lorsqu'il approche de l'écran.
+      useEffect(() => {
+        if (!ref.current || typeof IntersectionObserver === "undefined") { setVisible(true); return; }
+        const io = new IntersectionObserver((entries) => {
+          if (entries.some(e => e.isIntersecting)) { setVisible(true); io.disconnect(); }
+        }, { rootMargin: "300px" });
+        io.observe(ref.current);
+        return () => io.disconnect();
+      }, []);
+      // Visible + AdSense configuré → on charge le script et on pousse la pub.
+      useEffect(() => {
+        if (!visible || !ADSENSE_CLIENT) return;
+        chargerAdSense();
+        try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+      }, [visible]);
+      return (
+        <div className={"adslot adslot-" + fmt + (className ? " " + className : "")} ref={ref} aria-label={t("Publicité")}>
+          <div className="pub-label">{t("Publicité")}</div>
+          {ADSENSE_CLIENT
+            ? <ins className="adsbygoogle" style={{ display: "block" }}
+                data-ad-client={ADSENSE_CLIENT} data-ad-slot={slot || ""}
+                data-ad-format="auto" data-full-width-responsive="true"></ins>
+            : <div className="adslot-box">{t("Espace publicitaire")}</div>}
+        </div>
+      );
+    }
+
+    /* ===== CONSENTEMENT RGPD ===== */
+    const CONSENT_TXT = {
+      fr: { titre: "Respect de ta vie privée",
+        texte: "On utilise des cookies pour mesurer l'audience et afficher des publicités qui financent le site. Tu peux tout accepter ou tout refuser.",
+        plus: "En savoir plus", accept: "Tout accepter", refuse: "Tout refuser" },
+      en: { titre: "Your privacy matters",
+        texte: "We use cookies to measure audience and show ads that fund the site. You can accept or decline everything.",
+        plus: "Learn more", accept: "Accept all", refuse: "Decline all" },
+      de: { titre: "Deine Privatsphäre zählt",
+        texte: "Wir verwenden Cookies zur Reichweitenmessung und für Werbung, die die Seite finanziert. Du kannst alles akzeptieren oder ablehnen.",
+        plus: "Mehr erfahren", accept: "Alle akzeptieren", refuse: "Alle ablehnen" }
+    };
+    function appliquerConsentement(ad) {
+      try {
+        if (typeof gtag === "function") gtag('consent', 'update', {
+          ad_storage: ad ? 'granted' : 'denied',
+          ad_user_data: ad ? 'granted' : 'denied',
+          ad_personalization: ad ? 'granted' : 'denied',
+          analytics_storage: ad ? 'granted' : 'denied'
+        });
+      } catch (e) {}
+      try { localStorage.setItem("wz_consent", JSON.stringify({ ad: !!ad, t: Date.now() })); } catch (e) {}
+    }
+    function ConsentBanner({ langue, onChoix, onPlus }) {
+      const T = CONSENT_TXT[langue] || CONSENT_TXT.fr;
+      return (
+        <div className="consent" role="dialog" aria-live="polite" aria-label={T.titre}>
+          <h2 className="consent-titre">🍪 {T.titre}</h2>
+          <p className="consent-texte">{T.texte}{" "}
+            <a onClick={(e) => { e.preventDefault(); onPlus && onPlus(); }}>{T.plus}</a>
+          </p>
+          <div className="consent-actions">
+            <button className="consent-btn consent-refuse" onClick={() => onChoix(false)}>{T.refuse}</button>
+            <button className="consent-btn consent-accept" onClick={() => onChoix(true)}>{T.accept}</button>
+          </div>
+        </div>
+      );
+    }
+
+    /* ===== POLITIQUE DE CONFIDENTIALITÉ (à faire relire/adapter par tes soins) ===== */
+    const PRIVACY = {
+      fr: { titre: "Politique de confidentialité", maj: "Dernière mise à jour : juin 2026", revoir: "Revoir mon choix de cookies", sections: [
+        ["Qui sommes-nous", "WZ Guide est un site gratuit d'aide à la création de classes pour Call of Duty (Warzone, Black Ops). Éditeur : [À COMPLÉTER]. Contact : [ton-email@exemple.com]."],
+        ["Données traitées", "Le site ne demande aucun compte ni information personnelle. Tes classes sauvegardées et tes préférences (langue, consentement) sont stockées localement dans ton navigateur et ne sont jamais envoyées à un serveur."],
+        ["Cookies et publicité", "Le site est financé par la publicité. Avec ton consentement, nos partenaires (dont Google AdSense) peuvent déposer des cookies pour afficher des annonces et en mesurer la performance. Sans consentement, aucune publicité personnalisée n'est servie."],
+        ["Tes droits (RGPD)", "Tu disposes d'un droit d'accès, de rectification, d'effacement et d'opposition. Comme aucune donnée personnelle n'est conservée sur nos serveurs, tu peux tout supprimer en vidant le stockage local de ton navigateur."],
+        ["Gérer ton consentement", "Tu peux modifier ton choix à tout moment avec le bouton ci-dessous."]
+      ]},
+      en: { titre: "Privacy Policy", maj: "Last updated: June 2026", revoir: "Review my cookie choice", sections: [
+        ["Who we are", "WZ Guide is a free tool that helps you build Call of Duty (Warzone, Black Ops) loadouts. Publisher: [TO COMPLETE]. Contact: [your-email@example.com]."],
+        ["Data we process", "The site requires no account or personal information. Your saved classes and preferences (language, consent) are stored locally in your browser and never sent to a server."],
+        ["Cookies and advertising", "The site is funded by advertising. With your consent, our partners (including Google AdSense) may set cookies to display and measure ads. Without consent, no personalized ads are served."],
+        ["Your rights (GDPR)", "You have the right to access, rectify, erase and object. As no personal data is kept on our servers, you can delete everything by clearing your browser's local storage."],
+        ["Manage your consent", "You can change your choice at any time using the button below."]
+      ]},
+      de: { titre: "Datenschutzerklärung", maj: "Zuletzt aktualisiert: Juni 2026", revoir: "Cookie-Auswahl ändern", sections: [
+        ["Wer wir sind", "WZ Guide ist ein kostenloses Tool zum Erstellen von Call-of-Duty-Klassen (Warzone, Black Ops). Anbieter: [AUSZUFÜLLEN]. Kontakt: [deine-email@beispiel.com]."],
+        ["Verarbeitete Daten", "Die Seite verlangt kein Konto und keine persönlichen Angaben. Deine gespeicherten Klassen und Einstellungen (Sprache, Einwilligung) werden lokal im Browser gespeichert und nie an einen Server gesendet."],
+        ["Cookies und Werbung", "Die Seite finanziert sich über Werbung. Mit deiner Einwilligung können Partner (u. a. Google AdSense) Cookies setzen, um Anzeigen auszuspielen und zu messen. Ohne Einwilligung wird keine personalisierte Werbung ausgespielt."],
+        ["Deine Rechte (DSGVO)", "Du hast das Recht auf Auskunft, Berichtigung, Löschung und Widerspruch. Da keine personenbezogenen Daten auf unseren Servern gespeichert werden, kannst du alles löschen, indem du den lokalen Speicher deines Browsers leerst."],
+        ["Einwilligung verwalten", "Du kannst deine Auswahl jederzeit über die Schaltfläche unten ändern."]
+      ]}
+    };
+    function PrivacyPolicy({ langue, onRevoir }) {
+      const P = PRIVACY[langue] || PRIVACY.fr;
+      return (
+        <div>
+          <Banniere titre={P.titre} sous={P.maj} />
+          <div className="legal">
+            {P.sections.map(([h, txt], i) => (
+              <Fragment key={i}><h2>{h}</h2><p>{txt}</p></Fragment>
+            ))}
+            <button className="btn btn-principal" style={{ marginTop: "18px" }} onClick={onRevoir}>{P.revoir}</button>
+          </div>
+        </div>
+      );
+    }
+
     /* ===== APPLICATION PRINCIPALE ===== */
     function App() {
       const [mode, setMode] = useState("warzone");
@@ -1507,6 +1702,17 @@
       }
       const [afficherValeurs, setAfficherValeurs] = useState(false);
       const [pvCible, setPvCible] = useState(250);
+
+      /* --- Consentement RGPD (bandeau cookies) --- */
+      const [consentVu, setConsentVu] = useState(() => {
+        try { return !!localStorage.getItem("wz_consent"); } catch (e) { return false; }
+      });
+      function definirConsentement(ad) { appliquerConsentement(ad); setConsentVu(true); }
+      function revoirConsentement() {
+        try { localStorage.removeItem("wz_consent"); } catch (e) {}
+        appliquerConsentement(false);
+        setConsentVu(false);
+      }
 
       const [armeP, setArmeP] = useState(ARMES_PRINCIPALES[0]);
       const [selP, setSelP] = useState(() => etatVide(ARMES_PRINCIPALES[0].emplacements));
@@ -1752,6 +1958,7 @@
                       <button className="hero-cta" onClick={() => setVue("createur")}>{t("Créer une classe →")}</button>
                     </div>
                   </div>
+                  <AdSlot format="banner" />
                   <h2 className="accueil-titre">{t("Explorer")}</h2>
                   <div className="accueil-cartes">
                     {cartes.map(c => {
@@ -1849,6 +2056,8 @@
                     </div>
                   </div>
                 </div>
+
+                <AdSlot format="inline" />
 
                 {/* ARME SECONDAIRE */}
                 <div className="gunsmith">
@@ -2012,6 +2221,7 @@
               <div>
                 <Banniere icone={navItems.find(n => n.id === "meta").ico} titre={t("Méta — Tier list")}
                   sous={t("Classement indicatif des armes, basé sur la méta codmunity (modifiable dans donnees.js).")} />
+                <AdSlot format="banner" />
                 <div>
                   {(() => {
                     const ordreCats = [];
@@ -2055,12 +2265,22 @@
                 </div>
               </div>
             )}
-            {/* Emplacement publicitaire (bannière bas de page) */}
-            <div className="pub-slot pub-bottom" aria-label="Publicité">
-              <div className="pub-label">{t("Publicité")}</div>
-              <div className="pub-zone" id="pub-accueil">{t("Espace publicitaire")}</div>
-            </div>
+            {vue === "confidentialite" && (
+              <PrivacyPolicy langue={langue} onRevoir={revoirConsentement} />
+            )}
+
+            {/* Bannière publicitaire de bas de page */}
+            <AdSlot format="banner" />
+
+            <footer className="footer">
+              <div className="footer-liens">
+                <a onClick={() => { setVue("confidentialite"); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {} }}>{t("Confidentialité")}</a>
+                <a onClick={revoirConsentement}>{t("Gérer les cookies")}</a>
+              </div>
+              <div>© 2026 WZ Guide · {t("Site indépendant, non affilié à Activision / Call of Duty.")}</div>
+            </footer>
           </main>
+          {!consentVu && <ConsentBanner langue={langue} onChoix={definirConsentement} onPlus={() => setVue("confidentialite")} />}
         </div>
       );
     }

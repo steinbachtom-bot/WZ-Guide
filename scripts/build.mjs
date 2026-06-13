@@ -17,8 +17,8 @@ import { dirname, join } from "node:path";
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const DIST = join(ROOT, "dist");
 
-// Fichiers de données à copier tels quels à côté du HTML compilé.
-const ASSETS = ["donnees.js", "traductions.js"];
+// Fichiers à copier tels quels à côté du HTML compilé.
+const ASSETS = ["donnees.js", "traductions.js", "ads.txt"];
 
 async function main() {
   let html = await readFile(join(ROOT, "index.html"), "utf8");
