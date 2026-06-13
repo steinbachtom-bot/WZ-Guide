@@ -1,0 +1,14 @@
+{
+  "name": "wz-guide",
+  "version": "1.0.0",
+  "description": "Éditeur de classe Warzone / Black Ops 7 (Gunsmith, TTK, méta)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/preview-server.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}

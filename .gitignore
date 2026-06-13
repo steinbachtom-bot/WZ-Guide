@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Dépendances
+node_modules/
+
+# Réglages locaux Claude Code
+.claude/settings.local.json
+
+# Installateurs / binaires
+*.pkg
+
+# Captures de référence (matériel de travail local, non publié)
+Screenshots CHAT GPT/
+
+# Sortie du build de production (régénérée par `npm run build`)
+dist/
+
+# Logs et caches
+*.log
+.cache/
