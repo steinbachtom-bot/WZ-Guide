@@ -43,10 +43,12 @@ try {
   const jsonl = await readFile(join(ROOT, "scripts", "bo6-data.jsonl"), "utf8");
   jsonl.split("\n").map(l => l.trim()).filter(Boolean).forEach(l => data.push(JSON.parse(l)));
 } catch (e) {}
-try {
-  const big = JSON.parse(await readFile(join(ROOT, "scripts", "bo6-all.json"), "utf8"));
-  if (Array.isArray(big)) data.push(...big);
-} catch (e) {}
+for (const f of ["bo6-all.json", "bo7-1.json", "bo7-2.json", "bo7-3.json", "bo7-4.json"]) {
+  try {
+    const big = JSON.parse(await readFile(join(ROOT, "scripts", f), "utf8"));
+    if (Array.isArray(big)) data.push(...big);
+  } catch (e) {}
+}
 const dl = join(homedir(), "Downloads");
 for (const f of (await readdir(dl)).filter(f => /^wz_.*\.json$/.test(f))) {
   try { const j = JSON.parse(await readFile(join(dl, f), "utf8")); if (Array.isArray(j)) data.push(...j); else data.push(j); } catch (e) {}
