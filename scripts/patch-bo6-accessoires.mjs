@@ -43,7 +43,7 @@ try {
   const jsonl = await readFile(join(ROOT, "scripts", "bo6-data.jsonl"), "utf8");
   jsonl.split("\n").map(l => l.trim()).filter(Boolean).forEach(l => data.push(JSON.parse(l)));
 } catch (e) {}
-for (const f of ["bo6-all.json", "bo7-1.json", "bo7-2.json", "bo7-3.json", "bo7-4.json"]) {
+for (const f of ["bo6-all.json", "bo7-1.json", "bo7-2.json", "bo7-3.json", "bo7-4.json", "bo7-vx.json"]) {
   try {
     const big = JSON.parse(await readFile(join(ROOT, "scripts", f), "utf8"));
     if (Array.isArray(big)) data.push(...big);
