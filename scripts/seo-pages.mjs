@@ -281,6 +281,8 @@ function pageArme(arme, lang) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-adsense-account" content="ca-pub-2060302255453240">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2060302255453240" crossorigin="anonymous"></script>
 <title>${esc(tr.titre(arme.nom))} | WZ Guide</title>
 <meta name="description" content="${esc(tr.desc(arme.nom, catTr))}">
 <link rel="canonical" href="${urlSelf}">
@@ -349,6 +351,8 @@ function pageHub(lang) {
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-adsense-account" content="ca-pub-2060302255453240">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2060302255453240" crossorigin="anonymous"></script>
 <title>${esc(titre)} | WZ Guide</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${BASE}${lang === "fr" ? "/armes/" : "/weapons/"}">
