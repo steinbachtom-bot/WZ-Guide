@@ -19,7 +19,7 @@
 
   <!-- ============ SEO ============
        Domaine : wzguide.com.
-       ⚠️ Reste à faire : ajouter une image og-image.png (1200×630) à la racine
+       Reste à faire : ajouter une image og-image.png (1200×630) à la racine
        pour un bel aperçu lors des partages (Facebook, Discord, X…). -->
   <meta name="description" content="Crée tes classes optimales Warzone & Black Ops 7 : Gunsmith complet, stats réelles, calcul du TTK, dégâts par distance et par zone, spray pattern, générateur de classe et tier list (méta). Gratuit, FR/EN/DE.">
   <meta name="keywords" content="Warzone, Black Ops 7, BO7, Black Ops 6, classe, loadout, gunsmith, accessoires, TTK, méta, tier list, meilleures armes, Call of Duty">
@@ -800,7 +800,7 @@
   <!-- DONNÉES (même fichier que la version vanilla) -->
   <script src="donnees.js?v=17"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=15"></script>
+  <script src="traductions.js?v=16"></script>
 
   <!-- React + Babel depuis un CDN : aucune installation requise.
        Attribut integrity (SRI) = le navigateur refuse d'exécuter le script si son contenu
@@ -1674,7 +1674,7 @@
       const T = CONSENT_TXT[langue] || CONSENT_TXT.fr;
       return (
         <div className="consent" role="dialog" aria-live="polite" aria-label={T.titre}>
-          <h2 className="consent-titre">🍪 {T.titre}</h2>
+          <h2 className="consent-titre">{T.titre}</h2>
           <p className="consent-texte">{T.texte}{" "}
             <a onClick={(e) => { e.preventDefault(); onPlus && onPlus(); }}>{T.plus}</a>
           </p>
@@ -1962,7 +1962,7 @@
       function partagerClasse() {
         const code = encoderClasse(classeActuelle());
         const lien = location.origin + location.pathname + "?c=" + code;
-        const ok = () => { setNotePartage(t("Lien copié ! 📋")); setTimeout(() => setNotePartage(""), 4000); };
+        const ok = () => { setNotePartage(t("Lien copié !")); setTimeout(() => setNotePartage(""), 4000); };
         const echec = () => setNotePartage(t("Copie impossible — lien : ") + lien);
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(lien).then(ok, echec);
@@ -2044,7 +2044,7 @@
                     <p className="hero-slogan">{t("Crée tes classes Warzone & Black Ops 7 optimales")}</p>
                     <p className="hero-sous">{t("Gunsmith complet, stats réelles, calcul du TTK, générateur de classe et tier list — le tout au même endroit.")}</p>
                     {typeof META_DONNEES !== "undefined" &&
-                      <div className="badge-maj">📊 {t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}</div>}
+                      <div className="badge-maj">{t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}</div>}
                     <div>
                       <button className="hero-cta" onClick={() => setVue("createur")}>{t("Créer une classe →")}</button>
                     </div>
@@ -2079,7 +2079,7 @@
                     <h1>{t("Éditeur de classe —")} {mode === "warzone" ? "Warzone" : "Black Ops"}
                       {typeof META_DONNEES !== "undefined" &&
                         <span className="badge-maj">
-                          📊 {t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}
+                          {t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}
                         </span>}
                     </h1>
                     <p className="sous-titre">{t("5 accessoires max par arme, un seul par emplacement. Étiquettes :")} <span style={{ color: "#4ade80" }}>{t("vert = bonus")}</span>, <span style={{ color: "#f87171" }}>{t("rouge = malus")}</span>.
@@ -2093,7 +2093,7 @@
                     <button className={mode === "blackops" ? "actif" : ""} onClick={() => changerMode("blackops")}>Black Ops</button>
                   </div>
                   <button className="btn btn-principal btn-enregistrer" onClick={enregistrerClasse}>{t("Enregistrer la classe")}</button>
-                  <button className="btn" onClick={(e) => { e.stopPropagation(); partagerClasse(); }}>{t("🔗 Partager")}</button>
+                  <button className="btn" onClick={(e) => { e.stopPropagation(); partagerClasse(); }}>{t("Partager")}</button>
                   <span className="ia-note">{notePartage}</span>
                 </div>
 
@@ -2122,7 +2122,7 @@
                         <div className="gs-coltitre">{t("Emplacements")}</div>
                         <AttachmentSlots emplacements={armeP.emplacements} selection={selP} onChange={changeAccP} onReset={() => { setSelP(etatVide(armeP.emplacements)); setAlerteP(false); }} alerte={alerteP} afficherValeurs={afficherValeurs} />
                         <div className="ia-bar">
-                          <span className="ia-titre">{t("✨ Générateur de classe")}</span>
+                          <span className="ia-titre">{t("Générateur de classe")}</span>
                           <label>{t("Objectif :")}</label>
                           <select className="ia-select" value={iaObjectif} onChange={(e) => setIaObjectif(e.target.value)}>
                             <option value="polyvalent">{t("Polyvalent")}</option>
@@ -2173,7 +2173,7 @@
                         <div className="gs-coltitre">{t("Emplacements")}</div>
                         <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} onReset={() => { setSelS(etatVide(armeS.emplacements)); setAlerteS(false); }} alerte={alerteS} afficherValeurs={afficherValeurs} />
                         <div className="ia-bar">
-                          <span className="ia-titre">{t("✨ Générateur de classe")}</span>
+                          <span className="ia-titre">{t("Générateur de classe")}</span>
                           <label>{t("Objectif :")}</label>
                           <select className="ia-select" value={iaObjectifS} onChange={(e) => setIaObjectifS(e.target.value)}>
                             <option value="polyvalent">{t("Polyvalent")}</option>
@@ -2227,7 +2227,7 @@
                       </div>
                       <h3 className="news-titre">{c.titre}</h3>
                       <p className="news-texte">{c.texte}</p>
-                      {c.bal && <p className="news-bal"><span className="news-bal-ico">⚖</span> {c.bal}</p>}
+                      {c.bal && <p className="news-bal"><span className="news-bal-ico"></span> {c.bal}</p>}
                     </div>
                   );
                 })}
