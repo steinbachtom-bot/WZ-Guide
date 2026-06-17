@@ -280,6 +280,7 @@ function pageArme(arme, lang) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-adsense-account" content="ca-pub-2060302255453240">
 <title>${esc(tr.titre(arme.nom))} | WZ Guide</title>
 <meta name="description" content="${esc(tr.desc(arme.nom, catTr))}">
 <link rel="canonical" href="${urlSelf}">
@@ -347,6 +348,7 @@ function pageHub(lang) {
 <html lang="${lang}">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-adsense-account" content="ca-pub-2060302255453240">
 <title>${esc(titre)} | WZ Guide</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${BASE}${lang === "fr" ? "/armes/" : "/weapons/"}">
