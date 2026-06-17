@@ -1,9 +1,2 @@
-# ads.txt — déclare les régies publicitaires autorisées à vendre l'inventaire de ce site.
-# Doit être accessible à la racine du domaine : https://ton-site.com/ads.txt
-#
-# ⚠️ À PERSONNALISER : remplace pub-XXXXXXXXXXXXXXXX par ton identifiant AdSense
-#    (celui de ADSENSE_CLIENT dans index.html, mais SANS le préfixe "ca-").
-#    Exemple : si ADSENSE_CLIENT = "ca-pub-1234567890123456",
-#    alors la ligne ci-dessous devient : google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0
-#
+# ads.txt — régies publicitaires autorisées à vendre l'inventaire de ce site (wzguide.com).
 google.com, pub-2060302255453240, DIRECT, f08c47fec0942fa0

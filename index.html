@@ -802,10 +802,12 @@
   <!-- TRADUCTIONS (FR / EN / DE) -->
   <script src="traductions.js?v=15"></script>
 
-  <!-- React + Babel depuis un CDN : aucune installation requise -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin></script>
+  <!-- React + Babel depuis un CDN : aucune installation requise.
+       Attribut integrity (SRI) = le navigateur refuse d'exécuter le script si son contenu
+       ne correspond pas au hash → protège contre une compromission du CDN. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" integrity="sha384-tMH8h3BGESGckSAVGZ82T9n90ztNXxvdwvdM6UoR56cYcf+0iGXBliJ29D+wZ/x8" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" integrity="sha384-bm7MnzvK++ykSwVJ2tynSE5TRdN+xL418osEVF2DE/L/gfWHj91J2Sphe582B1Bh" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" integrity="sha384-1qlE7MZPM2pHD/pBZCU/yB8UCP52RYL8bge/qNdfNBCWToySp8/M+JL2waXU4hjJ" crossorigin="anonymous"></script>
 
   <!-- ========== APPLICATION REACT ========== -->
   <script type="text/babel" data-presets="react">
@@ -1922,11 +1924,21 @@
         if (c.mode) setMode(c.mode);
         const ap = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale) || ARMES_PRINCIPALES[0];
         const sp = etatVide(ap.emplacements);
-        for (const k in (c.selectionPrincipale || {})) if (k in sp) sp[k] = c.selectionPrincipale[k];
+        // On ne reprend une option que si elle existe RÉELLEMENT sur l'arme retenue
+        // (évite de garder un accessoire d'une autre arme et de fausser le compteur).
+        for (const k in (c.selectionPrincipale || {})) {
+          if (!(k in sp)) continue;
+          const v = c.selectionPrincipale[k], emp = ap.emplacements.find(e => e.id === k);
+          if (emp && emp.options.some(o => o.id === v)) sp[k] = v;
+        }
         setArmeP(ap); setSelP(sp); setAlerteP(false);
         const as = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire) || ARMES_SECONDAIRES[0];
         const ss = etatVide(as.emplacements);
-        for (const k in (c.selectionSecondaire || {})) if (k in ss) ss[k] = c.selectionSecondaire[k];
+        for (const k in (c.selectionSecondaire || {})) {
+          if (!(k in ss)) continue;
+          const v = c.selectionSecondaire[k], emp = as.emplacements.find(e => e.id === k);
+          if (emp && emp.options.some(o => o.id === v)) ss[k] = v;
+        }
         setArmeS(as); setSelS(ss); setAlerteS(false);
         const at = { slot1: "aucun", slot2: "aucun", slot3: "aucun" };
         for (const k in (c.atouts || {})) if (k in at) at[k] = c.atouts[k];

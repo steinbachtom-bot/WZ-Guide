@@ -25,10 +25,12 @@ const sandbox = { window: {}, console };
 vm.createContext(sandbox);
 vm.runInContext(
   donneesCode +
-  "\n;var __OUT = { ARMES_PRINCIPALES, INFOS_STATS, TIERS, DEGATS_PALIERS, IMAGES_ARMES, CAP_ACCESSOIRES, META_DONNEES };",
+  "\n;var __OUT = { ARMES_PRINCIPALES, ARMES_SECONDAIRES, INFOS_STATS, TIERS, DEGATS_PALIERS, IMAGES_ARMES, CAP_ACCESSOIRES, META_DONNEES };",
   sandbox
 );
-const { ARMES_PRINCIPALES, INFOS_STATS, TIERS, DEGATS_PALIERS, IMAGES_ARMES, CAP_ACCESSOIRES } = sandbox.__OUT;
+const { ARMES_PRINCIPALES, ARMES_SECONDAIRES, INFOS_STATS, TIERS, DEGATS_PALIERS, IMAGES_ARMES, CAP_ACCESSOIRES } = sandbox.__OUT;
+// Toutes les armes (principales + secondaires) reçoivent une page SEO.
+const TOUTES_ARMES = [...ARMES_PRINCIPALES, ...ARMES_SECONDAIRES];
 
 // ---- 2) Logique reprise de l'app (calcul de classe + TTK) ----
 function appliquerMod(base, actuelle, mod) {
@@ -86,9 +88,22 @@ function ttkClose(finales, pv = 250) {
 }
 
 // ---- 3) Helpers ----
-const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 const slug = (s) => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "")
   .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+// Slug UNIQUE par arme (déduplication : 2 armes de même nom → "couteau", "couteau-2").
+// Calculé une fois sur toutes les armes pour garantir la cohérence des liens/sitemap.
+const SLUG_OF = {};
+{
+  const vus = {};
+  for (const a of TOUTES_ARMES) {
+    let sl = slug(a.nom);
+    if (vus[sl]) { let i = 2; while (vus[`${sl}-${i}`]) i++; sl = `${sl}-${i}`; }
+    vus[sl] = 1; SLUG_OF[a.id] = sl;
+  }
+}
+const slugArme = (a) => SLUG_OF[a.id] || slug(a.nom);
 
 // Libellé lisible d'un modificateur, ex: ("recul_vertical","-30%") -> "Recul vertical −30%"
 function modLisible(stat, val, lang) {
@@ -124,8 +139,8 @@ const TR_STATLABEL = {
   en: { degats: "Damage", portee_m: "Range (m)", cadence_cpm: "Fire rate (rpm)", velocite_ms: "Velocity (m/s)", capacite_chargeur: "Magazine", vitesse_visee_ms: "ADS time (ms)", sprint_to_fire_ms: "Sprint-to-fire (ms)", vitesse_rechargement_ms: "Reload (ms)", gun_kick: "Gun kick", recul_horizontal: "Horizontal recoil", recul_vertical: "Vertical recoil", mobilite: "Movement (m/s)" }
 };
 const TR_CAT = {
-  fr: { "Fusil d'assaut": "fusil d'assaut", "Mitraillette": "mitraillette", "Fusil-mitrailleur": "fusil-mitrailleur", "Fusil tactique": "fusil tactique", "Fusil de précision": "fusil de précision", "Fusil à pompe": "fusil à pompe" },
-  en: { "Fusil d'assaut": "assault rifle", "Mitraillette": "SMG", "Fusil-mitrailleur": "LMG", "Fusil tactique": "tactical rifle", "Fusil de précision": "sniper rifle", "Fusil à pompe": "shotgun" }
+  fr: { "Fusil d'assaut": "fusil d'assaut", "Mitraillette": "mitraillette", "Fusil-mitrailleur": "fusil-mitrailleur", "Fusil tactique": "fusil tactique", "Fusil de précision": "fusil de précision", "Fusil à pompe": "fusil à pompe", "Pistolet": "pistolet", "Lanceur": "lanceur", "Arme de mêlée": "arme de mêlée", "Arme spéciale": "arme spéciale" },
+  en: { "Fusil d'assaut": "assault rifle", "Mitraillette": "SMG", "Fusil-mitrailleur": "LMG", "Fusil tactique": "tactical rifle", "Fusil de précision": "sniper rifle", "Fusil à pompe": "shotgun", "Pistolet": "pistol", "Lanceur": "launcher", "Arme de mêlée": "melee weapon", "Arme spéciale": "special weapon" }
 };
 // Nom de catégorie pour l'affichage (titre/badge), traduit et capitalisé en EN.
 function catDisplay(cat, lang) {
@@ -134,8 +149,8 @@ function catDisplay(cat, lang) {
   return en.charAt(0).toUpperCase() + en.slice(1);
 }
 const CAT_DESC = {
-  fr: { "Fusil d'assaut": "polyvalent, efficace à moyenne portée", "Mitraillette": "redoutable au corps-à-corps et en déplacement", "Fusil-mitrailleur": "puissant et précis en continu, mais lourd à manier", "Fusil tactique": "précis en tir semi-automatique à moyenne/longue portée", "Fusil de précision": "fait pour la longue portée et les éliminations rapides", "Fusil à pompe": "dévastateur à très courte portée" },
-  en: { "Fusil d'assaut": "versatile and effective at mid range", "Mitraillette": "deadly up close and on the move", "Fusil-mitrailleur": "powerful and accurate in sustained fire, but heavy to handle", "Fusil tactique": "accurate in semi-auto at mid/long range", "Fusil de précision": "built for long range and quick eliminations", "Fusil à pompe": "devastating at very close range" }
+  fr: { "Fusil d'assaut": "polyvalent, efficace à moyenne portée", "Mitraillette": "redoutable au corps-à-corps et en déplacement", "Fusil-mitrailleur": "puissant et précis en continu, mais lourd à manier", "Fusil tactique": "précis en tir semi-automatique à moyenne/longue portée", "Fusil de précision": "fait pour la longue portée et les éliminations rapides", "Fusil à pompe": "dévastateur à très courte portée", "Pistolet": "compact, idéal comme arme secondaire de secours", "Lanceur": "conçu pour détruire véhicules et équipements", "Arme de mêlée": "mortel au corps-à-corps avec un déplacement rapide", "Arme spéciale": "au comportement unique, pour sortir des sentiers battus" },
+  en: { "Fusil d'assaut": "versatile and effective at mid range", "Mitraillette": "deadly up close and on the move", "Fusil-mitrailleur": "powerful and accurate in sustained fire, but heavy to handle", "Fusil tactique": "accurate in semi-auto at mid/long range", "Fusil de précision": "built for long range and quick eliminations", "Fusil à pompe": "devastating at very close range", "Pistolet": "compact, ideal as a backup secondary", "Lanceur": "built to destroy vehicles and equipment", "Arme de mêlée": "lethal in melee with fast movement", "Arme spéciale": "with unique behavior for off-meta playstyles" }
 };
 const T = {
   fr: {
@@ -218,7 +233,7 @@ const TIER_COLOR = { S: "#ffb020", A: "#4ade80", B: "#38bdf8", C: "#d29a6a", D: 
 // ---- 6) Rendu d'une page d'arme ----
 function pageArme(arme, lang) {
   const tr = T[lang];
-  const s = slug(arme.nom);
+  const s = slugArme(arme);
   const cat = arme.categorie;
   const catTr = TR_CAT[lang][cat] || cat;
   const tier = TIERS[arme.id] || null;
@@ -259,9 +274,9 @@ function pageArme(arme, lang) {
   const ffHtml = `<div class="ff"><div class="col"><h3 class="good">▲ ${tr.forces}</h3><ul style="margin:0;padding-left:18px">${forces.map(st => `<li>${esc(TR_STATLABEL[lang][st] || st)}</li>`).join("")}</ul></div><div class="col"><h3 class="bad">▼ ${tr.faiblesses}</h3><ul style="margin:0;padding-left:18px">${faiblesses.map(st => `<li>${esc(TR_STATLABEL[lang][st] || st)}</li>`).join("")}</ul></div></div>`;
 
   // Armes liées (même catégorie, même langue)
-  const liees = ARMES_PRINCIPALES.filter(a => a.categorie === cat && a.id !== arme.id).slice(0, 8);
+  const liees = TOUTES_ARMES.filter(a => a.categorie === cat && a.id !== arme.id).slice(0, 8);
   const lieesHtml = `<div class="grid">${liees.map(a => {
-    const u = (lang === "fr" ? "/armes/" : "/weapons/") + slug(a.nom) + "/";
+    const u = (lang === "fr" ? "/armes/" : "/weapons/") + slugArme(a) + "/";
     return `<a href="${u}">${esc(a.nom)}<small>${esc(TIERS[a.id] ? "Tier " + TIERS[a.id] : catTr)}</small></a>`;
   }).join("")}</div>`;
 
@@ -281,7 +296,7 @@ function pageArme(arme, lang) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-adsense-account" content="ca-pub-2060302255453240">
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2060302255453240" crossorigin="anonymous"></script>
 <title>${esc(tr.titre(arme.nom))} | WZ Guide</title>
 <meta name="description" content="${esc(tr.desc(arme.nom, catTr))}">
@@ -293,8 +308,8 @@ function pageArme(arme, lang) {
 <meta property="og:title" content="${esc(tr.titre(arme.nom))}">
 <meta property="og:description" content="${esc(tr.desc(arme.nom, catTr))}">
 <meta property="og:url" content="${urlSelf}">
-${img ? `<meta property="og:image" content="${esc(img)}">` : ""}
-<script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<meta property="og:image" content="${img ? esc(img) : BASE + "/og-image.png"}">
+<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>
 <style>${STYLE}</style>
 </head>
 <body>
@@ -335,10 +350,10 @@ ${img ? `<meta property="og:image" content="${esc(img)}">` : ""}
 function pageHub(lang) {
   const tr = T[lang];
   const parCat = {};
-  ARMES_PRINCIPALES.forEach(a => { (parCat[a.categorie] = parCat[a.categorie] || []).push(a); });
+  TOUTES_ARMES.forEach(a => { (parCat[a.categorie] = parCat[a.categorie] || []).push(a); });
   const sections = Object.keys(parCat).map(cat => {
     const items = parCat[cat].map(a => {
-      const u = (lang === "fr" ? "/armes/" : "/weapons/") + slug(a.nom) + "/";
+      const u = (lang === "fr" ? "/armes/" : "/weapons/") + slugArme(a) + "/";
       return `<a href="${u}">${esc(a.nom)}<small>${TIERS[a.id] ? "Tier " + TIERS[a.id] : ""}</small></a>`;
     }).join("");
     return `<h2>${esc(catDisplay(cat, lang))}</h2><div class="grid">${items}</div>`;
@@ -351,7 +366,7 @@ function pageHub(lang) {
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-adsense-account" content="ca-pub-2060302255453240">
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2060302255453240" crossorigin="anonymous"></script>
 <title>${esc(titre)} | WZ Guide</title>
 <meta name="description" content="${esc(desc)}">
@@ -381,7 +396,7 @@ function sitemap() {
   const add = (locFr, locEn) => urls.push({ fr: locFr, en: locEn });
   add(BASE + "/", BASE + "/");                       // accueil (alternates gérées à part)
   add(BASE + "/armes/", BASE + "/weapons/");
-  ARMES_PRINCIPALES.forEach(a => add(`${BASE}/armes/${slug(a.nom)}/`, `${BASE}/weapons/${slug(a.nom)}/`));
+  TOUTES_ARMES.forEach(a => add(`${BASE}/armes/${slugArme(a)}/`, `${BASE}/weapons/${slugArme(a)}/`));
   const entry = (u) => `  <url>
     <loc>${u.fr}</loc>
     <changefreq>weekly</changefreq>
@@ -405,8 +420,8 @@ ${urls.map(entry).join("\n")}
 // ---- 9) Écriture ----
 async function main() {
   let n = 0;
-  for (const arme of ARMES_PRINCIPALES) {
-    const s = slug(arme.nom);
+  for (const arme of TOUTES_ARMES) {
+    const s = slugArme(arme);
     await mkdir(join(DIST, "armes", s), { recursive: true });
     await writeFile(join(DIST, "armes", s, "index.html"), pageArme(arme, "fr"));
     await mkdir(join(DIST, "weapons", s), { recursive: true });
@@ -417,6 +432,6 @@ async function main() {
   await writeFile(join(DIST, "weapons", "index.html"), pageHub("en"));
   await writeFile(join(DIST, "sitemap.xml"), sitemap());
   console.log(`✅ Pages SEO générées : ${n} pages d'armes (FR+EN) + 2 hubs + sitemap.xml`);
-  console.log(`   ${ARMES_PRINCIPALES.length} armes · /armes/<slug>/ (FR) et /weapons/<slug>/ (EN)`);
+  console.log(`   ${TOUTES_ARMES.length} armes · /armes/<slug>/ (FR) et /weapons/<slug>/ (EN)`);
 }
 main().catch(e => { console.error("❌ Génération SEO échouée :", e); process.exit(1); });
