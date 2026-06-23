@@ -14,7 +14,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WZ Guide — Éditeur de classe Warzone (BO7)</title>
+  <meta name="google-adsense-account" content="ca-pub-2060302255453240">
+  <title>WZ Guide — Éditeur de classe Warzone & Black Ops 7 (Gunsmith, TTK, méta)</title>
+
+  <!-- ============ SEO ============
+       Domaine : wzguide.com.
+       Reste à faire : ajouter une image og-image.png (1200×630) à la racine
+       pour un bel aperçu lors des partages (Facebook, Discord, X…). -->
+  <meta name="description" content="Crée tes classes optimales Warzone & Black Ops 7 : Gunsmith complet, stats réelles, calcul du TTK, dégâts par distance et par zone, spray pattern, générateur de classe et tier list (méta). Gratuit, FR/EN/DE.">
+  <meta name="keywords" content="Warzone, Black Ops 7, BO7, Black Ops 6, classe, loadout, gunsmith, accessoires, TTK, méta, tier list, meilleures armes, Call of Duty">
+  <meta name="author" content="WZ Guide">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f1217">
+  <link rel="canonical" href="https://wzguide.com/">
+  <!-- Versions linguistiques (SEO multilingue). -->
+  <link rel="alternate" hreflang="fr" href="https://wzguide.com/?lang=fr">
+  <link rel="alternate" hreflang="en" href="https://wzguide.com/?lang=en">
+  <link rel="alternate" hreflang="de" href="https://wzguide.com/?lang=de">
+  <link rel="alternate" hreflang="x-default" href="https://wzguide.com/">
+
+  <!-- Données structurées (Google : résultats enrichis) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "WZ Guide",
+    "url": "https://wzguide.com/",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Web",
+    "inLanguage": ["fr", "en", "de"],
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "description": "Éditeur de classes Warzone & Black Ops 7 : Gunsmith, stats réelles, calcul du TTK, générateur de classe et tier list."
+  }
+  </script>
+
+  <!-- Open Graph (Facebook, Discord, WhatsApp…) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WZ Guide">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="WZ Guide — Éditeur de classe Warzone & Black Ops 7">
+  <meta property="og:description" content="Gunsmith complet, stats réelles, calcul du TTK, générateur de classe et tier list — le tout au même endroit. Gratuit.">
+  <meta property="og:url" content="https://wzguide.com/">
+  <meta property="og:image" content="https://wzguide.com/og-image.png">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WZ Guide — Éditeur de classe Warzone & Black Ops 7">
+  <meta name="twitter:description" content="Gunsmith complet, stats réelles, TTK, générateur de classe et tier list. Gratuit, FR/EN/DE.">
+  <meta name="twitter:image" content="https://wzguide.com/og-image.png">
+
+  <!-- ============ CONSENTEMENT (RGPD) + PUBLICITÉ ============
+       Google Consent Mode v2 : par défaut TOUT est refusé tant que l'utilisateur
+       n'a pas répondu au bandeau de consentement (obligatoire en Europe).
+       Ce bloc DOIT s'exécuter avant tout script publicitaire. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 500
+    });
+    // Si un choix a déjà été mémorisé lors d'une visite précédente, on le ré-applique.
+    try {
+      var _c = JSON.parse(localStorage.getItem('wz_consent') || 'null');
+      if (_c && _c.ad) gtag('consent', 'update', {
+        ad_storage: 'granted', ad_user_data: 'granted',
+        ad_personalization: 'granted', analytics_storage: 'granted'
+      });
+    } catch (e) {}
+  </script>
+
+  <!-- AdSense : chargeur officiel. Requis par Google pour vérifier le site ET servir les pubs.
+       Placé APRÈS le Consent Mode v2 ci-dessus → aucun cookie pub tant que l'utilisateur n'a pas
+       accepté (le mode consentement gouverne la collecte, pas le simple chargement du script). -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2060302255453240" crossorigin="anonymous"></script>
+
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1c24'/%3E%3Cg fill='none' stroke='%234fd0e6' stroke-width='2.5'%3E%3Ccircle cx='16' cy='16' r='9'/%3E%3Cline x1='16' y1='2' x2='16' y2='7'/%3E%3Cline x1='16' y1='25' x2='16' y2='30'/%3E%3Cline x1='2' y1='16' x2='7' y2='16'/%3E%3Cline x1='25' y1='16' x2='30' y2='16'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%234fd0e6'/%3E%3C/svg%3E">
 
   <!-- HUD fonts -->
@@ -646,20 +723,91 @@
     .btn-principal, .hero-cta {
       clip-path: polygon(9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%, 0 9px);
     }
+
+    /* ===== Emplacements publicitaires (prêts pour AdSense) ===== */
+    .adslot { margin: 24px auto; max-width: 970px; }
+    .adslot .pub-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: #7c858d; text-align: center; margin-bottom: 6px; }
+    .adslot-box { display: flex; align-items: center; justify-content: center; text-align: center;
+      background: #0e1a20; border: 1px dashed #2c4452; border-radius: 10px; color: #46555d; font-size: 12px; padding: 10px; overflow: hidden; }
+    .adslot ins.adsbygoogle { display: block; }
+    .adslot-inline .adslot-box { min-height: 110px; }
+    .adslot-banner .adslot-box { min-height: 100px; }
+    .adslot-rect { max-width: 360px; }
+    .adslot-rect .adslot-box { min-height: 250px; }
+    .adslot-sticky { position: sticky; bottom: 0; z-index: 50; margin: 24px auto 0;
+      background: linear-gradient(180deg, rgba(10,12,15,0), rgba(10,12,15,.96) 28%); padding: 10px 0 6px; }
+
+    /* ===== Bandeau de consentement (RGPD) ===== */
+    .consent { position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 1000;
+      max-width: 760px; margin: 0 auto; padding: 18px 20px;
+      background: linear-gradient(160deg, #161a20, #0e1116); border: 1px solid #ff8a3c;
+      border-radius: 14px; box-shadow: 0 16px 50px rgba(0,0,0,.6); animation: apparition .35s ease both; }
+    .consent-titre { font-family: "Rajdhani", system-ui, sans-serif; font-weight: 700; font-size: 17px; color: #fff; margin: 0 0 6px; }
+    .consent-texte { font-size: 13px; color: #c8ccd2; line-height: 1.55; margin: 0 0 14px; }
+    .consent-texte a { color: #ff8a3c; text-decoration: underline; cursor: pointer; }
+    .consent-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .consent-btn { flex: 1 1 auto; min-width: 130px; padding: 11px 16px; border-radius: 9px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid #2c3038; transition: background .15s, border-color .15s, color .15s; }
+    .consent-refuse { background: transparent; color: #c8ccd2; }
+    .consent-refuse:hover { border-color: #f87171; color: #fff; }
+    .consent-accept { background: #ff7a18; border-color: #ff7a18; color: #fff; }
+    .consent-accept:hover { background: #ff9046; }
+    @media (max-width: 520px) { .consent-btn { flex-basis: 100%; } }
+
+    /* ===== Pied de page + pages légales ===== */
+    .footer { margin-top: 26px; padding: 22px 16px; border-top: 1px solid #20242b; text-align: center; color: #8a939d; font-size: 12px; }
+    .footer-liens { margin-bottom: 8px; }
+    .footer-liens a { color: #b0b7c0; cursor: pointer; text-decoration: none; margin: 0 9px; }
+    .footer-liens a:hover { color: #ff8a3c; text-decoration: underline; }
+    .legal { max-width: 820px; margin: 0 auto; line-height: 1.65; color: #c8ccd2; font-size: 14px; }
+    .legal h2 { font-family: "Rajdhani", system-ui, sans-serif; font-size: 17px; color: #ffb070; margin: 22px 0 8px; }
+    .legal p { margin: 0 0 6px; }
+    .legal a { color: #ff8a3c; }
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <!-- Contenu statique de repli : visible par les moteurs de recherche et les
+       visiteurs sans JavaScript. React le remplace entièrement au chargement. -->
+  <div id="root">
+    <div style="max-width:780px;margin:0 auto;padding:40px 20px;font-family:system-ui,Arial,sans-serif;color:#e8eaed">
+      <h1 style="font-size:34px;letter-spacing:2px">WZ <span style="color:#ff8a3c">GUIDE</span></h1>
+      <p style="font-size:18px;color:#ffd6b0">Crée tes classes Warzone &amp; Black Ops 7 optimales</p>
+      <p style="color:#b0b7c0;line-height:1.6">
+        WZ Guide est un éditeur de classe (Gunsmith) gratuit pour <strong>Call of Duty : Warzone</strong> et
+        <strong>Black Ops 7</strong>. Compose ton arme et tes accessoires, atouts et équipement, et visualise
+        en direct l'effet de chaque variable sur les statistiques.
+      </p>
+      <h2 style="font-size:20px;color:#ffb070">Fonctionnalités</h2>
+      <ul style="color:#c8ccd2;line-height:1.8">
+        <li><strong>Gunsmith complet</strong> — 5 accessoires max par arme, effets réels (bonus/malus).</li>
+        <li><strong>Stats en direct</strong> — dégâts, portée, cadence, recul, mobilité, vélocité…</li>
+        <li><strong>Calcul du TTK</strong> — temps pour éliminer, selon la distance et la zone touchée.</li>
+        <li><strong>Spray pattern simulé</strong> — tracé de recul estimé qui réagit aux accessoires.</li>
+        <li><strong>Générateur de classe</strong> — optimise automatiquement selon ton objectif de jeu.</li>
+        <li><strong>Comparateur d'armes</strong> et <strong>tier list (méta)</strong> par catégorie.</li>
+        <li>Multilingue <strong>FR / EN / DE</strong>, classes sauvegardées et partageables.</li>
+      </ul>
+      <p style="color:#c8ccd2"><a href="/armes/" style="color:#ff8a3c">Voir les guides de toutes les armes →</a> &nbsp;·&nbsp; <a href="/weapons/" style="color:#ff8a3c">All weapon guides (EN) →</a></p>
+      <p style="color:#8a939d;font-size:13px">Chargement de l'application…</p>
+      <noscript>
+        <p style="color:#f87171;font-weight:600">
+          Cette application nécessite JavaScript pour fonctionner. Active JavaScript dans ton navigateur
+          pour utiliser l'éditeur de classe interactif.
+        </p>
+      </noscript>
+    </div>
+  </div>
 
   <!-- DONNÉES (même fichier que la version vanilla) -->
-  <script src="donnees.js?v=11"></script>
+  <script src="donnees.js?v=17"></script>
   <!-- TRADUCTIONS (FR / EN / DE) -->
-  <script src="traductions.js?v=15"></script>
+  <script src="traductions.js?v=16"></script>
 
-  <!-- React + Babel depuis un CDN : aucune installation requise -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin></script>
+  <!-- React + Babel depuis un CDN : aucune installation requise.
+       Attribut integrity (SRI) = le navigateur refuse d'exécuter le script si son contenu
+       ne correspond pas au hash → protège contre une compromission du CDN. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" integrity="sha384-tMH8h3BGESGckSAVGZ82T9n90ztNXxvdwvdM6UoR56cYcf+0iGXBliJ29D+wZ/x8" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" integrity="sha384-bm7MnzvK++ykSwVJ2tynSE5TRdN+xL418osEVF2DE/L/gfWHj91J2Sphe582B1Bh" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" integrity="sha384-1qlE7MZPM2pHD/pBZCU/yB8UCP52RYL8bge/qNdfNBCWToySp8/M+JL2waXU4hjJ" crossorigin="anonymous"></script>
 
   <!-- ========== APPLICATION REACT ========== -->
   <script type="text/babel" data-presets="react">
@@ -672,6 +820,10 @@
     const LANGUES_OK = ["fr", "en", "de"];
     function detecterLangue() {
       try {
+        // Priorité : ?lang= dans l'URL (pour le SEO multilingue / hreflang)…
+        const url = new URLSearchParams(location.search).get("lang");
+        if (url && LANGUES_OK.includes(url)) return url;
+        // …puis le choix mémorisé, puis la langue du navigateur.
         const sauv = localStorage.getItem("wz_langue");
         if (sauv && LANGUES_OK.includes(sauv)) return sauv;
         const nav = (navigator.language || navigator.userLanguage || "fr").slice(0, 2).toLowerCase();
@@ -895,6 +1047,27 @@
     function decoderClasse(code) {
       try { return JSON.parse(decodeURIComponent(escape(atob(code)))); } catch (e) { return null; }
     }
+    /* ===== PUBLICITÉ (Google AdSense) =====
+       Quand ton compte AdSense sera validé, colle ici ton identifiant éditeur
+       (format "ca-pub-XXXXXXXXXXXXXXXX"). Tant que c'est vide :
+         → les emplacements affichent un simple cadre « Espace publicitaire »,
+           aucun script externe n'est chargé (site rapide).
+       Une fois rempli :
+         → les pubs se chargent automatiquement (lazy-load), dans le respect
+           du consentement RGPD. Pense aussi à renseigner les data-ad-slot
+           dans les balises <AdSlot slot="..."> si tu crées des blocs dédiés. */
+    const ADSENSE_CLIENT = "ca-pub-2060302255453240"; // compte AdSense de wzguide.com
+
+    /* ===== CMP CERTIFIÉ (Google Funding Choices) =====
+       Mets à true pour déléguer le consentement au CMP certifié IAB de Google
+       (recommandé pour les pubs personnalisées à grande échelle en Europe).
+       Pré-requis : ADSENSE_CLIENT renseigné ET message RGPD activé dans ton
+       compte AdSense → « Confidentialité et messages » → « RGPD ». Le message
+       s'injecte alors automatiquement via la balise AdSense.
+       Tant que ADSENSE_CLIENT est vide, c'est le bandeau maison qui s'affiche
+       (repli), donc tu n'es jamais sans consentement. */
+    const CMP_GOOGLE = false;
+
     const CLE_STOCKAGE = "wz_classes";
     function chargerStockage() { try { return JSON.parse(localStorage.getItem(CLE_STOCKAGE) || "[]"); } catch (e) { return []; } }
     function sauverStockage(arr) { try { localStorage.setItem(CLE_STOCKAGE, JSON.stringify(arr)); } catch (e) {} }
@@ -1436,6 +1609,176 @@
       );
     }
 
+    /* ===== PUBLICITÉ : emplacement AdSense avec chargement différé (lazy-load) ===== */
+    // Le script AdSense n'est chargé qu'une seule fois, à la demande.
+    // Le chargeur AdSense est déjà inclus dans le <head> (requis pour la vérification Google).
+    // On marque donc le script comme déjà demandé pour ne PAS l'injecter une 2e fois.
+    let adsenseDemande = true;
+    function chargerAdSense() { /* no-op : script chargé dans le <head> */ }
+    // format : "banner" | "rect" | "inline" ; slot = data-ad-slot AdSense (optionnel).
+    function AdSlot({ format, slot, className }) {
+      const fmt = format || "inline";
+      const ref = useRef(null);
+      const [visible, setVisible] = useState(false);
+      // Lazy-load : on n'active l'emplacement que lorsqu'il approche de l'écran.
+      useEffect(() => {
+        if (!ref.current || typeof IntersectionObserver === "undefined") { setVisible(true); return; }
+        const io = new IntersectionObserver((entries) => {
+          if (entries.some(e => e.isIntersecting)) { setVisible(true); io.disconnect(); }
+        }, { rootMargin: "300px" });
+        io.observe(ref.current);
+        return () => io.disconnect();
+      }, []);
+      // Visible + AdSense configuré → on charge le script et on pousse la pub.
+      useEffect(() => {
+        if (!visible || !ADSENSE_CLIENT) return;
+        chargerAdSense();
+        try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+      }, [visible]);
+      return (
+        <div className={"adslot adslot-" + fmt + (className ? " " + className : "")} ref={ref} aria-label={t("Publicité")}>
+          <div className="pub-label">{t("Publicité")}</div>
+          {ADSENSE_CLIENT
+            ? <ins className="adsbygoogle" style={{ display: "block" }}
+                data-ad-client={ADSENSE_CLIENT} data-ad-slot={slot || ""}
+                data-ad-format="auto" data-full-width-responsive="true"></ins>
+            : <div className="adslot-box">{t("Espace publicitaire")}</div>}
+        </div>
+      );
+    }
+
+    /* ===== CONSENTEMENT RGPD ===== */
+    const CONSENT_TXT = {
+      fr: { titre: "Respect de ta vie privée",
+        texte: "On utilise des cookies pour mesurer l'audience et afficher des publicités qui financent le site. Tu peux tout accepter ou tout refuser.",
+        plus: "En savoir plus", accept: "Tout accepter", refuse: "Tout refuser" },
+      en: { titre: "Your privacy matters",
+        texte: "We use cookies to measure audience and show ads that fund the site. You can accept or decline everything.",
+        plus: "Learn more", accept: "Accept all", refuse: "Decline all" },
+      de: { titre: "Deine Privatsphäre zählt",
+        texte: "Wir verwenden Cookies zur Reichweitenmessung und für Werbung, die die Seite finanziert. Du kannst alles akzeptieren oder ablehnen.",
+        plus: "Mehr erfahren", accept: "Alle akzeptieren", refuse: "Alle ablehnen" }
+    };
+    function appliquerConsentement(ad) {
+      try {
+        if (typeof gtag === "function") gtag('consent', 'update', {
+          ad_storage: ad ? 'granted' : 'denied',
+          ad_user_data: ad ? 'granted' : 'denied',
+          ad_personalization: ad ? 'granted' : 'denied',
+          analytics_storage: ad ? 'granted' : 'denied'
+        });
+      } catch (e) {}
+      try { localStorage.setItem("wz_consent", JSON.stringify({ ad: !!ad, t: Date.now() })); } catch (e) {}
+    }
+    function ConsentBanner({ langue, onChoix, onPlus }) {
+      const T = CONSENT_TXT[langue] || CONSENT_TXT.fr;
+      return (
+        <div className="consent" role="dialog" aria-live="polite" aria-label={T.titre}>
+          <h2 className="consent-titre">{T.titre}</h2>
+          <p className="consent-texte">{T.texte}{" "}
+            <a onClick={(e) => { e.preventDefault(); onPlus && onPlus(); }}>{T.plus}</a>
+          </p>
+          <div className="consent-actions">
+            <button className="consent-btn consent-refuse" onClick={() => onChoix(false)}>{T.refuse}</button>
+            <button className="consent-btn consent-accept" onClick={() => onChoix(true)}>{T.accept}</button>
+          </div>
+        </div>
+      );
+    }
+
+    /* ===== POLITIQUE DE CONFIDENTIALITÉ (à faire relire/adapter par tes soins) ===== */
+    const PRIVACY = {
+      fr: { titre: "Politique de confidentialité", maj: "Dernière mise à jour : juin 2026", revoir: "Revoir mon choix de cookies", sections: [
+        ["Qui sommes-nous", "WZ Guide est un site gratuit d'aide à la création de classes pour Call of Duty (Warzone, Black Ops). Éditeur : WZ Guide. Contact : service@wzguide.com."],
+        ["Données traitées", "Le site ne demande aucun compte ni information personnelle. Tes classes sauvegardées et tes préférences (langue, consentement) sont stockées localement dans ton navigateur et ne sont jamais envoyées à un serveur."],
+        ["Cookies et publicité", "Le site est financé par la publicité. Avec ton consentement, nos partenaires (dont Google AdSense) peuvent déposer des cookies pour afficher des annonces et en mesurer la performance. Sans consentement, aucune publicité personnalisée n'est servie."],
+        ["Tes droits (RGPD)", "Tu disposes d'un droit d'accès, de rectification, d'effacement et d'opposition. Comme aucune donnée personnelle n'est conservée sur nos serveurs, tu peux tout supprimer en vidant le stockage local de ton navigateur."],
+        ["Gérer ton consentement", "Tu peux modifier ton choix à tout moment avec le bouton ci-dessous."]
+      ]},
+      en: { titre: "Privacy Policy", maj: "Last updated: June 2026", revoir: "Review my cookie choice", sections: [
+        ["Who we are", "WZ Guide is a free tool that helps you build Call of Duty (Warzone, Black Ops) loadouts. Publisher: WZ Guide. Contact: service@wzguide.com."],
+        ["Data we process", "The site requires no account or personal information. Your saved classes and preferences (language, consent) are stored locally in your browser and never sent to a server."],
+        ["Cookies and advertising", "The site is funded by advertising. With your consent, our partners (including Google AdSense) may set cookies to display and measure ads. Without consent, no personalized ads are served."],
+        ["Your rights (GDPR)", "You have the right to access, rectify, erase and object. As no personal data is kept on our servers, you can delete everything by clearing your browser's local storage."],
+        ["Manage your consent", "You can change your choice at any time using the button below."]
+      ]},
+      de: { titre: "Datenschutzerklärung", maj: "Zuletzt aktualisiert: Juni 2026", revoir: "Cookie-Auswahl ändern", sections: [
+        ["Wer wir sind", "WZ Guide ist ein kostenloses Tool zum Erstellen von Call-of-Duty-Klassen (Warzone, Black Ops). Anbieter: WZ Guide. Kontakt: service@wzguide.com."],
+        ["Verarbeitete Daten", "Die Seite verlangt kein Konto und keine persönlichen Angaben. Deine gespeicherten Klassen und Einstellungen (Sprache, Einwilligung) werden lokal im Browser gespeichert und nie an einen Server gesendet."],
+        ["Cookies und Werbung", "Die Seite finanziert sich über Werbung. Mit deiner Einwilligung können Partner (u. a. Google AdSense) Cookies setzen, um Anzeigen auszuspielen und zu messen. Ohne Einwilligung wird keine personalisierte Werbung ausgespielt."],
+        ["Deine Rechte (DSGVO)", "Du hast das Recht auf Auskunft, Berichtigung, Löschung und Widerspruch. Da keine personenbezogenen Daten auf unseren Servern gespeichert werden, kannst du alles löschen, indem du den lokalen Speicher deines Browsers leerst."],
+        ["Einwilligung verwalten", "Du kannst deine Auswahl jederzeit über die Schaltfläche unten ändern."]
+      ]}
+    };
+    function PrivacyPolicy({ langue, onRevoir }) {
+      const P = PRIVACY[langue] || PRIVACY.fr;
+      return (
+        <div>
+          <Banniere titre={P.titre} sous={P.maj} />
+          <div className="legal">
+            {P.sections.map(([h, txt], i) => (
+              <Fragment key={i}><h2>{h}</h2><p>{txt}</p></Fragment>
+            ))}
+            <button className="btn btn-principal" style={{ marginTop: "18px" }} onClick={onRevoir}>{P.revoir}</button>
+          </div>
+        </div>
+      );
+    }
+
+    /* ===== Pages À PROPOS / CONTACT ===== */
+    const APROPOS = {
+      fr: { titre: "À propos", sous: "Qui sommes-nous", sections: [
+        ["WZ Guide en bref", "WZ Guide est un éditeur de classes (« gunsmith ») gratuit pour Call of Duty : Warzone, Black Ops 7 et Black Ops 6. Compose ton arme et ses accessoires, et vois en temps réel l'effet de chaque choix sur les statistiques."],
+        ["Fonctionnalités", "Créateur de classe complet (arme principale et secondaire, accessoires, atouts et équipement), calcul du TTK, dégâts par distance et par partie du corps, tracé de recul, générateur de classe par objectif, tier list (méta) et comparateur d'armes. Interface en français, anglais et allemand."],
+        ["Sources et mises à jour", "Les statistiques et la méta s'appuient sur des données communautaires (notamment codmunity et Game8) et sont mises à jour au fil des saisons. Un écart avec le jeu reste possible : signale-nous toute erreur via la page Contact."],
+        ["Indépendance", "WZ Guide est un projet indépendant. Le site n'est ni affilié, ni approuvé, ni sponsorisé par Activision Blizzard ou les développeurs de Call of Duty. « Call of Duty », « Warzone », « Black Ops » et les noms d'armes sont des marques de leurs propriétaires respectifs."]
+      ]},
+      en: { titre: "About", sous: "Who we are", sections: [
+        ["WZ Guide in short", "WZ Guide is a free loadout editor (« gunsmith ») for Call of Duty: Warzone, Black Ops 7 and Black Ops 6. Build your weapon and its attachments and see the effect of every choice on the stats in real time."],
+        ["Features", "Full loadout builder (primary and secondary weapon, attachments, perks and equipment), TTK calculation, damage by range and body part, recoil pattern, an objective-based class generator, a tier list (meta) and a weapon comparator. Available in French, English and German."],
+        ["Sources and updates", "Stats and the meta are based on community data (notably codmunity and Game8) and are updated season after season. Differences with the game can occur: please report any error through the Contact page."],
+        ["Independence", "WZ Guide is an independent project. The site is not affiliated with, endorsed or sponsored by Activision Blizzard or the Call of Duty developers. 'Call of Duty', 'Warzone', 'Black Ops' and weapon names belong to their respective owners."]
+      ]},
+      de: { titre: "Über uns", sous: "Wer wir sind", sections: [
+        ["WZ Guide in Kürze", "WZ Guide ist ein kostenloser Klassen-Editor (« Gunsmith ») für Call of Duty: Warzone, Black Ops 7 und Black Ops 6. Stelle deine Waffe und ihre Aufsätze zusammen und sieh in Echtzeit, wie sich jede Wahl auf die Werte auswirkt."],
+        ["Funktionen", "Vollständiger Klassen-Builder (Primär- und Sekundärwaffe, Aufsätze, Perks und Ausrüstung), TTK-Berechnung, Schaden nach Entfernung und Körperzone, Rückstoßmuster, Klassengenerator nach Ziel, Tier-Liste (Meta) und Waffenvergleich. Verfügbar auf Französisch, Englisch und Deutsch."],
+        ["Quellen und Updates", "Werte und Meta basieren auf Community-Daten (u. a. codmunity und Game8) und werden Saison für Saison aktualisiert. Abweichungen vom Spiel sind möglich: Bitte melde Fehler über die Kontaktseite."],
+        ["Unabhängigkeit", "WZ Guide ist ein unabhängiges Projekt. Die Seite ist nicht mit Activision Blizzard oder den Call-of-Duty-Entwicklern verbunden, von ihnen unterstützt oder gesponsert. 'Call of Duty', 'Warzone', 'Black Ops' und Waffennamen gehören ihren jeweiligen Eigentümern."]
+      ]}
+    };
+    const CONTACT = {
+      fr: { titre: "Contact", sous: "Une question, une suggestion ?", sections: [
+        ["Écris-nous", "Une question, une suggestion, une erreur de données à signaler, ou une demande concernant le site ? Contacte-nous par e-mail, on lit tout."],
+        ["E-mail", "service@wzguide.com"],
+        ["Signaler une erreur", "Pour un signalement, précise l'arme ou l'accessoire concerné et le jeu (Warzone, BO7 ou BO6) — ça nous aide à corriger rapidement. Nous répondons généralement sous quelques jours."]
+      ]},
+      en: { titre: "Contact", sous: "A question or a suggestion?", sections: [
+        ["Get in touch", "A question, a suggestion, a data error to report, or any request about the site? Email us, we read everything."],
+        ["Email", "service@wzguide.com"],
+        ["Report an error", "When reporting, please mention the weapon or attachment and the game (Warzone, BO7 or BO6) — it helps us fix it quickly. We usually reply within a few days."]
+      ]},
+      de: { titre: "Kontakt", sous: "Eine Frage oder ein Vorschlag?", sections: [
+        ["Schreib uns", "Eine Frage, ein Vorschlag, ein Datenfehler oder ein Anliegen zur Seite? Schreib uns eine E-Mail, wir lesen alles."],
+        ["E-Mail", "service@wzguide.com"],
+        ["Fehler melden", "Nenne beim Melden bitte die Waffe oder den Aufsatz und das Spiel (Warzone, BO7 oder BO6) — das hilft uns, schnell zu korrigieren. Wir antworten in der Regel innerhalb weniger Tage."]
+      ]}
+    };
+    function PageInfo({ data, langue }) {
+      const P = data[langue] || data.fr;
+      return (
+        <div>
+          <Banniere titre={P.titre} sous={P.sous} />
+          <div className="legal">
+            {P.sections.map(([h, txt], i) => {
+              const t2 = txt.trim();
+              const mail = t2.indexOf("@") > 0 && t2.lastIndexOf(".") > t2.indexOf("@") && t2.indexOf(" ") === -1;
+              return <Fragment key={i}><h2>{h}</h2><p>{mail ? <a href={"mailto:" + t2}>{t2}</a> : txt}</p></Fragment>;
+            })}
+          </div>
+        </div>
+      );
+    }
+
     /* ===== APPLICATION PRINCIPALE ===== */
     function App() {
       const [mode, setMode] = useState("warzone");
@@ -1447,10 +1790,64 @@
         LANGUE = l;
         try { localStorage.setItem("wz_langue", l); } catch (e) {}
         try { document.documentElement.lang = l; } catch (e) {}
+        // Refléter la langue dans l'URL (?lang=) sans recharger la page.
+        try { const u = new URL(location.href); u.searchParams.set("lang", l); history.replaceState(null, "", u); } catch (e) {}
         setLangueState(l);
       }
       const [afficherValeurs, setAfficherValeurs] = useState(false);
       const [pvCible, setPvCible] = useState(250);
+
+      /* --- SEO : titre + meta description dynamiques selon la vue et la langue --- */
+      useEffect(() => {
+        const SUF = " — WZ Guide";
+        const titres = {
+          accueil:        { fr: "Éditeur de classes Warzone & Black Ops 7", en: "Warzone & Black Ops 7 Loadout Builder", de: "Warzone & Black Ops 7 Klassen-Editor" },
+          createur:       { fr: "Créateur de classe (Gunsmith)", en: "Loadout Builder (Gunsmith)", de: "Klassen-Editor (Waffenschmied)" },
+          meta:           { fr: "Méta & Tier list des armes", en: "Weapon Meta & Tier List", de: "Waffen-Meta & Tier-Liste" },
+          comparateur:    { fr: "Comparateur d'armes", en: "Weapon Comparison", de: "Waffenvergleich" },
+          classes:        { fr: "Classes enregistrées", en: "Saved Loadouts", de: "Gespeicherte Klassen" },
+          news:           { fr: "Actualités Warzone & Black Ops 7", en: "Warzone & Black Ops 7 News", de: "Warzone & Black Ops 7 News" },
+          confidentialite:{ fr: "Politique de confidentialité", en: "Privacy Policy", de: "Datenschutzerklärung" }
+        };
+        const desc = {
+          fr: "Crée tes classes optimales Warzone & Black Ops 7 : Gunsmith, stats réelles, TTK, générateur de classe et tier list. Gratuit, FR/EN/DE.",
+          en: "Build your optimal Warzone & Black Ops 7 loadouts: gunsmith, real stats, TTK, class generator and tier list. Free, FR/EN/DE.",
+          de: "Erstelle optimale Warzone- & Black-Ops-7-Klassen: Waffenschmied, echte Werte, TTK, Klassengenerator und Tier-Liste. Kostenlos, FR/EN/DE."
+        };
+        const bloc = titres[vue] || titres.accueil;
+        const titre = (bloc[langue] || bloc.fr) + SUF;
+        try {
+          document.title = titre;
+          document.documentElement.lang = langue;   // cohérence SEO : <html lang> = langue active
+          const m = document.querySelector('meta[name="description"]');
+          if (m) m.setAttribute("content", desc[langue] || desc.fr);
+          const ogt = document.querySelector('meta[property="og:title"]');
+          if (ogt) ogt.setAttribute("content", titre);
+        } catch (e) {}
+      }, [vue, langue]);
+
+      /* --- Consentement RGPD (bandeau cookies) --- */
+      // On délègue au CMP Google seulement s'il est activé ET qu'AdSense est configuré.
+      // Sinon, le bandeau maison sert de repli (jamais de page sans consentement).
+      const utiliserCMPGoogle = CMP_GOOGLE && !!ADSENSE_CLIENT;
+      const [consentVu, setConsentVu] = useState(() => {
+        try { return !!localStorage.getItem("wz_consent"); } catch (e) { return false; }
+      });
+      function definirConsentement(ad) { appliquerConsentement(ad); setConsentVu(true); }
+      function revoirConsentement() {
+        try { localStorage.removeItem("wz_consent"); } catch (e) {}
+        appliquerConsentement(false);
+        setConsentVu(false);
+      }
+      // « Gérer les cookies » : rouvre le CMP Google si actif, sinon le bandeau maison.
+      function gererCookies() {
+        if (utiliserCMPGoogle && window.googlefc && window.googlefc.showRevocationMessage) {
+          window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
+          window.googlefc.callbackQueue.push(() => window.googlefc.showRevocationMessage());
+        } else {
+          revoirConsentement();
+        }
+      }
 
       const [armeP, setArmeP] = useState(ARMES_PRINCIPALES[0]);
       const [selP, setSelP] = useState(() => etatVide(ARMES_PRINCIPALES[0].emplacements));
@@ -1581,11 +1978,21 @@
         if (c.mode) setMode(c.mode);
         const ap = ARMES_PRINCIPALES.find(a => a.id === c.armePrincipale) || ARMES_PRINCIPALES[0];
         const sp = etatVide(ap.emplacements);
-        for (const k in (c.selectionPrincipale || {})) if (k in sp) sp[k] = c.selectionPrincipale[k];
+        // On ne reprend une option que si elle existe RÉELLEMENT sur l'arme retenue
+        // (évite de garder un accessoire d'une autre arme et de fausser le compteur).
+        for (const k in (c.selectionPrincipale || {})) {
+          if (!(k in sp)) continue;
+          const v = c.selectionPrincipale[k], emp = ap.emplacements.find(e => e.id === k);
+          if (emp && emp.options.some(o => o.id === v)) sp[k] = v;
+        }
         setArmeP(ap); setSelP(sp); setAlerteP(false);
         const as = ARMES_SECONDAIRES.find(a => a.id === c.armeSecondaire) || ARMES_SECONDAIRES[0];
         const ss = etatVide(as.emplacements);
-        for (const k in (c.selectionSecondaire || {})) if (k in ss) ss[k] = c.selectionSecondaire[k];
+        for (const k in (c.selectionSecondaire || {})) {
+          if (!(k in ss)) continue;
+          const v = c.selectionSecondaire[k], emp = as.emplacements.find(e => e.id === k);
+          if (emp && emp.options.some(o => o.id === v)) ss[k] = v;
+        }
         setArmeS(as); setSelS(ss); setAlerteS(false);
         const at = { slot1: "aucun", slot2: "aucun", slot3: "aucun" };
         for (const k in (c.atouts || {})) if (k in at) at[k] = c.atouts[k];
@@ -1609,7 +2016,7 @@
       function partagerClasse() {
         const code = encoderClasse(classeActuelle());
         const lien = location.origin + location.pathname + "?c=" + code;
-        const ok = () => { setNotePartage(t("Lien copié ! 📋")); setTimeout(() => setNotePartage(""), 4000); };
+        const ok = () => { setNotePartage(t("Lien copié !")); setTimeout(() => setNotePartage(""), 4000); };
         const echec = () => setNotePartage(t("Copie impossible — lien : ") + lien);
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(lien).then(ok, echec);
@@ -1691,11 +2098,12 @@
                     <p className="hero-slogan">{t("Crée tes classes Warzone & Black Ops 7 optimales")}</p>
                     <p className="hero-sous">{t("Gunsmith complet, stats réelles, calcul du TTK, générateur de classe et tier list — le tout au même endroit.")}</p>
                     {typeof META_DONNEES !== "undefined" &&
-                      <div className="badge-maj">📊 {t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}</div>}
+                      <div className="badge-maj">{t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}</div>}
                     <div>
                       <button className="hero-cta" onClick={() => setVue("createur")}>{t("Créer une classe →")}</button>
                     </div>
                   </div>
+                  <AdSlot format="banner" />
                   <h2 className="accueil-titre">{t("Explorer")}</h2>
                   <div className="accueil-cartes">
                     {cartes.map(c => {
@@ -1725,7 +2133,7 @@
                     <h1>{t("Éditeur de classe —")} {mode === "warzone" ? "Warzone" : "Black Ops"}
                       {typeof META_DONNEES !== "undefined" &&
                         <span className="badge-maj">
-                          📊 {t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}
+                          {t(META_DONNEES.saison)} · {META_DONNEES.jeu} · {t("données")} {t(META_DONNEES.maj)}
                         </span>}
                     </h1>
                     <p className="sous-titre">{t("5 accessoires max par arme, un seul par emplacement. Étiquettes :")} <span style={{ color: "#4ade80" }}>{t("vert = bonus")}</span>, <span style={{ color: "#f87171" }}>{t("rouge = malus")}</span>.
@@ -1739,7 +2147,7 @@
                     <button className={mode === "blackops" ? "actif" : ""} onClick={() => changerMode("blackops")}>Black Ops</button>
                   </div>
                   <button className="btn btn-principal btn-enregistrer" onClick={enregistrerClasse}>{t("Enregistrer la classe")}</button>
-                  <button className="btn" onClick={(e) => { e.stopPropagation(); partagerClasse(); }}>{t("🔗 Partager")}</button>
+                  <button className="btn" onClick={(e) => { e.stopPropagation(); partagerClasse(); }}>{t("Partager")}</button>
                   <span className="ia-note">{notePartage}</span>
                 </div>
 
@@ -1768,7 +2176,7 @@
                         <div className="gs-coltitre">{t("Emplacements")}</div>
                         <AttachmentSlots emplacements={armeP.emplacements} selection={selP} onChange={changeAccP} onReset={() => { setSelP(etatVide(armeP.emplacements)); setAlerteP(false); }} alerte={alerteP} afficherValeurs={afficherValeurs} />
                         <div className="ia-bar">
-                          <span className="ia-titre">{t("✨ Générateur de classe")}</span>
+                          <span className="ia-titre">{t("Générateur de classe")}</span>
                           <label>{t("Objectif :")}</label>
                           <select className="ia-select" value={iaObjectif} onChange={(e) => setIaObjectif(e.target.value)}>
                             <option value="polyvalent">{t("Polyvalent")}</option>
@@ -1794,6 +2202,8 @@
                   </div>
                 </div>
 
+                <AdSlot format="inline" />
+
                 {/* ARME SECONDAIRE */}
                 <div className="gunsmith">
                   <div className="gs-topbar">
@@ -1817,7 +2227,7 @@
                         <div className="gs-coltitre">{t("Emplacements")}</div>
                         <AttachmentSlots emplacements={armeS.emplacements} selection={selS} onChange={changeAccS} onReset={() => { setSelS(etatVide(armeS.emplacements)); setAlerteS(false); }} alerte={alerteS} afficherValeurs={afficherValeurs} />
                         <div className="ia-bar">
-                          <span className="ia-titre">{t("✨ Générateur de classe")}</span>
+                          <span className="ia-titre">{t("Générateur de classe")}</span>
                           <label>{t("Objectif :")}</label>
                           <select className="ia-select" value={iaObjectifS} onChange={(e) => setIaObjectifS(e.target.value)}>
                             <option value="polyvalent">{t("Polyvalent")}</option>
@@ -1871,7 +2281,7 @@
                       </div>
                       <h3 className="news-titre">{c.titre}</h3>
                       <p className="news-texte">{c.texte}</p>
-                      {c.bal && <p className="news-bal"><span className="news-bal-ico">⚖</span> {c.bal}</p>}
+                      {c.bal && <p className="news-bal"><span className="news-bal-ico"></span> {c.bal}</p>}
                     </div>
                   );
                 })}
@@ -1929,18 +2339,22 @@
                     <span className="cmp-val">{cmpB.nom}</span>
                   </div>
                   {Object.keys(INFOS_STATS).map(stat => {
-                    const a = cmpA.stats_base[stat] ?? 0;
-                    const b = cmpB.stats_base[stat] ?? 0;
+                    const a = cmpA.stats_base[stat];
+                    const b = cmpB.stats_base[stat];
+                    const aManque = a == null, bManque = b == null;
                     let aGagne = false, bGagne = false;
-                    if (a !== b) {
+                    // On ne désigne un gagnant que si LES DEUX armes possèdent la stat
+                    // (sinon une stat absente, traitée comme 0, gagnait à tort sur
+                    //  les stats « plus petit = mieux » : recul, visée, rechargement).
+                    if (!aManque && !bManque && a !== b) {
                       const aMieux = INFOS_STATS[stat].plusGrandEstMieux ? (a > b) : (a < b);
                       aGagne = aMieux; bGagne = !aMieux;
                     }
                     return (
                       <div className="cmp-ligne" key={stat}>
                         <span className="cmp-stat">{t(INFOS_STATS[stat].label)}</span>
-                        <span className={"cmp-val" + (aGagne ? " gagne" : "")}>{a}</span>
-                        <span className={"cmp-val" + (bGagne ? " gagne" : "")}>{b}</span>
+                        <span className={"cmp-val" + (aGagne ? " gagne" : "")}>{aManque ? "—" : a}</span>
+                        <span className={"cmp-val" + (bGagne ? " gagne" : "")}>{bManque ? "—" : b}</span>
                       </div>
                     );
                   })}
@@ -1952,6 +2366,7 @@
               <div>
                 <Banniere icone={navItems.find(n => n.id === "meta").ico} titre={t("Méta — Tier list")}
                   sous={t("Classement indicatif des armes, basé sur la méta codmunity (modifiable dans donnees.js).")} />
+                <AdSlot format="banner" />
                 <div>
                   {(() => {
                     const ordreCats = [];
@@ -1959,7 +2374,9 @@
                     return ordreCats.map(cat => {
                       const armesCat = TOUTES_F.filter(a => a.categorie === cat);
                       const groupes = {};
-                      armesCat.forEach(a => { const t = TIERS[a.id] || "N"; (groupes[t] = groupes[t] || []).push(a); });
+                      // NB : variable nommée « tier » (et non « t ») pour ne pas masquer
+                      // la fonction de traduction t() utilisée juste en dessous.
+                      armesCat.forEach(a => { const tier = TIERS[a.id] || "N"; (groupes[tier] = groupes[tier] || []).push(a); });
                       return (
                         <div className="meta-categorie" key={cat}>
                           <h3 className="meta-cat-titre">{t(cat)}</h3>
@@ -1993,12 +2410,27 @@
                 </div>
               </div>
             )}
-            {/* Emplacement publicitaire (bannière bas de page) */}
-            <div className="pub-slot pub-bottom" aria-label="Publicité">
-              <div className="pub-label">{t("Publicité")}</div>
-              <div className="pub-zone" id="pub-accueil">{t("Espace publicitaire")}</div>
-            </div>
+            {vue === "confidentialite" && (
+              <PrivacyPolicy langue={langue} onRevoir={gererCookies} />
+            )}
+            {vue === "apropos" && <PageInfo data={APROPOS} langue={langue} />}
+            {vue === "contact" && <PageInfo data={CONTACT} langue={langue} />}
+
+            {/* Bannière publicitaire de bas de page */}
+            <AdSlot format="banner" />
+
+            <footer className="footer">
+              <div className="footer-liens">
+                <a onClick={() => { setVue("apropos"); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {} }}>{langue === "en" ? "About" : langue === "de" ? "Über uns" : "À propos"}</a>
+                <a onClick={() => { setVue("contact"); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {} }}>{langue === "de" ? "Kontakt" : "Contact"}</a>
+                <a href={langue === "en" ? "/weapons/" : "/armes/"}>{t("Guides des armes")}</a>
+                <a onClick={() => { setVue("confidentialite"); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {} }}>{t("Confidentialité")}</a>
+                <a onClick={gererCookies}>{t("Gérer les cookies")}</a>
+              </div>
+              <div>© 2026 WZ Guide · {t("Site indépendant, non affilié à Activision / Call of Duty.")}</div>
+            </footer>
           </main>
+          {!utiliserCMPGoogle && !consentVu && <ConsentBanner langue={langue} onChoix={definirConsentement} onPlus={() => setVue("confidentialite")} />}
         </div>
       );
     }

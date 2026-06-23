@@ -1689,21 +1689,21 @@
     /* ===== POLITIQUE DE CONFIDENTIALITÉ (à faire relire/adapter par tes soins) ===== */
     const PRIVACY = {
       fr: { titre: "Politique de confidentialité", maj: "Dernière mise à jour : juin 2026", revoir: "Revoir mon choix de cookies", sections: [
-        ["Qui sommes-nous", "WZ Guide est un site gratuit d'aide à la création de classes pour Call of Duty (Warzone, Black Ops). Éditeur : [À COMPLÉTER]. Contact : contact@wzguide.com."],
+        ["Qui sommes-nous", "WZ Guide est un site gratuit d'aide à la création de classes pour Call of Duty (Warzone, Black Ops). Éditeur : WZ Guide. Contact : service@wzguide.com."],
         ["Données traitées", "Le site ne demande aucun compte ni information personnelle. Tes classes sauvegardées et tes préférences (langue, consentement) sont stockées localement dans ton navigateur et ne sont jamais envoyées à un serveur."],
         ["Cookies et publicité", "Le site est financé par la publicité. Avec ton consentement, nos partenaires (dont Google AdSense) peuvent déposer des cookies pour afficher des annonces et en mesurer la performance. Sans consentement, aucune publicité personnalisée n'est servie."],
         ["Tes droits (RGPD)", "Tu disposes d'un droit d'accès, de rectification, d'effacement et d'opposition. Comme aucune donnée personnelle n'est conservée sur nos serveurs, tu peux tout supprimer en vidant le stockage local de ton navigateur."],
         ["Gérer ton consentement", "Tu peux modifier ton choix à tout moment avec le bouton ci-dessous."]
       ]},
       en: { titre: "Privacy Policy", maj: "Last updated: June 2026", revoir: "Review my cookie choice", sections: [
-        ["Who we are", "WZ Guide is a free tool that helps you build Call of Duty (Warzone, Black Ops) loadouts. Publisher: [TO COMPLETE]. Contact: [your-email@example.com]."],
+        ["Who we are", "WZ Guide is a free tool that helps you build Call of Duty (Warzone, Black Ops) loadouts. Publisher: WZ Guide. Contact: service@wzguide.com."],
         ["Data we process", "The site requires no account or personal information. Your saved classes and preferences (language, consent) are stored locally in your browser and never sent to a server."],
         ["Cookies and advertising", "The site is funded by advertising. With your consent, our partners (including Google AdSense) may set cookies to display and measure ads. Without consent, no personalized ads are served."],
         ["Your rights (GDPR)", "You have the right to access, rectify, erase and object. As no personal data is kept on our servers, you can delete everything by clearing your browser's local storage."],
         ["Manage your consent", "You can change your choice at any time using the button below."]
       ]},
       de: { titre: "Datenschutzerklärung", maj: "Zuletzt aktualisiert: Juni 2026", revoir: "Cookie-Auswahl ändern", sections: [
-        ["Wer wir sind", "WZ Guide ist ein kostenloses Tool zum Erstellen von Call-of-Duty-Klassen (Warzone, Black Ops). Anbieter: [AUSZUFÜLLEN]. Kontakt: [deine-email@beispiel.com]."],
+        ["Wer wir sind", "WZ Guide ist ein kostenloses Tool zum Erstellen von Call-of-Duty-Klassen (Warzone, Black Ops). Anbieter: WZ Guide. Kontakt: service@wzguide.com."],
         ["Verarbeitete Daten", "Die Seite verlangt kein Konto und keine persönlichen Angaben. Deine gespeicherten Klassen und Einstellungen (Sprache, Einwilligung) werden lokal im Browser gespeichert und nie an einen Server gesendet."],
         ["Cookies und Werbung", "Die Seite finanziert sich über Werbung. Mit deiner Einwilligung können Partner (u. a. Google AdSense) Cookies setzen, um Anzeigen auszuspielen und zu messen. Ohne Einwilligung wird keine personalisierte Werbung ausgespielt."],
         ["Deine Rechte (DSGVO)", "Du hast das Recht auf Auskunft, Berichtigung, Löschung und Widerspruch. Da keine personenbezogenen Daten auf unseren Servern gespeichert werden, kannst du alles löschen, indem du den lokalen Speicher deines Browsers leerst."],
@@ -1720,6 +1720,60 @@
               <Fragment key={i}><h2>{h}</h2><p>{txt}</p></Fragment>
             ))}
             <button className="btn btn-principal" style={{ marginTop: "18px" }} onClick={onRevoir}>{P.revoir}</button>
+          </div>
+        </div>
+      );
+    }
+
+    /* ===== Pages À PROPOS / CONTACT ===== */
+    const APROPOS = {
+      fr: { titre: "À propos", sous: "Qui sommes-nous", sections: [
+        ["WZ Guide en bref", "WZ Guide est un éditeur de classes (« gunsmith ») gratuit pour Call of Duty : Warzone, Black Ops 7 et Black Ops 6. Compose ton arme et ses accessoires, et vois en temps réel l'effet de chaque choix sur les statistiques."],
+        ["Fonctionnalités", "Créateur de classe complet (arme principale et secondaire, accessoires, atouts et équipement), calcul du TTK, dégâts par distance et par partie du corps, tracé de recul, générateur de classe par objectif, tier list (méta) et comparateur d'armes. Interface en français, anglais et allemand."],
+        ["Sources et mises à jour", "Les statistiques et la méta s'appuient sur des données communautaires (notamment codmunity et Game8) et sont mises à jour au fil des saisons. Un écart avec le jeu reste possible : signale-nous toute erreur via la page Contact."],
+        ["Indépendance", "WZ Guide est un projet indépendant. Le site n'est ni affilié, ni approuvé, ni sponsorisé par Activision Blizzard ou les développeurs de Call of Duty. « Call of Duty », « Warzone », « Black Ops » et les noms d'armes sont des marques de leurs propriétaires respectifs."]
+      ]},
+      en: { titre: "About", sous: "Who we are", sections: [
+        ["WZ Guide in short", "WZ Guide is a free loadout editor (« gunsmith ») for Call of Duty: Warzone, Black Ops 7 and Black Ops 6. Build your weapon and its attachments and see the effect of every choice on the stats in real time."],
+        ["Features", "Full loadout builder (primary and secondary weapon, attachments, perks and equipment), TTK calculation, damage by range and body part, recoil pattern, an objective-based class generator, a tier list (meta) and a weapon comparator. Available in French, English and German."],
+        ["Sources and updates", "Stats and the meta are based on community data (notably codmunity and Game8) and are updated season after season. Differences with the game can occur: please report any error through the Contact page."],
+        ["Independence", "WZ Guide is an independent project. The site is not affiliated with, endorsed or sponsored by Activision Blizzard or the Call of Duty developers. 'Call of Duty', 'Warzone', 'Black Ops' and weapon names belong to their respective owners."]
+      ]},
+      de: { titre: "Über uns", sous: "Wer wir sind", sections: [
+        ["WZ Guide in Kürze", "WZ Guide ist ein kostenloser Klassen-Editor (« Gunsmith ») für Call of Duty: Warzone, Black Ops 7 und Black Ops 6. Stelle deine Waffe und ihre Aufsätze zusammen und sieh in Echtzeit, wie sich jede Wahl auf die Werte auswirkt."],
+        ["Funktionen", "Vollständiger Klassen-Builder (Primär- und Sekundärwaffe, Aufsätze, Perks und Ausrüstung), TTK-Berechnung, Schaden nach Entfernung und Körperzone, Rückstoßmuster, Klassengenerator nach Ziel, Tier-Liste (Meta) und Waffenvergleich. Verfügbar auf Französisch, Englisch und Deutsch."],
+        ["Quellen und Updates", "Werte und Meta basieren auf Community-Daten (u. a. codmunity und Game8) und werden Saison für Saison aktualisiert. Abweichungen vom Spiel sind möglich: Bitte melde Fehler über die Kontaktseite."],
+        ["Unabhängigkeit", "WZ Guide ist ein unabhängiges Projekt. Die Seite ist nicht mit Activision Blizzard oder den Call-of-Duty-Entwicklern verbunden, von ihnen unterstützt oder gesponsert. 'Call of Duty', 'Warzone', 'Black Ops' und Waffennamen gehören ihren jeweiligen Eigentümern."]
+      ]}
+    };
+    const CONTACT = {
+      fr: { titre: "Contact", sous: "Une question, une suggestion ?", sections: [
+        ["Écris-nous", "Une question, une suggestion, une erreur de données à signaler, ou une demande concernant le site ? Contacte-nous par e-mail, on lit tout."],
+        ["E-mail", "service@wzguide.com"],
+        ["Signaler une erreur", "Pour un signalement, précise l'arme ou l'accessoire concerné et le jeu (Warzone, BO7 ou BO6) — ça nous aide à corriger rapidement. Nous répondons généralement sous quelques jours."]
+      ]},
+      en: { titre: "Contact", sous: "A question or a suggestion?", sections: [
+        ["Get in touch", "A question, a suggestion, a data error to report, or any request about the site? Email us, we read everything."],
+        ["Email", "service@wzguide.com"],
+        ["Report an error", "When reporting, please mention the weapon or attachment and the game (Warzone, BO7 or BO6) — it helps us fix it quickly. We usually reply within a few days."]
+      ]},
+      de: { titre: "Kontakt", sous: "Eine Frage oder ein Vorschlag?", sections: [
+        ["Schreib uns", "Eine Frage, ein Vorschlag, ein Datenfehler oder ein Anliegen zur Seite? Schreib uns eine E-Mail, wir lesen alles."],
+        ["E-Mail", "service@wzguide.com"],
+        ["Fehler melden", "Nenne beim Melden bitte die Waffe oder den Aufsatz und das Spiel (Warzone, BO7 oder BO6) — das hilft uns, schnell zu korrigieren. Wir antworten in der Regel innerhalb weniger Tage."]
+      ]}
+    };
+    function PageInfo({ data, langue }) {
+      const P = data[langue] || data.fr;
+      return (
+        <div>
+          <Banniere titre={P.titre} sous={P.sous} />
+          <div className="legal">
+            {P.sections.map(([h, txt], i) => {
+              const t2 = txt.trim();
+              const mail = t2.indexOf("@") > 0 && t2.lastIndexOf(".") > t2.indexOf("@") && t2.indexOf(" ") === -1;
+              return <Fragment key={i}><h2>{h}</h2><p>{mail ? <a href={"mailto:" + t2}>{t2}</a> : txt}</p></Fragment>;
+            })}
           </div>
         </div>
       );
@@ -2359,12 +2413,16 @@
             {vue === "confidentialite" && (
               <PrivacyPolicy langue={langue} onRevoir={gererCookies} />
             )}
+            {vue === "apropos" && <PageInfo data={APROPOS} langue={langue} />}
+            {vue === "contact" && <PageInfo data={CONTACT} langue={langue} />}
 
             {/* Bannière publicitaire de bas de page */}
             <AdSlot format="banner" />
 
             <footer className="footer">
               <div className="footer-liens">
+                <a onClick={() => { setVue("apropos"); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {} }}>{langue === "en" ? "About" : langue === "de" ? "Über uns" : "À propos"}</a>
+                <a onClick={() => { setVue("contact"); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {} }}>{langue === "de" ? "Kontakt" : "Contact"}</a>
                 <a href={langue === "en" ? "/weapons/" : "/armes/"}>{t("Guides des armes")}</a>
                 <a onClick={() => { setVue("confidentialite"); try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {} }}>{t("Confidentialité")}</a>
                 <a onClick={gererCookies}>{t("Gérer les cookies")}</a>
