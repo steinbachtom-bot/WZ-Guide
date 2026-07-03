@@ -55,6 +55,18 @@ pour accélérer la prise en compte des nouvelles pages.
 - [ ] `?v=` incrémenté
 - [ ] `audit-contenu.mjs` OK puis `npm run build` puis push
 
-> ⚠️ Note : les stats du **VX Compact** (ajouté S4) sont **approximatives** —
-> à affiner depuis codmunity quand les valeurs chiffrées seront disponibles.
-> Images manquantes à compléter : **VX Compact**, **GDL Havoc**.
+> ⚠️ Note : images manquantes à compléter : **VX Compact**, **GDL Havoc**
+> (l'icône n'apparaît pas sur leur propre page codmunity — la chercher dans la
+> liste « alternatives » d'une autre arme de la même catégorie).
+
+> ℹ️ Convention (depuis la re-sync S4 Reloaded du 03/07/2026) : `degats` =
+> dégâts **torse (stomach)** du 1er palier dans le **comparateur Warzone** de
+> codmunity (arme de base, sans accessoire) ; `portee_m` = fin du 1er palier ;
+> `DEGATS_PALIERS` = paliers torse du même comparateur. Armes re-synchronisées :
+> AN-94, VX Compact, MK35 ISR, Voyak KT-3, REV-46, Sturmwolf 45, VST, XM325,
+> XR-3 Ion, Kogot-7, Maddox RFB, X9 Maverick, Warden 308, Grimhawk. Les autres
+> armes gardent d'anciennes conventions (paliers BO7 multijoueur pour certaines) —
+> à harmoniser lors d'une prochaine re-sync complète.
+> Stats de mêlée de l'**Executioner's Duet** (dégâts/cadence/portée) : estimation
+> (codmunity ne publie pas de stats pour la mêlée) — mobilité max de sa classe,
+> allonge la plus courte.
