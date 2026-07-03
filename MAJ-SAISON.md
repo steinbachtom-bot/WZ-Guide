@@ -77,6 +77,10 @@ pour accélérer la prise en compte des nouvelles pages.
 > https://codmunity.gg/weapon-stats/warzone (blob JSON `serverApp-state`,
 > clé `weaponStats`, filtrer `sourceGame:"bo7"`, champ `simple_damage` :
 > `dropoff` = début de palier en m, `stomach` = dégâts torse).
+> `DEGATS_PARTIES` (mannequin) vient du **1er élément** de `simple_damage`
+> (arme de base, courte portée) : `head`/`neck`/`chest`/`stomach` directs,
+> `arm` = `upperarm`, `leg` = `upperleg`. Toujours re-syncer ce bloc **en même
+> temps** que `DEGATS_PALIERS` (contrôle : `stomach` = dégâts du 1er palier).
 > Stats de mêlée de l'**Executioner's Duet** (dégâts/cadence/portée) : estimation
 > (codmunity ne publie pas de stats pour la mêlée) — mobilité max de sa classe,
 > allonge la plus courte.
