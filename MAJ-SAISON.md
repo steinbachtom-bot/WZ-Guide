@@ -62,11 +62,21 @@ pour accélérer la prise en compte des nouvelles pages.
 > ℹ️ Convention (depuis la re-sync S4 Reloaded du 03/07/2026) : `degats` =
 > dégâts **torse (stomach)** du 1er palier dans le **comparateur Warzone** de
 > codmunity (arme de base, sans accessoire) ; `portee_m` = fin du 1er palier ;
-> `DEGATS_PALIERS` = paliers torse du même comparateur. Armes re-synchronisées :
-> AN-94, VX Compact, MK35 ISR, Voyak KT-3, REV-46, Sturmwolf 45, VST, XM325,
-> XR-3 Ion, Kogot-7, Maddox RFB, X9 Maverick, Warden 308, Grimhawk. Les autres
-> armes gardent d'anciennes conventions (paliers BO7 multijoueur pour certaines) —
-> à harmoniser lors d'une prochaine re-sync complète.
+> `DEGATS_PALIERS` = paliers torse du même comparateur. Re-sync complète du
+> 03/07/2026 : **toutes** les armes BO7/Warzone suivent cette convention,
+> sauf exceptions ci-dessous.
+> - **Fusils à pompe** (M10 Breacher, SG-12, Echo 12, Akita), **GDL Havoc**,
+>   lanceurs et mêlée : le comparateur Warzone de codmunity ne publie pas de
+>   paliers de dégâts pour eux (`simple_damage` vide) — anciennes valeurs
+>   conservées.
+> - Armes à palier unique (VS Recon, Siren, NX Ravager) : pas de fin de
+>   1er palier dans le comparateur — `portee_m` existant conservé.
+> - Armes BO6 (`jeu:"Black Ops 6"`) : absentes du comparateur Warzone actuel —
+>   inchangées.
+> Astuce : les paliers du comparateur sont embarqués dans le HTML de
+> https://codmunity.gg/weapon-stats/warzone (blob JSON `serverApp-state`,
+> clé `weaponStats`, filtrer `sourceGame:"bo7"`, champ `simple_damage` :
+> `dropoff` = début de palier en m, `stomach` = dégâts torse).
 > Stats de mêlée de l'**Executioner's Duet** (dégâts/cadence/portée) : estimation
 > (codmunity ne publie pas de stats pour la mêlée) — mobilité max de sa classe,
 > allonge la plus courte.
